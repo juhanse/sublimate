@@ -43,7 +43,8 @@
     "expo-camera": "~16.1.6",
     "expo-localization": "~16.1.5",
     "expo-secure-store": "~14.2.3",
-    "react-native-svg": "15.11.2"
+    "react-native-svg": "15.11.2",
+    "expo-media-library": "~17.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
