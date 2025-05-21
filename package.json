@@ -45,7 +45,8 @@
     "expo-secure-store": "~14.2.3",
     "react-native-svg": "15.11.2",
     "expo-media-library": "~17.1.6",
-    "expo-notifications": "~0.31.2"
+    "expo-notifications": "~0.31.2",
+    "expo-sharing": "~13.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
