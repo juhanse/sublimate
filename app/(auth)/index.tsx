@@ -1,9 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function AuthentificationScreen() {
+	const [seenOnboarding, setSeenOnboarding] = useState(false);
+
 	return (
 		<View style={styles.container}>
 			<ImageBackground
@@ -12,38 +15,38 @@ export default function AuthentificationScreen() {
 				resizeMode="cover"
 			>
 				<LinearGradient
-				colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.7)']}
-				style={styles.overlay}
+					colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.7)']}
+					style={styles.overlay}
 				>
 				<View style={styles.content}>
 					<View style={styles.heroSection}>
-					<View style={styles.iconContainer}>
-						<Ionicons name="rocket" size={60} color="#FFFFFF" />
-					</View>
-					
-					<Text style={styles.title}>Bienvenue sur MyApp</Text>
-					<Text style={styles.subtitle}>
-						Organisez vos projets, atteignez vos objectifs et transformez vos idées en réalité.
-					</Text>
+						<View style={styles.iconContainer}>
+							<Ionicons name="rocket" size={60} color="#FFFFFF" />
+						</View>
+						
+						<Text style={styles.title}>Just It</Text>
+						<Text style={styles.subtitle}>
+							Organisez vos projets, atteignez vos objectifs et transformez vos idées en réalité.
+						</Text>
 
-					<View style={styles.featuresContainer}>
-						<View style={styles.feature}>
-						<Ionicons name="checkmark-circle" size={24} color="#34C759" />
-						<Text style={styles.featureText}>Gestion de projets intuitive</Text>
+						<View style={styles.featuresContainer}>
+							<View style={styles.feature}>
+								<Ionicons name="checkmark-circle" size={24} color="#34C759" />
+								<Text style={styles.featureText}>Gestion de projets intuitive</Text>
+							</View>
+							<View style={styles.feature}>
+								<Ionicons name="checkmark-circle" size={24} color="#34C759" />
+								<Text style={styles.featureText}>Suivi de progression en temps réel</Text>
+							</View>
+							<View style={styles.feature}>
+								<Ionicons name="checkmark-circle" size={24} color="#34C759" />
+								<Text style={styles.featureText}>Collaboration simplifiée</Text>
+							</View>
 						</View>
-						<View style={styles.feature}>
-						<Ionicons name="checkmark-circle" size={24} color="#34C759" />
-						<Text style={styles.featureText}>Suivi de progression en temps réel</Text>
-						</View>
-						<View style={styles.feature}>
-						<Ionicons name="checkmark-circle" size={24} color="#34C759" />
-						<Text style={styles.featureText}>Collaboration simplifiée</Text>
-						</View>
-					</View>
 					</View>
 
 					<View style={styles.buttonSection}>
-						<Link href="/(auth)/register" asChild>
+						<Link href="/(auth)/onboarding" asChild>
 							<TouchableOpacity style={styles.primaryButton}>
 								<Text style={styles.primaryButtonText}>Créer un compte</Text>
 							</TouchableOpacity>
