@@ -84,21 +84,6 @@ export default function CreateProjectModal() {
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 		>
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-				{/* <View style={styles.header}>
-					<TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
-						<Text style={styles.cancelText}>Annuler</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={handleCreate}
-						style={[styles.createButton, isLoading && styles.createButtonDisabled]}
-						disabled={isLoading}
-					>
-						<Text style={styles.createText}>
-							{isLoading ? 'Création...' : 'Créer'}
-						</Text>
-					</TouchableOpacity>
-				</View> */}
-
 				<View style={styles.form}>
 					<View style={styles.inputGroup}>
 						<Text style={styles.label}>Nom du projet *</Text>
@@ -220,24 +205,6 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		flex: 1,
-	},
-	header: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 20,
-		paddingVertical: 16,
-		backgroundColor: '#FFFFFF',
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderBottomColor: '#C6C6C8',
-	},
-	cancelButton: {
-		paddingVertical: 8,
-		paddingHorizontal: 12,
-	},
-	cancelText: {
-		color: '#007AFF',
-		fontSize: 16,
 	},
 	createButton: {
 		backgroundColor: '#007AFF',
