@@ -1,75 +1,121 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, Alert } from 'react-native';
+import StreakCalendar from '@/components/Calendar';
 
 export default function HomeScreen() {
+	const [completedDays, setCompletedDays] = useState<number[]>([0, 1, 3, 5]);
+	const [streakCount, setStreakCount] = useState(12);
+
+	const handleDayPress = (dayIndex: number) => {
+		const today = new Date();
+		const currentDay = today.getDay();
+		const mondayIndex = currentDay === 0 ? 6 : currentDay - 1;
+
+		if (dayIndex === mondayIndex) {
+			if (completedDays.includes(dayIndex)) {
+				Alert.alert(
+					'Déjà complété !',
+					'Vous avez déjà effectué votre action aujourd\'hui. Revenez demain !'
+				);
+			} else {
+				setCompletedDays(prev => [...prev, dayIndex]);
+				setStreakCount(prev => prev + 1);
+
+				Alert.alert(
+					'Bravo ! 🔥',
+					'Vous avez complété votre objectif du jour !',
+					[{ text: 'Super !', style: 'default' }]
+				);
+			}
+		} else if (dayIndex > mondayIndex) {
+			Alert.alert(
+				'Patience !',
+				'Vous ne pouvez pas encore compléter les jours futurs.'
+			);
+		} else {
+			Alert.alert(
+				'Jour passé',
+				'Ce jour est déjà passé. Concentrez-vous sur aujourd\'hui !'
+			);
+		}
+	};
+
 	return (
-		<ParallaxScrollView
-			headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-			headerImage={
-				<Image
-				source={require('@/assets/images/partial-react-logo.png')}
-				style={styles.reactLogo}
-			/>
-		}>
-		<ThemedView style={styles.titleContainer}>
-			<ThemedText type="title">Welcome!</ThemedText>
-			<HelloWave />
-		</ThemedView>
-		<ThemedView style={styles.stepContainer}>
-			<ThemedText type="subtitle">Step 1: Try it</ThemedText>
-			<ThemedText>
-				Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-				Press{' '}
-				<ThemedText type="defaultSemiBold">
-					{Platform.select({
-					ios: 'cmd + d',
-					android: 'cmd + m',
-					web: 'F12',
-					})}
-				</ThemedText>{' '}
-				to open developer tools.
-			</ThemedText>
-		</ThemedView>
-		<ThemedView style={styles.stepContainer}>
-			<ThemedText type="subtitle">Step 2: Explore</ThemedText>
-			<ThemedText>
-				{`Tap the Explore tab to learn more about what's included in this starter app.`}
-			</ThemedText>
-		</ThemedView>
-		<ThemedView style={styles.stepContainer}>
-			<ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-			<ThemedText>
-				{`When you're ready, run `}
-				<ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-				<ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-				<ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-				<ThemedText type="defaultSemiBold">app-example</ThemedText>.
-			</ThemedText>
-		</ThemedView>
-		</ParallaxScrollView>
+		<SafeAreaView style={styles.container}>
+			<ScrollView 
+				style={styles.scrollView}
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={styles.scrollContent}
+			>
+				<StreakCalendar
+					completedDays={completedDays}
+					streakCount={streakCount}
+					onDayPress={handleDayPress}
+				/>
+
+				<View style={styles.mainContent}>
+					<View style={styles.welcomeSection}>
+						<Text style={styles.welcomeText}>
+						Salut Julien ! 👋
+						</Text>
+						<Text style={styles.motivationText}>
+						Continuez votre excellent travail !
+						</Text>
+					</View>
+
+					<View style={styles.placeholder}>
+						<Text style={styles.placeholderText}>
+						Contenu principal de ton écran d'accueil
+						</Text>
+					</View>
+				</View>
+			</ScrollView>
+		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
-	titleContainer: {
-		flexDirection: 'row',
+	container: {
+		flex: 1,
+		backgroundColor: '#F8F9FA',
+	},
+	scrollView: {
+		flex: 1,
+	},
+	scrollContent: {
+		paddingBottom: 20,
+	},
+	mainContent: {
+		flex: 1,
+		paddingHorizontal: 16,
+	},
+	welcomeSection: {
+		marginVertical: 20,
+	},
+	welcomeText: {
+		fontSize: 24,
+		fontWeight: 'bold',
+		color: '#1D1D1F',
+		marginBottom: 4,
+	},
+	motivationText: {
+		fontSize: 16,
+		color: '#8E8E93',
+	},
+	placeholder: {
+		backgroundColor: '#FFFFFF',
+		borderRadius: 12,
+		padding: 20,
+		marginTop: 16,
 		alignItems: 'center',
-		gap: 8,
+		justifyContent: 'center',
+		minHeight: 200,
+		borderWidth: 1,
+		borderColor: '#F2F2F7',
 	},
-	stepContainer: {
-		gap: 8,
-		marginBottom: 8,
-	},
-	reactLogo: {
-		height: 178,
-		width: 290,
-		bottom: 0,
-		left: 0,
-		position: 'absolute',
+	placeholderText: {
+		fontSize: 16,
+		color: '#8E8E93',
+		textAlign: 'center',
 	},
 });
