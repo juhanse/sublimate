@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Tabs } from 'expo-router';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { router, Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
@@ -23,6 +23,21 @@ export default function TabLayout() {
 					tabBarIcon: ({ color }) => (
 						<Ionicons name="home" size={24} color={color} />
 					),
+				}}
+			/>
+			<Tabs.Screen
+				name="create-placeholder"
+				options={{
+					title: 'Créer',
+					tabBarIcon: ({ color }) => (
+						<Ionicons name="add" size={24} color={color} />
+					),
+					tabBarButton: (props) => (
+						<TouchableOpacity
+							{...(props as any)}
+							onPress={() => router.push('/create')}
+						/>
+					)
 				}}
 			/>
 			<Tabs.Screen
