@@ -35,7 +35,7 @@ export default function TabLayout() {
 					tabBarButton: (props) => (
 						<TouchableOpacity
 							{...(props as any)}
-							onPress={() => router.push('/create')}
+							onPress={() => router.push('/create2')}
 						/>
 					)
 				}}
@@ -49,6 +49,7 @@ export default function TabLayout() {
 					),
 				}}
 			/>
+			<Tabs.Screen name="settings" options={{ href: null }} />
 		</Tabs>
   	);
 }
