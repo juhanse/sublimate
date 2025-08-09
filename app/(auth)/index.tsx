@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -46,7 +46,7 @@ export default function AuthentificationScreen() {
 					</View>
 
 					<View style={styles.buttonSection}>
-						<Link href="/(auth)/onboarding" asChild>
+						<Link href="/(tabs)" asChild>
 							<TouchableOpacity style={styles.primaryButton}>
 								<Text style={styles.primaryButtonText}>Créer un compte</Text>
 							</TouchableOpacity>
