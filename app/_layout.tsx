@@ -22,6 +22,7 @@ export default function RootLayout() {
 				<Stack.Screen name="(auth)" />
 				<Stack.Screen name="(tabs)" />
 				<Stack.Screen name="create" options={{ presentation: 'modal' }} />
+				<Stack.Screen name="create2" options={{ presentation: 'modal' }} />
 				<Stack.Screen name="+not-found" />
 			</Stack>
 			<StatusBar style="auto" />
