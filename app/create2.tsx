@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import ValideStepButton from '@/components/ui/ValideStepButton';
+import { Colors } from '@/constants/Colors';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -57,14 +58,6 @@ export default function CreateScreen() {
 		const x = Math.cos(angle) * wheelRadius;
 		const y = -Math.sin(angle) * wheelRadius;
 		return { x, y };
-	};
-
-	const handleCreateProject = () => {
-		Alert.alert(
-			"Nouveau Projet",
-			"Fonctionnalité de création de projet",
-			[{ text: "OK" }]
-		);
 	};
 
 	const handleTakePhoto = () => {
@@ -154,9 +147,7 @@ export default function CreateScreen() {
 
 			{selectedProject ? (
 				<ValideStepButton text={selectedProject.currentObjective} onPress={handleTakePhoto} />
-			) : (
-				<ValideStepButton text="Créer un nouveau projet" onPress={handleCreateProject} />
-			)}
+			) : null}
 		</View>
 	);
 }
@@ -218,7 +209,7 @@ const styles = StyleSheet.create({
 		height: 60,
 		borderRadius: 30,
 		borderWidth: 3,
-		borderColor: '#007AFF',
+		borderColor: Colors.purple,
 		backgroundColor: 'transparent',
 	},
 	navigationButtons: {
@@ -234,7 +225,7 @@ const styles = StyleSheet.create({
 		width: 40,
 		height: 40,
 		borderRadius: 20,
-		backgroundColor: '#007AFF',
+		backgroundColor: Colors.purple,
 		justifyContent: 'center',
 		alignItems: 'center',
 		shadowColor: '#000',
