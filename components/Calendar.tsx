@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Colors } from '@/constants/Colors';
 
 interface DayData {
 	day: string;
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
 	},
 	progressFill: {
 		height: '100%',
-		backgroundColor: '#34C759',
+		backgroundColor: Colors.purple,
 		borderRadius: 2,
 	},
 	calendar: {
@@ -245,8 +246,8 @@ const styles = StyleSheet.create({
 		marginBottom: 6,
 	},
 	todayLabel: {
-		color: '#007AFF',
-		fontWeight: '600',
+		color: Colors.purple,
+		fontWeight: '800',
 	},
 	dayBubble: {
 		position: 'relative',
@@ -265,15 +266,15 @@ const styles = StyleSheet.create({
 	},
 	todayBubble: {
 		backgroundColor: '#E3F2FD',
-		borderColor: '#007AFF',
+		borderColor: Colors.purple,
 	},
 	futureBubble: {
 		backgroundColor: '#F9F9F9',
 		borderColor: '#E5E5EA',
 	},
 	completedBubble: {
-		backgroundColor: '#E8F5E8',
-		borderColor: '#34C759',
+		backgroundColor: '#ede6ffff',
+		borderColor: Colors.purple,
 	},
 	dayNumber: {
 		fontSize: 14,
@@ -281,13 +282,13 @@ const styles = StyleSheet.create({
 		color: '#8E8E93',
 	},
 	todayDayNumber: {
-		color: '#007AFF',
+		color: Colors.purple,
 	},
 	futureDayNumber: {
-		color: '#C7C7CC',
+		color: Colors.purple,
 	},
 	completedDayNumber: {
-		color: '#34C759',
+		color: Colors.purple,
 	},
 	flameContainer: {
 		position: 'absolute',
