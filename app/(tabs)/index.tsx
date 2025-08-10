@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, Alert } from 'react-native';
 import StreakCalendar from '@/components/Calendar';
+import CreateProjectButton from '@/components/ui/CreateProjectButton';
 
 export default function HomeScreen() {
 	const [completedDays, setCompletedDays] = useState<number[]>([0, 1, 3, 5]);
@@ -40,6 +41,14 @@ export default function HomeScreen() {
 		}
 	};
 
+	const handleCreateProject = () => {
+		Alert.alert(
+			"Nouveau Projet",
+			"Fonctionnalité de création de projet",
+			[{ text: "OK" }]
+		);
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView 
@@ -70,6 +79,7 @@ export default function HomeScreen() {
 					</View>
 				</View>
 			</ScrollView>
+			<CreateProjectButton onPress={handleCreateProject} />
 		</SafeAreaView>
 	);
 }
