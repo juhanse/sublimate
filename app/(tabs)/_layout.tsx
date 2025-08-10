@@ -31,7 +31,7 @@ export default function TabLayout() {
 				options={{
 					title: '',
 					tabBarIcon: ({ color }) => (
-						<Ionicons name="add" size={32} color={color} />
+						<Ionicons name="camera" size={32} color={color} />
 					),
 					tabBarButton: (props) => (
 						<TouchableOpacity
