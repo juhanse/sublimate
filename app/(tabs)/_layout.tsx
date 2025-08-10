@@ -4,13 +4,14 @@ import { router, Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
+import { Colors } from '@/constants/Colors';
 
 export default function TabLayout() {
   	return (
 		<Tabs
 			screenOptions={{
 				headerShown: false,
-				tabBarActiveTintColor: '#fff',
+				tabBarActiveTintColor: Colors.purple,
 				tabBarStyle: styles.tabBarStyle,
 				tabBarBackground: TabBarBackground,
 				tabBarButton: HapticTab,
@@ -28,9 +29,9 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="create-placeholder"
 				options={{
-					title: 'Créer',
+					title: '',
 					tabBarIcon: ({ color }) => (
-						<Ionicons name="add" size={24} color={color} />
+						<Ionicons name="add" size={32} color={color} />
 					),
 					tabBarButton: (props) => (
 						<TouchableOpacity
