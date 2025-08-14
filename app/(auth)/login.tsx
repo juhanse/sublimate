@@ -1,37 +1,43 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, Alert } from 'react-native';
-import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useAuth } from '@/contexts/AuthContext';
+import { useMutation } from '@tanstack/react-query';
+import { LoginUser, postLogin } from '@/services/authQueries';
+import * as Haptics from 'expo-haptics';
 
 export default function LoginScreen() {
-	const [identifier, setIdentifier] = useState('');
+	const { login } = useAuth();
+	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+	const { mutate, isPending } = useMutation({
+		mutationFn: (userData: LoginUser) => postLogin(userData),
+		onSuccess: async (data) => {
+			const token = data.access_token;
+			await login(token);
+			setIsLoading(false);
+		},
+		onError: (error) => {
+			console.log(error);
+			alert('Email ou mot de passe incorrect');
+			setIsLoading(false);
+		},
+	});
+
 	const handleLogin = async () => {
-		if (!identifier || !password) {
-			Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
+		setIsLoading(true);
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
+		if (!email || !password) {
+			Alert.alert("Erreur", "Veuillez remplir tous les champs.");
+			setIsLoading(false);
 			return;
 		}
 
-		try {
-			setIsLoading(true);
-			const res = await fetch('/api/login', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ identifier, password }),
-			});
-
-			if (!res.ok) throw new Error();
-
-			Alert.alert('Connexion réussie');
-			router.replace('/');
-		} catch (err) {
-			Alert.alert('Erreur', 'Identifiants incorrects.');
-		} finally {
-			setIsLoading(false);
-		}
+		mutate({ email, password });
 	};
 
 	const handleForgot = async () => {
@@ -46,8 +52,8 @@ export default function LoginScreen() {
 				style={styles.input}
 				placeholder="Email ou pseudo"
 				placeholderTextColor="#8E8E93"
-				value={identifier}
-				onChangeText={setIdentifier}
+				value={email}
+				onChangeText={setEmail}
 				autoCapitalize="none"
 				keyboardType="email-address"
 			/>
@@ -62,15 +68,11 @@ export default function LoginScreen() {
 					secureTextEntry={!isPasswordVisible}
 				/>
 				<TouchableOpacity style={styles.icon} onPress={() => setIsPasswordVisible((prev) => !prev)}>
-				<Ionicons
-					name={isPasswordVisible ? 'eye-off' : 'eye'}
-					size={24}
-					color="#8E8E93"
-				/>
+				<Ionicons name={isPasswordVisible ? 'eye-off' : 'eye'} size={24} color="#8E8E93"/>
 				</TouchableOpacity>
 			</View>
 
-			<TouchableOpacity style={styles.forgotButton} onPress={handleForgot} disabled={isLoading} >
+			<TouchableOpacity style={styles.forgotButton} onPress={handleForgot} disabled={isLoading}>
 				<Text style={styles.forgotText}>Mot de passe oublié ?</Text>
 			</TouchableOpacity>
 	
