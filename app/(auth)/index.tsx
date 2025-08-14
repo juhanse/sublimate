@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function AuthentificationScreen() {
-	const [seenOnboarding, setSeenOnboarding] = useState(false);
-
 	return (
 		<View style={styles.container}>
 			<ImageBackground
@@ -46,7 +43,7 @@ export default function AuthentificationScreen() {
 					</View>
 
 					<View style={styles.buttonSection}>
-						<Link href="/(tabs)" asChild>
+						<Link href="/(auth)/register" asChild>
 							<TouchableOpacity style={styles.primaryButton}>
 								<Text style={styles.primaryButtonText}>Créer un compte</Text>
 							</TouchableOpacity>
