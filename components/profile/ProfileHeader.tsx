@@ -2,8 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { User } from '../../hooks/useAuth';
 import { router } from 'expo-router';
+
+type User = {
+	id: string;
+	name: string;
+	email: string;
+};
 
 interface ProfileHeaderProps {
 	user: User | null;
