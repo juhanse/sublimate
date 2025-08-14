@@ -1,9 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
 import Swiper from 'react-native-swiper';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 
-const OnboardingScreen = ({ onDone }: { onDone: () => void }) => {
+const OnboardingScreen = () => {
+	const { markOnboardingSeen } = useOnboarding();
+
+	const handleDone = () => {
+		markOnboardingSeen();
+	};
+
 	return (
 		<Swiper loop={false}>
 			<View style={styles.container}>
@@ -13,11 +19,9 @@ const OnboardingScreen = ({ onDone }: { onDone: () => void }) => {
 					resizeMode="cover"
 				>
 					<View style={styles.button}>
-						<Link href="/(auth)" asChild>
-							<TouchableOpacity style={styles.skipButton}>
-								<Text style={styles.text}>Passer</Text>
-							</TouchableOpacity>
-						</Link>
+						<TouchableOpacity style={styles.skipButton} onPress={handleDone}>
+							<Text style={styles.text}>Passer</Text>
+						</TouchableOpacity>
 					</View>
 				</ImageBackground>
 			</View>
@@ -45,11 +49,9 @@ const OnboardingScreen = ({ onDone }: { onDone: () => void }) => {
 					resizeMode="cover"
 				>
 					<View style={styles.button}>
-						<Link href="/(auth)" asChild>
-							<TouchableOpacity style={styles.startButton}>
-								<Text style={styles.text}>Commencer 🎉</Text>
-							</TouchableOpacity>
-						</Link>
+						<TouchableOpacity style={styles.startButton} onPress={handleDone}>
+							<Text style={styles.text}>Commencer 🎉</Text>
+						</TouchableOpacity>
 					</View>
 				</ImageBackground>
 			</View>
