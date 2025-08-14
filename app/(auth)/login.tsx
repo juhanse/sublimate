@@ -10,7 +10,6 @@ export default function LoginScreen() {
 	const { login } = useAuth();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 	const { mutate, isPending } = useMutation({
@@ -18,22 +17,18 @@ export default function LoginScreen() {
 		onSuccess: async (data) => {
 			const token = data.access_token;
 			await login(token);
-			setIsLoading(false);
 		},
 		onError: (error) => {
 			console.log(error);
 			alert('Email ou mot de passe incorrect');
-			setIsLoading(false);
 		},
 	});
 
 	const handleLogin = async () => {
-		setIsLoading(true);
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
 		if (!email || !password) {
 			Alert.alert("Erreur", "Veuillez remplir tous les champs.");
-			setIsLoading(false);
 			return;
 		}
 
@@ -72,17 +67,17 @@ export default function LoginScreen() {
 				</TouchableOpacity>
 			</View>
 
-			<TouchableOpacity style={styles.forgotButton} onPress={handleForgot} disabled={isLoading}>
+			<TouchableOpacity style={styles.forgotButton} onPress={handleForgot} disabled={isPending}>
 				<Text style={styles.forgotText}>Mot de passe oublié ?</Text>
 			</TouchableOpacity>
 	
 			<TouchableOpacity
-				style={[styles.button, isLoading && styles.buttonDisabled]}
+				style={[styles.button, isPending && styles.buttonDisabled]}
 				onPress={handleLogin}
-				disabled={isLoading}
+				disabled={isPending}
 			>
 				<Text style={styles.buttonText}>
-					{isLoading ? 'Connexion...' : 'Se connecter'}
+					{isPending ? 'Connexion...' : 'Se connecter'}
 				</Text>
 			</TouchableOpacity>
 		</KeyboardAvoidingView>
