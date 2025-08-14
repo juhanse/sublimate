@@ -1,10 +1,33 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import { OnboardingProvider } from '@/contexts/OnboardingContext';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+
+const queryClient = new QueryClient();
+
+const InitialLayout = () => {
+	const { isAuth } = useAuth();
+
+	return (
+		<Stack screenOptions={{ headerShown: false }}>
+			<Stack.Protected guard={!isAuth}>
+				<Stack.Screen name="(auth)" />
+			</Stack.Protected>
+
+			<Stack.Protected guard={isAuth}>
+				<Stack.Screen name="(tabs)" />
+				<Stack.Screen name="create" options={{ presentation: 'modal' }} />
+				<Stack.Screen name="create2" options={{ presentation: 'modal' }} />
+			</Stack.Protected>
+
+			<Stack.Screen name="+not-found" />
+		</Stack>
+	)
+}
 
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
@@ -19,15 +42,14 @@ export default function RootLayout() {
 	}
 
 	return (
-		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-			<Stack screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="(auth)" />
-				<Stack.Screen name="(tabs)" />
-				<Stack.Screen name="create" options={{ presentation: 'modal' }} />
-				<Stack.Screen name="create2" options={{ presentation: 'modal' }} />
-				<Stack.Screen name="+not-found" />
-			</Stack>
-			<StatusBar style="auto" />
-		</ThemeProvider>
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<OnboardingProvider>
+					<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+						<InitialLayout />
+					</ThemeProvider>
+				</OnboardingProvider>
+			</AuthProvider>
+		</QueryClientProvider>
 	);
 }
