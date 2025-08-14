@@ -1,48 +1,54 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthContextType {
-	token: string | null;
+	isAuth: boolean;
 	login: (token: string) => Promise<void>;
 	logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [token, setToken] = useState<string | null>(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+	const [isAuth, setIsAuth] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
-		const loadToken = async () => {
-			const storedToken = await SecureStore.getItemAsync('access_token');
-			if (storedToken) setToken(storedToken);
+		const loadAuthState = async () => {
+			try {
+				const token = await AsyncStorage.getItem("access_token");
+				setIsAuth(!!token);
+			} catch (error) {
+				console.error('Failed to load auth state:', error);
+			} finally {
+				setLoading(false);
+			}
 		};
-		loadToken();
+
+		loadAuthState();
 	}, []);
 
-	const login = async (newToken: string) => {
-		setToken(newToken);
-		await SecureStore.setItemAsync('access_token', newToken);
+	const login = async (token: string) => {
+		await AsyncStorage.setItem("access_token", token);
+		setIsAuth(true);
 	};
 
 	const logout = async () => {
-		setToken(null);
-		await SecureStore.deleteItemAsync('access_token');
+		await AsyncStorage.removeItem("access_token");
+		setIsAuth(false);
 	};
 
 	return (
-		<AuthContext.Provider value={{ token, login, logout }}>
+		<AuthContext.Provider value={{ isAuth, login, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);
 };
 
-export const useAuth = (): AuthContextType => {
+export const useAuth = () => {
 	const context = useContext(AuthContext);
-
 	if (!context) {
 		throw new Error('useAuth must be used within an AuthProvider');
 	}
-
 	return context;
 };
