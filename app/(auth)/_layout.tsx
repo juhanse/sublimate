@@ -1,19 +1,20 @@
-import { Stack, Redirect } from 'expo-router';
-import { useAuth } from '@/hooks/useAuth';
+import { Stack } from 'expo-router';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 
 export default function AuthLayout() {
-	/* const { user } = useAuth();
-
-	if (user) {
-		return <Redirect href="/(tabs)" />;
-	} */
+	const { seenOnboarding } = useOnboarding();
 
 	return (
 		<Stack screenOptions={{ headerShown: false }}>
-			<Stack.Screen name="index" />
-			<Stack.Screen name="login" options={{ presentation: 'modal' }} />
-			<Stack.Screen name="register" />
-			<Stack.Screen name="onboarding" />
+			<Stack.Protected guard={!seenOnboarding}>
+				<Stack.Screen name="onboarding" />
+			</Stack.Protected>
+
+			<Stack.Protected guard={seenOnboarding}>
+				<Stack.Screen name="index" />
+				<Stack.Screen name="login" options={{ presentation: 'modal' }} />
+				<Stack.Screen name="register" />
+			</Stack.Protected>
 		</Stack>
 	);
 }
