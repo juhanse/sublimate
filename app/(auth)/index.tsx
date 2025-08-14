@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -43,17 +43,13 @@ export default function AuthentificationScreen() {
 					</View>
 
 					<View style={styles.buttonSection}>
-						<Link href="/(auth)/register" asChild>
-							<TouchableOpacity style={styles.primaryButton}>
-								<Text style={styles.primaryButtonText}>Créer un compte</Text>
-							</TouchableOpacity>
-						</Link>
+						<TouchableOpacity style={styles.primaryButton} onPress={() => router.push('/(auth)/register')}>
+							<Text style={styles.primaryButtonText}>Créer un compte</Text>
+						</TouchableOpacity>
 
-						<Link href="/(auth)/login" asChild>
-							<TouchableOpacity style={styles.secondaryButton}>
-								<Text style={styles.secondaryButtonText}>Se connecter</Text>
-							</TouchableOpacity>
-						</Link>
+						<TouchableOpacity style={styles.secondaryButton} onPress={() => router.push('/(auth)/login')}>
+							<Text style={styles.secondaryButtonText}>Se connecter</Text>
+						</TouchableOpacity>
 
 						<View style={styles.termsContainer}>
 							<Text style={styles.termsText}>
