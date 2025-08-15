@@ -134,10 +134,10 @@ export default function CreateScreen() {
 						</View>
 
 						<View style={styles.navigationButtons}>
-							<TouchableOpacity style={styles.navButton} onPress={selectPreviousProject}>
+							<TouchableOpacity style={styles.navButton} onPress={selectNextProject}>
 								<Text style={styles.navButtonText}>←</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.navButton} onPress={selectNextProject}>
+							<TouchableOpacity style={styles.navButton} onPress={selectPreviousProject}>
 								<Text style={styles.navButtonText}>→</Text>
 							</TouchableOpacity>
 						</View>
