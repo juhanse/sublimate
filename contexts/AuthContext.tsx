@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 interface AuthContextType {
 	isAuth: boolean;
@@ -11,17 +11,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [isAuth, setIsAuth] = useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		const loadAuthState = async () => {
 			try {
-				const token = await AsyncStorage.getItem("access_token");
+				const token = await SecureStore.getItemAsync("access_token");
 				setIsAuth(!!token);
 			} catch (error) {
 				console.error('Failed to load auth state:', error);
-			} finally {
-				setLoading(false);
 			}
 		};
 
@@ -29,12 +26,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	}, []);
 
 	const login = async (token: string) => {
-		await AsyncStorage.setItem("access_token", token);
+		await SecureStore.setItemAsync("access_token", token);
 		setIsAuth(true);
 	};
 
 	const logout = async () => {
-		await AsyncStorage.removeItem("access_token");
+		await SecureStore.deleteItemAsync("access_token");
 		setIsAuth(false);
 	};
 
