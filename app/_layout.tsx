@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import { UserProvider } from '@/contexts/UserContext';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -43,13 +44,15 @@ export default function RootLayout() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<AuthProvider>
-				<OnboardingProvider>
-					<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-						<InitialLayout />
-					</ThemeProvider>
-				</OnboardingProvider>
-			</AuthProvider>
+			<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+				<AuthProvider>
+					<OnboardingProvider>
+						<UserProvider>
+							<InitialLayout />
+						</UserProvider>
+					</OnboardingProvider>
+				</AuthProvider>
+			</ThemeProvider>
 		</QueryClientProvider>
 	);
 }
