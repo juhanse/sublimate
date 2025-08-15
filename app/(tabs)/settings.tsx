@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, SafeAreaView, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface UserInfo {
 	pseudo: string;
@@ -138,6 +139,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ visible, onCancel, onConfirm 
 );
 
 const Settings: React.FC = () => {
+	const { logout } = useAuth();
 	const [userInfo, setUserInfo] = useState<UserInfo>({
 		pseudo: 'JohnDoe',
 		email: 'john.doe@example.com',
@@ -193,7 +195,7 @@ const Settings: React.FC = () => {
 				{ 
 					text: 'Se déconnecter', 
 					style: 'destructive',
-					onPress: () => router.replace('/(auth)/login')
+					onPress: () => logout()
 				}
 			]
 		);

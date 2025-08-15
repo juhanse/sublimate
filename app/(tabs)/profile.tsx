@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, Alert } from 'react-native';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import StatsGrid from '@/components/profile/StatsGrid';
 import ProjectsList from '@/components/profile/ProjectsList';
@@ -121,17 +121,6 @@ export default function ProfileScreen() {
 			[
 				{ text: 'Annuler', style: 'cancel' },
 				{ text: 'Télécharger', onPress: () => console.log('Download', project.id) },
-			]
-		);
-	};
-
-	const handleLogout = () => {
-		Alert.alert(
-			'Déconnexion',
-			'Êtes-vous sûr de vouloir vous déconnecter ?',
-			[
-				{ text: 'Annuler', style: 'cancel' },
-				{ text: 'Se déconnecter', style: 'destructive', onPress: signOut },
 			]
 		);
 	};

@@ -51,17 +51,16 @@ export default function HomeScreen() {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			<StreakCalendar
+				completedDays={completedDays}
+				streakCount={streakCount}
+				onDayPress={handleDayPress}
+			/>
 			<ScrollView 
 				style={styles.scrollView}
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={styles.scrollContent}
 			>
-				<StreakCalendar
-					completedDays={completedDays}
-					streakCount={streakCount}
-					onDayPress={handleDayPress}
-				/>
-
 				<View style={styles.mainContent}>
 					<View style={styles.welcomeSection}>
 						<Text style={styles.welcomeText}>
