@@ -1,7 +1,6 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
-console.log("API URL:", process.env.EXPO_PUBLIC_BACKEND_URL);
 const api = axios.create({
   	baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,
 	headers: {
