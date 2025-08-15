@@ -20,8 +20,8 @@ const InitialLayout = () => {
 
 			<Stack.Protected guard={isAuth}>
 				<Stack.Screen name="(tabs)" />
-				<Stack.Screen name="create" options={{ presentation: 'modal' }} />
-				<Stack.Screen name="create2" options={{ presentation: 'modal' }} />
+				<Stack.Screen name="create" options={{ presentation: 'modal', contentStyle: { backgroundColor: 'transparent' } }} />
+				<Stack.Screen name="create2" options={{ presentation: 'modal', contentStyle: { backgroundColor: 'transparent' } }} />
 			</Stack.Protected>
 
 			<Stack.Screen name="+not-found" />
