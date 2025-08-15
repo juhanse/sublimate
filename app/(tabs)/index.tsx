@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, Alert } from 'react-native';
 import StreakCalendar from '@/components/Calendar';
 import CreateProjectButton from '@/components/ui/CreateProjectButton';
+import { useUser } from '@/contexts/UserContext';
+import * as Haptics from 'expo-haptics';
 
 export default function HomeScreen() {
+	const { user } = useUser();
 	const [completedDays, setCompletedDays] = useState<number[]>([0, 1, 3, 5]);
 	const [streakCount, setStreakCount] = useState(12);
 
@@ -41,12 +44,9 @@ export default function HomeScreen() {
 		}
 	};
 
-	const handleCreateProject = () => {
-		Alert.alert(
-			"Nouveau Projet",
-			"Fonctionnalité de création de projet",
-			[{ text: "OK" }]
-		);
+	const handleCreateProject = async () => {
+		// TODO: Implement project creation
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 	};
 
 	return (
@@ -56,28 +56,24 @@ export default function HomeScreen() {
 				streakCount={streakCount}
 				onDayPress={handleDayPress}
 			/>
-			<ScrollView 
-				style={styles.scrollView}
-				showsVerticalScrollIndicator={false}
-				contentContainerStyle={styles.scrollContent}
-			>
-				<View style={styles.mainContent}>
-					<View style={styles.welcomeSection}>
-						<Text style={styles.welcomeText}>
-						Salut Julien ! 👋
-						</Text>
-						<Text style={styles.motivationText}>
-						Continuez votre excellent travail !
-						</Text>
-					</View>
-
+			<View style={styles.mainContent}>
+				<View style={styles.welcomeSection}>
+					<Text style={styles.welcomeText}>
+					Salut {user?.username} ! 👋
+					</Text>
+				</View>
+				<ScrollView 
+					style={styles.scrollView}
+					showsVerticalScrollIndicator={false}
+					contentContainerStyle={styles.scrollContent}
+				>
 					<View style={styles.placeholder}>
 						<Text style={styles.placeholderText}>
 						Contenu principal de ton écran d'accueil
 						</Text>
 					</View>
-				</View>
-			</ScrollView>
+				</ScrollView>
+			</View>
 			<CreateProjectButton onPress={handleCreateProject} />
 		</SafeAreaView>
 	);
@@ -106,10 +102,6 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: '#1D1D1F',
 		marginBottom: 4,
-	},
-	motivationText: {
-		fontSize: 16,
-		color: '#8E8E93',
 	},
 	placeholder: {
 		backgroundColor: '#FFFFFF',
