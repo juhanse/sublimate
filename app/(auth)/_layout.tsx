@@ -1,8 +1,8 @@
 import { Stack } from 'expo-router';
-import { useOnboarding } from '@/contexts/OnboardingContext';
+import { useOnboardingStore } from '@/contexts/OnboardingContext';
 
 export default function AuthLayout() {
-	const { seenOnboarding } = useOnboarding();
+  	const { seenOnboarding } = useOnboardingStore();
 
 	return (
 		<Stack screenOptions={{ headerShown: false }}>

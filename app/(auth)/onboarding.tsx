@@ -1,14 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { useOnboarding } from '@/contexts/OnboardingContext';
+import { useOnboardingStore } from '@/contexts/OnboardingContext';
 
 const OnboardingScreen = () => {
-	const { markOnboardingSeen } = useOnboarding();
-
-	const handleDone = () => {
-		markOnboardingSeen();
-	};
+	const { markOnboardingSeen } = useOnboardingStore();
 
 	return (
 		<Swiper loop={false}>
@@ -19,7 +15,7 @@ const OnboardingScreen = () => {
 					resizeMode="cover"
 				>
 					<View style={styles.button}>
-						<TouchableOpacity style={styles.skipButton} onPress={handleDone}>
+						<TouchableOpacity style={styles.skipButton} onPress={markOnboardingSeen}>
 							<Text style={styles.text}>Passer</Text>
 						</TouchableOpacity>
 					</View>
@@ -49,7 +45,7 @@ const OnboardingScreen = () => {
 					resizeMode="cover"
 				>
 					<View style={styles.button}>
-						<TouchableOpacity style={styles.startButton} onPress={handleDone}>
+						<TouchableOpacity style={styles.startButton} onPress={markOnboardingSeen}>
 							<Text style={styles.text}>Commencer 🎉</Text>
 						</TouchableOpacity>
 					</View>
