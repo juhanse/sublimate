@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 export default function AuthentificationScreen() {
 	return (
@@ -43,6 +44,26 @@ export default function AuthentificationScreen() {
 					</View>
 
 					<View style={styles.buttonSection}>
+						<AppleAuthentication.AppleAuthenticationButton
+							buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+							buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+							cornerRadius={5}
+							style={styles.buttonApple}
+							onPress={async () => {
+								try {
+									const credential = await AppleAuthentication.signInAsync({
+										requestedScopes: [
+											AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+											AppleAuthentication.AppleAuthenticationScope.EMAIL,
+										],
+									});
+									// signed in
+								} catch (e) {
+									console.log("Error: " + e);
+								}
+							}}
+						/>
+
 						<TouchableOpacity style={styles.primaryButton} onPress={() => router.push('/(auth)/register')}>
 							<Text style={styles.primaryButtonText}>Créer un compte</Text>
 						</TouchableOpacity>
@@ -178,5 +199,9 @@ const styles = StyleSheet.create({
 	termsLink: {
 		textDecorationLine: 'underline',
 		fontWeight: '500',
+	},
+	buttonApple: {
+		width: 200,
+		height: 44,
 	},
 });
