@@ -1,17 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-
-type User = {
-	id: string;
-	name: string;
-	email: string;
-};
+import { User } from '@/services/usersQueries';
 
 interface ProfileHeaderProps {
-	user: User | null;
+	user: User;
 	onAvatarEdit: () => void;
 }
 
@@ -24,20 +19,11 @@ const GRADES = {
 };
 
 export default function ProfileHeader({ user, onAvatarEdit }: ProfileHeaderProps) {
-	const currentGrade = 'Expert';
+	const currentGrade = 'Légende';
 	const gradeInfo = GRADES[currentGrade];
-	const experiencePoints = 2450;
+	const experiencePoints = user?.xp || 0;
 	const nextLevelPoints = 3000;
 	const progress = (experiencePoints / nextLevelPoints) * 100;
-
-	const getInitials = (name: string) => {
-		return name
-		.split(' ')
-		.map(word => word.charAt(0))
-		.join('')
-		.toUpperCase()
-		.slice(0, 2);
-	};
 
 	return (
 		<View style={styles.container}>
@@ -54,17 +40,7 @@ export default function ProfileHeader({ user, onAvatarEdit }: ProfileHeaderProps
 					activeOpacity={0.8}
 				>
 					<View style={styles.avatarWrapper}>
-						<LinearGradient
-							colors={['#667eea', '#764ba2']}
-							style={styles.avatarGradient}
-							start={{ x: 0, y: 0 }}
-							end={{ x: 1, y: 1 }}
-						>
-							<Text style={styles.avatarText}>
-								{user?.name ? getInitials(user.name) : 'U'}
-							</Text>
-						</LinearGradient>
-
+						<Image source={{ uri: user?.avatar }} style={styles.avatarGradient} />
 						<View style={styles.editBadge}>
 							<LinearGradient
 								colors={['#667eea', '#764ba2']}
@@ -73,15 +49,11 @@ export default function ProfileHeader({ user, onAvatarEdit }: ProfileHeaderProps
 								<Ionicons name="camera" size={12} color="#FFFFFF" />
 							</LinearGradient>
 						</View>
-
-						<View style={styles.levelBadge}>
-							<Text style={styles.levelText}>{gradeInfo.level}</Text>
-						</View>
 					</View>
 				</TouchableOpacity>
 
 				<View style={styles.userInfo}>
-					<Text style={styles.userName}>{user?.name || 'Utilisateur'}</Text>
+					<Text style={styles.userName}>{user?.username || 'Invité'}</Text>
 					<Text style={styles.userEmail}>{user?.email || 'email@example.com'}</Text>
 
 					<View style={styles.gradeBadge}>
@@ -123,9 +95,6 @@ export default function ProfileHeader({ user, onAvatarEdit }: ProfileHeaderProps
 					</View>
 					<Text style={styles.progressPercentage}>{Math.round(progress)}%</Text>
 				</View>
-				<Text style={styles.nextLevelText}>
-					{nextLevelPoints - experiencePoints} XP pour atteindre Maître
-				</Text>
 			</View>
 		</View>
 	);
@@ -155,9 +124,9 @@ const styles = StyleSheet.create({
 		position: 'relative',
 	},
 	avatarGradient: {
-		width: 100,
-		height: 100,
-		borderRadius: 50,
+		width: 120,
+		height: 120,
+		borderRadius: 60,
 		justifyContent: 'center',
 		alignItems: 'center',
 		borderWidth: 4,
