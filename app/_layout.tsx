@@ -3,7 +3,6 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
-import { UserProvider } from '@/contexts/UserContext';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -45,9 +44,7 @@ export default function RootLayout() {
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 				<AuthProvider>
-					<UserProvider>
-						<InitialLayout />
-					</UserProvider>
+					<InitialLayout />
 				</AuthProvider>
 			</ThemeProvider>
 		</QueryClientProvider>
