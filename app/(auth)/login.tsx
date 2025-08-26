@@ -4,13 +4,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { useMutation } from '@tanstack/react-query';
 import { LoginUser, postLogin } from '@/services/authQueries';
-import { useUser } from '@/contexts/UserContext';
 import api from '@/services/api';
 import * as Haptics from 'expo-haptics';
 
 export default function LoginScreen() {
 	const { login } = useAuth();
-	const { setUser } = useUser();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -24,7 +22,6 @@ export default function LoginScreen() {
 			const me = await api.get('/users/me', {
 				headers: { Authorization: `Bearer ${token}` }
 			});
-			setUser(me.data);
 		},
 		onError: (error) => {
 			console.log(error);
