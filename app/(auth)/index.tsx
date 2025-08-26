@@ -1,88 +1,81 @@
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
+import { useEvent } from 'expo';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import GoogleButton from '@/components/ui/GoogleButton';
 
 export default function AuthentificationScreen() {
 	return (
 		<View style={styles.container}>
 			<ImageBackground
-				source={{ uri: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}
+				source={{ uri: 'https://images.pexels.com/photos/8242992/pexels-photo-8242992.jpeg' }}
 				style={styles.backgroundImage}
 				resizeMode="cover"
 			>
-				<LinearGradient
-					colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.7)']}
-					style={styles.overlay}
-				>
-				<View style={styles.content}>
-					<View style={styles.heroSection}>
-						<View style={styles.iconContainer}>
-							<Ionicons name="rocket" size={60} color="#FFFFFF" />
-						</View>
-						
-						<Text style={styles.title}>Just It</Text>
-						<Text style={styles.subtitle}>
-							Organisez vos projets, atteignez vos objectifs et transformez vos idées en réalité.
-						</Text>
-
-						<View style={styles.featuresContainer}>
-							<View style={styles.feature}>
-								<Ionicons name="checkmark-circle" size={24} color="#34C759" />
-								<Text style={styles.featureText}>Gestion de projets intuitive</Text>
-							</View>
-							<View style={styles.feature}>
-								<Ionicons name="checkmark-circle" size={24} color="#34C759" />
-								<Text style={styles.featureText}>Suivi de progression en temps réel</Text>
-							</View>
-							<View style={styles.feature}>
-								<Ionicons name="checkmark-circle" size={24} color="#34C759" />
-								<Text style={styles.featureText}>Collaboration simplifiée</Text>
-							</View>
-						</View>
+			<LinearGradient
+				colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.7)']}
+				style={styles.overlay}
+			>
+			<View style={styles.content}>
+				<View style={styles.heroSection}>
+					<View style={styles.iconContainer}>
+						<Ionicons name="rocket" size={60} color="#FFFFFF" />
 					</View>
 
-					<View style={styles.buttonSection}>
-						<AppleAuthentication.AppleAuthenticationButton
-							buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-							buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-							cornerRadius={5}
-							style={styles.buttonApple}
-							onPress={async () => {
-								try {
-									const credential = await AppleAuthentication.signInAsync({
-										requestedScopes: [
-											AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-											AppleAuthentication.AppleAuthenticationScope.EMAIL,
-										],
-									});
-									// signed in
-								} catch (e) {
-									console.log("Error: " + e);
-								}
-							}}
-						/>
-
-						<TouchableOpacity style={styles.primaryButton} onPress={() => router.push('/(auth)/register')}>
-							<Text style={styles.primaryButtonText}>Créer un compte</Text>
-						</TouchableOpacity>
-
-						<TouchableOpacity style={styles.secondaryButton} onPress={() => router.push('/(auth)/login')}>
-							<Text style={styles.secondaryButtonText}>Se connecter</Text>
-						</TouchableOpacity>
-
-						<View style={styles.termsContainer}>
-							<Text style={styles.termsText}>
-							En continuant, vous acceptez nos{' '}
-							<Text style={styles.termsLink}>Conditions d'utilisation</Text>
-							{' '}et notre{' '}
-							<Text style={styles.termsLink}>Politique de confidentialité</Text>
-							</Text>
-						</View>
-					</View>
+					<Text style={styles.title}>
+						Atteignez vos objectifs, en toute simplicité.
+					</Text>
 				</View>
-				</LinearGradient>
+
+				<View style={styles.buttonSection}>
+					<TouchableOpacity style={styles.email} onPress={() => router.push('/(auth)/login')}>
+						<Text style={styles.emailText}>Continue with Email</Text>
+					</TouchableOpacity>
+
+					<View style={styles.lineContainer}>
+						<View style={styles.line} />
+						<View>
+							<Text style={styles.lineText}>ou</Text>
+						</View>
+						<View style={styles.line} />
+					</View>
+
+					<AppleAuthentication.AppleAuthenticationButton
+						buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+						buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE_OUTLINE}
+						cornerRadius={18}
+						style={styles.buttonApple}
+						onPress={async () => {
+							try {
+								const credential = await AppleAuthentication.signInAsync({
+									requestedScopes: [
+										AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+										AppleAuthentication.AppleAuthenticationScope.EMAIL,
+									],
+								});
+
+								console.log(credential);
+							} catch (e) {
+								console.log("Error: " + e);
+							}
+						}}
+					/>
+
+					<GoogleButton onPress={() => console.log("test")} radius={18} />
+				</View>
+
+				<View style={styles.termsContainer}>
+					<Text style={styles.termsText}>
+						En continuant, vous acceptez nos{' '}
+						<Text style={styles.termsLink}>Conditions d'utilisation</Text>
+						{' '}et notre{' '}
+						<Text style={styles.termsLink}>Politique de confidentialité</Text>
+					</Text>
+				</View>
+			</View>
+			</LinearGradient>
 			</ImageBackground>
 		</View>
 	);
@@ -124,69 +117,55 @@ const styles = StyleSheet.create({
 		borderColor: 'rgba(255, 255, 255, 0.2)',
 	},
 	title: {
-		fontSize: 32,
-		fontWeight: 'bold',
-		color: '#FFFFFF',
+		fontSize: 22,
+		fontFamily: 'Mona',
+		color: '#f0f0f0ff',
 		textAlign: 'center',
-		marginBottom: 16,
-	},
-	subtitle: {
-		fontSize: 18,
-		color: '#FFFFFF',
-		textAlign: 'center',
-		lineHeight: 26,
-		marginBottom: 40,
-		opacity: 0.9,
-	},
-	featuresContainer: {
-		alignItems: 'flex-start',
-	},
-	feature: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 12,
-	},
-	featureText: {
-		color: '#FFFFFF',
-		fontSize: 16,
-		marginLeft: 12,
-		opacity: 0.9,
+		paddingHorizontal: 24,
+		marginBottom: 100,
 	},
 	buttonSection: {
 		marginTop: 40,
 	},
-	primaryButton: {
+	email: {
 		backgroundColor: '#007AFF',
 		paddingVertical: 16,
-		borderRadius: 12,
+		borderRadius: 18,
 		marginBottom: 12,
 		shadowColor: '#007AFF',
 		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.3,
+		shadowOpacity: 0.4,
 		shadowRadius: 8,
 		elevation: 6,
 	},
-	primaryButtonText: {
+	emailText: {
 		color: '#FFFFFF',
 		fontSize: 18,
 		fontWeight: '600',
 		textAlign: 'center',
 	},
-	secondaryButton: {
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-		paddingVertical: 16,
-		borderRadius: 12,
-		borderWidth: 1,
-		borderColor: 'rgba(255, 255, 255, 0.3)',
-		marginBottom: 24,
+	buttonApple: {
+		width: '100%',
+		height: 56,
+		marginVertical: 12,
 	},
-	secondaryButtonText: {
-		color: '#FFFFFF',
-		fontSize: 18,
-		fontWeight: '500',
-		textAlign: 'center',
-	},
+    lineContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 8,
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: '#BABABA'
+    },
+    lineText: {
+        width: 50,
+        textAlign: 'center',
+        color: '#BABABA',
+    },
 	termsContainer: {
+		marginTop: 20,
 		paddingHorizontal: 8,
 	},
 	termsText: {
@@ -199,9 +178,5 @@ const styles = StyleSheet.create({
 	termsLink: {
 		textDecorationLine: 'underline',
 		fontWeight: '500',
-	},
-	buttonApple: {
-		width: 200,
-		height: 44,
 	},
 });
