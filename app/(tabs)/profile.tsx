@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, Alert } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import StatsGrid from '@/components/profile/StatsGrid';
 import ProjectsList from '@/components/profile/ProjectsList';
 import TrophiesList from '@/components/profile/TrophiesList';
+import { useQuery } from '@tanstack/react-query';
+import { fetchMe } from '@/services/usersQueries';
 
 export interface UserStats {
 	projectsCompleted: number;
@@ -30,7 +32,10 @@ export interface Trophy {
 }
 
 export default function ProfileScreen() {
-	const user = { id: "caca", name: 'John Doe', email: 'john.doe@example.com' };
+	const { data, isLoading, isError, error } = useQuery({
+		queryKey: ['currentUser'],
+		queryFn: fetchMe,
+	});
 
 	const [userStats] = useState<UserStats>({
 		projectsCompleted: 24,
@@ -98,10 +103,6 @@ export default function ProfileScreen() {
 		},
 	]);
 
-	const signOut = () => {
-		console.log('User signed out');
-	}
-
 	const handleAvatarEdit = () => {
 		Alert.alert(
 			'Modifier l\'avatar',
@@ -125,6 +126,10 @@ export default function ProfileScreen() {
 		);
 	};
 
+	if (isLoading) {
+		return <ActivityIndicator color="white" size="small" />;
+	}
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView 
@@ -132,7 +137,7 @@ export default function ProfileScreen() {
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={styles.scrollContent}
 			>
-				<ProfileHeader user={user} onAvatarEdit={handleAvatarEdit} />
+				<ProfileHeader user={data!} onAvatarEdit={handleAvatarEdit} />
 				<StatsGrid stats={userStats} />
 				<TrophiesList trophies={trophies} />
 				<ProjectsList projects={projects} onProjectDownload={handleProjectDownload} />

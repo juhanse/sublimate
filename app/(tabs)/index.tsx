@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
 import StreakCalendar from '@/components/Calendar';
 import CreateProjectButton from '@/components/ui/CreateProjectButton';
-import { useUser } from '@/contexts/UserContext';
+import { useQuery } from '@tanstack/react-query';
+import { fetchMe } from '@/services/usersQueries';
 import * as Haptics from 'expo-haptics';
 
 export default function HomeScreen() {
-	const { user } = useUser();
 	const [completedDays, setCompletedDays] = useState<number[]>([0, 1, 3, 5]);
 	const [streakCount, setStreakCount] = useState(12);
+
+	const { data, isLoading, isError, error } = useQuery({
+		queryKey: ['currentUser'],
+		queryFn: fetchMe,
+	});
 
 	const handleDayPress = (dayIndex: number) => {
 		const today = new Date();
@@ -45,9 +50,12 @@ export default function HomeScreen() {
 	};
 
 	const handleCreateProject = async () => {
-		// TODO: Implement project creation
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 	};
+
+	if (isLoading) {
+		return <ActivityIndicator color="white" size="small" />;
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -59,7 +67,7 @@ export default function HomeScreen() {
 			<View style={styles.mainContent}>
 				<View style={styles.welcomeSection}>
 					<Text style={styles.welcomeText}>
-					Salut {user?.username} ! 👋
+					Salut {data?.username} ! 👋
 					</Text>
 				</View>
 				<ScrollView 
