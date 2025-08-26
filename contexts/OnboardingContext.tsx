@@ -16,7 +16,7 @@ export const useOnboardingStore = create<OnboardingProps>()(
 			},
 		}),
 		{
-			name: 'seen_onboarding', // la clé dans AsyncStorage
+			name: 'seen_onboarding',
 			storage: createJSONStorage(() => AsyncStorage),
 		}
 	)
