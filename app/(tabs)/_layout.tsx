@@ -8,6 +8,8 @@ export default function TabsLayout() {
 		<Stack screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="index" />
 			<Stack.Screen name="settings" />
+			<Stack.Screen name="[id]/index" />
+			<Stack.Screen name="[id]/settings" />
 
 			<Stack.Protected guard={isPremium}>
 				<Stack.Screen name="create" options={{ presentation: 'modal', contentStyle: { backgroundColor: 'transparent' } }} />
