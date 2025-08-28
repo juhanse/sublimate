@@ -42,7 +42,7 @@ export default function ProjectCard({ name, thumbnail, onValidate }: ProjectCard
 const styles = StyleSheet.create({
 	shadowWrap: {
 		width: 280,
-		height: 360,
+		height: 400,
 		borderRadius: 40,
 		marginRight: 20,
 		shadowColor: '#000000',
