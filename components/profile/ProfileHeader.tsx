@@ -28,23 +28,23 @@ export default function ProfileHeader({ user }: { user: User }) {
 		{ date: new Date('2023-03-22'), present: true },
 		{ date: new Date('2023-03-23'), present: true },
 		{ date: new Date('2023-03-24'), present: false },
-		{ date: new Date('2023-03-25'), present: true },
-		{ date: new Date('2023-03-26'), present: true },
+		{ date: new Date('2023-03-25'), present: false },
+		{ date: new Date('2023-03-26'), present: false },
 	];
 	const StreaksProps = { week: StreakDay || [] };
 
 	return (
 		<View style={styles.outerContainer}>
 			<LinearGradient
-				colors={["#b219ee6c", "#b219ee6c", "rgba(222, 37, 84, 0.52)"]}
+				colors={["#194eee6c", "#1f4dd96c", "rgba(222, 37, 84, 0.52)"]}
 				style={StyleSheet.absoluteFill}
 				start={{ x: 0, y: 0 }}
 				end={{ x: 1, y: 1 }}
 			/>
 			<BlurView intensity={60} tint="light" style={styles.container}>
-				<TouchableOpacity style={styles.settingsButton} onPress={() => router.push('/settings')}>
+				{/* <TouchableOpacity style={styles.settingsButton} onPress={() => router.push('/settings')}>
 					<Ionicons name="settings-outline" size={24} color="#007AFF" />
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 
 				<View style={styles.rowAvatarName}>
 					<Image source={{ uri: user?.avatar }} style={styles.avatarImageSmall} />
