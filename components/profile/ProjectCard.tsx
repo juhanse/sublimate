@@ -6,16 +6,17 @@ import { Colors } from '@/constants/Colors';
 type ProjectCardProps = {
 	name: string;
 	thumbnail: string;
+	onPress?: () => void;
 	onValidate?: () => void;
 };
 
-export default function ProjectCard({ name, thumbnail, onValidate }: ProjectCardProps) {
+export default function ProjectCard({ name, thumbnail, onPress, onValidate }: ProjectCardProps) {
 	const handleValidateProject = async () => {
 		if (onValidate) onValidate();
 	};
 
 	return (
-		<View style={styles.shadowWrap}>
+		<TouchableOpacity style={styles.shadowWrap} onLongPress={onPress} delayLongPress={200}>
 			<ImageBackground
 				source={{ uri: thumbnail }}
 				style={styles.container}
@@ -35,7 +36,7 @@ export default function ProjectCard({ name, thumbnail, onValidate }: ProjectCard
 					<Text style={styles.text}>Valider</Text>
 				</TouchableOpacity>
 			</ImageBackground>
-		</View>
+		</TouchableOpacity>
 	);
 }
 
