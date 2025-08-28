@@ -6,7 +6,7 @@ import ProfileHeader from '@/components/profile/ProfileHeader';
 import ProjectCard from '@/components/profile/ProjectCard';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { fetchMeProjectsActive, Project } from '@/services/projectsQueries';
+import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { router } from 'expo-router';
 
 type ProjectListItem = Project | 'add';
@@ -19,12 +19,17 @@ export default function HomeScreen() {
 
 	const projectsQuery = useQuery({
 		queryKey: ['activeProjects'],
-		queryFn: fetchMeProjectsActive,
+		queryFn: () => fetchMeProjects('active'),
 	});
 
 	const handleCreate = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 		router.push('/(tabs)/create');
+	};
+
+	const handleDetails = async (projectId: string) => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+		router.push({ pathname: '/(tabs)/[id]', params: { id: projectId } });
 	};
 
 	const handleValidate = async () => {
@@ -44,6 +49,7 @@ export default function HomeScreen() {
 			<ProjectCard 
 				name={item.name}
 				thumbnail={item.thumbnail}
+				onPress={() => handleDetails(item.id)}
 				onValidate={handleValidate}
 			/>
 		);
