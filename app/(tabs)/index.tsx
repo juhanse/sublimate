@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, SafeAreaView, ActivityIndicator, View } from 'react-native';
+import { TouchableOpacity, FlatList, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMe } from '@/services/usersQueries';
 import ProfileHeader from '@/components/profile/ProfileHeader';
@@ -7,6 +7,7 @@ import ProjectCard from '@/components/profile/ProjectCard';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { fetchMeProjectsActive, Project } from '@/services/projectsQueries';
+import { router } from 'expo-router';
 
 type ProjectListItem = Project | 'add';
 
@@ -23,6 +24,7 @@ export default function HomeScreen() {
 
 	const handleCreate = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+		router.push('/(tabs)/create');
 	};
 
 	const handleValidate = async () => {
@@ -32,9 +34,9 @@ export default function HomeScreen() {
 	const renderProject = ({ item }: { item: ProjectListItem }) => {
 		if (item === 'add') {
 			return (
-				<View style={styles.addIcon}>
-					<Ionicons name="add" size={32} color="#fff" onPress={handleCreate} />
-				</View>
+				<TouchableOpacity style={styles.addIcon} onPress={handleCreate}>
+					<Ionicons name="add" size={32} color="#fff" />
+				</TouchableOpacity>
 			);
 		}
 
@@ -71,6 +73,8 @@ export default function HomeScreen() {
 				initialNumToRender={5}
 				maxToRenderPerBatch={3}
 				windowSize={5}
+				bounces={false}
+				alwaysBounceVertical={false}
 			/>
 		</SafeAreaView>
 	);
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
 	},
 	addIcon: {
 		width: 280,
-		height: 360,
+		height: 400,
 		borderRadius: 40,
 		backgroundColor: '#7c5fff',
 		justifyContent: 'center',

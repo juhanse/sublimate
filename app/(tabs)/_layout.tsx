@@ -1,17 +1,17 @@
-import React from 'react';
-import { Tabs } from 'expo-router';
+import React, { useState } from 'react';
+import { Stack } from 'expo-router';
 
-export default function TabLayout() {
-  	return (
-		<Tabs
-			screenOptions={{
-				headerShown: false,
-				tabBarStyle: { display: "none" },
-			}}
-		>
-			<Tabs.Screen name="index" options={{ href: null }} />
-			<Tabs.Screen name="create-placeholder" options={{ href: null }} />
-			<Tabs.Screen name="settings" options={{ href: null }} />
-		</Tabs>
-  	);
+export default function TabsLayout() {
+	const [isPremium, setIsPremium] = useState(true);
+
+	return (
+		<Stack screenOptions={{ headerShown: false }}>
+			<Stack.Screen name="index" />
+			<Stack.Screen name="settings" />
+
+			<Stack.Protected guard={isPremium}>
+				<Stack.Screen name="create" options={{ presentation: 'modal', contentStyle: { backgroundColor: 'transparent' } }} />
+			</Stack.Protected>
+		</Stack>
+	);
 }
