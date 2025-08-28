@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Streak from '@/components/profile/Streak';
 import { User } from '@/services/usersQueries';
+import SettingsButton from './SettingsButton';
 
 const GRADES = {
 	'Débutant': { color: '#8E8E93', icon: 'leaf', level: 1 },
@@ -42,15 +43,11 @@ export default function ProfileHeader({ user }: { user: User }) {
 				end={{ x: 1, y: 1 }}
 			/>
 			<BlurView intensity={60} tint="light" style={styles.container}>
-				{/* <TouchableOpacity style={styles.settingsButton} onPress={() => router.push('/settings')}>
-					<Ionicons name="settings-outline" size={24} color="#007AFF" />
-				</TouchableOpacity> */}
-
 				<View style={styles.rowAvatarName}>
 					<Image source={{ uri: user?.avatar }} style={styles.avatarImageSmall} />
 
 					<View style={styles.columnName}>
-						<Text style={styles.userName}>👋 Salut {user?.username || 'Invité'}</Text>
+						<Text style={styles.userName}>👋 Salut, {user?.username || 'Invité'}</Text>
 						<View style={styles.gradeBadge}>
 							<LinearGradient
 								colors={[gradeInfo.color + '20', gradeInfo.color + '40']}
@@ -67,6 +64,8 @@ export default function ProfileHeader({ user }: { user: User }) {
 							</LinearGradient>
 						</View>
 					</View>
+
+					<SettingsButton />
 				</View>
 
 				<View style={styles.progressBarRow}>
@@ -112,10 +111,9 @@ const styles = StyleSheet.create({
 	},
 	rowAvatarName: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		paddingLeft: 24,
+		alignItems: 'flex-start',
+		justifyContent: 'flex-start',
 		marginTop: 50,
-		gap: 10,
 	},
 	avatarImageSmall: {
 		width: 100,
