@@ -29,7 +29,7 @@ export default function ProjectCard({ name, thumbnail, onValidate }: ProjectCard
 					end={{ x: 1, y: 0 }}
 				/>
 				<View style={styles.content}>
-					<Text style={styles.projectName}>{name}</Text>
+					<Text style={styles.projectName} numberOfLines={3}>{name}</Text>
 				</View>
 				<TouchableOpacity style={styles.button} onPress={handleValidateProject}>
 					<Text style={styles.text}>Valider</Text>
@@ -41,7 +41,8 @@ export default function ProjectCard({ name, thumbnail, onValidate }: ProjectCard
 
 const styles = StyleSheet.create({
 	shadowWrap: {
-		flex: 1,
+		width: 280,
+		height: 360,
 		borderRadius: 40,
 		marginRight: 20,
 		shadowColor: '#000000',
@@ -52,10 +53,10 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 	},
 	container: {
-		flex: 1,
+		width: '100%',
+		height: '100%',
 		borderRadius: 4,
 		overflow: 'hidden',
-		minHeight: 180,
 		justifyContent: 'flex-end',
 		backgroundColor: '#222',
 	},
