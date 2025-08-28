@@ -26,18 +26,13 @@ export type CreateProject = {
 	name: string,
 }
 
-export const fetchMeProjects = async (): Promise<Project[]> => {
-	const res = await api.get<Project[]>('/projects/me');
+export const fetchMeProjects = async (status?: 'active' | 'inactive'): Promise<Project[]> => {
+	const res = await api.get<Project[]>('/projects/me', { params: { status } });
 	return res.data;
 };
 
-export const fetchMeProjectsActive = async (): Promise<Project[]> => {
-	const res = await api.get<Project[]>('/projects/me/active');
-	return res.data;
-};
-
-export const fetchMeProjectsInactive = async (): Promise<Project[]> => {
-	const res = await api.get<Project[]>('/projects/me/inactive');
+export const fetchMeProjectById = async (projectId: string): Promise<Project> => {
+	const res = await api.get<Project>(`/projects/me/${projectId}`);
 	return res.data;
 };
 
@@ -46,12 +41,12 @@ export const createProject = async (projectData: CreateProject): Promise<Project
 	return res.data;
 };
 
-export const updateMeProjectById = async (projectId: string, projectData: Partial<UpdateProject>): Promise<Project> => {
+export const updateMeProjectById = async (projectId: string, projectData: UpdateProject): Promise<Project> => {
 	const res = await api.patch<Project>(`/projects/me/${projectId}`, projectData);
 	return res.data;
 };
 
 export const deleteMeProjectById = async (projectId: string): Promise<Project> => {
-	const res = await api.delete(`/projects/me/${projectId}`);
+	const res = await api.delete<Project>(`/projects/me/${projectId}`);
 	return res.data;
 };
