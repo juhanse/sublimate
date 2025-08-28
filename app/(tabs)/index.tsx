@@ -1,14 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
-import CreateProjectButton from '@/components/ui/CreateProjectButton';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMe } from '@/services/usersQueries';
-import ProfileH from '@/components/index/ProfileH';
+import ProfileHeader from '@/components/profile/ProfileHeader';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
-import ProjectCard from '@/components/index/ProjectCard';
+import ProjectCard from '@/components/profile/ProjectCard';
 
-export default function Home2Screen() {
+export default function HomeScreen() {
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ['currentUser'],
 		queryFn: fetchMe,
@@ -24,12 +23,11 @@ export default function Home2Screen() {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ProfileH user={data!} />
+			<ProfileHeader user={data!} />
 			<ScrollView 
 				style={styles.scrollView}
 				horizontal={true}
 				showsVerticalScrollIndicator={false}
-				contentContainerStyle={styles.scrollContent}
 			>
 				<ProjectCard />
 				<ProjectCard />
@@ -43,14 +41,12 @@ export default function Home2Screen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#22162dff',
+		backgroundColor: '#18111fff',
 	},
 	scrollView: {
 		flex: 1,
 		padding: 24,
-	},
-	scrollContent: {
-		paddingVertical: 30,
+		marginTop: 24,
 	},
 	projectsContainer: {
 		padding: 120,
