@@ -4,6 +4,7 @@ export type Project = {
 	id: string,
 	user_id: string,
 	name: string,
+	thumbnail: string,
 	end_date: string,
 	progress_level: number,
 	steps_count: number,
