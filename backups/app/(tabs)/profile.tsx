@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
-import ProfileHeader from '@/components/profile/ProfileHeader';
-import StatsGrid from '@/components/profile/StatsGrid';
-import ProjectsList from '@/components/profile/ProjectsList';
-import TrophiesList from '@/components/profile/TrophiesList';
+import ProfileHeader from '@/backups/components/profile/ProfileHeader';
+import StatsGrid from '@/backups/components/profile/StatsGrid';
+import ProjectsList from '@/backups/components/profile/ProjectsList';
+import TrophiesList from '@/backups/components/profile/TrophiesList';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMe } from '@/services/usersQueries';
 
