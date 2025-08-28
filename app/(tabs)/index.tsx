@@ -6,12 +6,19 @@ import ProfileHeader from '@/components/profile/ProfileHeader';
 import ProjectCard from '@/components/profile/ProjectCard';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { fetchMeProjectsActive, Project } from '@/services/projectsQueries';
+
+type ProjectListItem = Project | 'add';
 
 export default function HomeScreen() {
-	const projects = [1, 2, 3, 'add'];
-	const { data, isLoading, isError, error } = useQuery({
+	const userQuery = useQuery({
 		queryKey: ['currentUser'],
 		queryFn: fetchMe,
+	});
+
+	const projectsQuery = useQuery({
+		queryKey: ['activeProjects'],
+		queryFn: fetchMeProjectsActive,
 	});
 
 	const handleCreate = async () => {
@@ -22,35 +29,48 @@ export default function HomeScreen() {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 	};
 
-	if (isLoading) {
+	const renderProject = ({ item }: { item: ProjectListItem }) => {
+		if (item === 'add') {
+			return (
+				<View style={styles.addIcon}>
+					<Ionicons name="add" size={32} color="#fff" onPress={handleCreate} />
+				</View>
+			);
+		}
+
+		return (
+			<ProjectCard 
+				name={item.name}
+				thumbnail={item.thumbnail}
+				onValidate={handleValidate}
+			/>
+		);
+	};
+
+	const getKeyExtractor = (item: ProjectListItem, index: number) => {
+		return item === 'add' ? 'add' : item.id;
+	};
+
+	if (userQuery.isLoading || projectsQuery.isLoading) {
 		return <ActivityIndicator color="white" size="small" />;
 	}
 
+	const projectsData: ProjectListItem[] = projectsQuery.data ? [...projectsQuery.data, 'add'] : ['add'];
+
 	return (
 		<SafeAreaView style={styles.container}>
-			<ProfileHeader user={data!} />
+			<ProfileHeader user={userQuery.data!} />
+
 			<FlatList
-				data={projects}
-				keyExtractor={(item, idx) => item === 'add' ? 'add' : String(item)}
-				renderItem={({ item }) => {
-					if (item === 'add') {
-						return (
-							<View style={styles.addIcon}>
-								<Ionicons name="add" size={32} color="#fff" onPress={handleCreate} />
-							</View>
-						);
-					}
-					return (
-						<ProjectCard 
-							name={`Révoner ma chambre #${item}`}
-							thumbnail='https://images.pexels.com/photos/32603590/pexels-photo-32603590.jpeg'
-							onValidate={handleValidate}
-						/>
-					);
-				}}
+				data={projectsData}
+				keyExtractor={getKeyExtractor}
+				renderItem={renderProject}
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				contentContainerStyle={styles.projectsList}
+				initialNumToRender={5}
+				maxToRenderPerBatch={3}
+				windowSize={5}
 			/>
 		</SafeAreaView>
 	);
@@ -62,18 +82,18 @@ const styles = StyleSheet.create({
 		backgroundColor: '#352940ff',
 	},
 	projectsList: {
-		flex: 1,
 		padding: 24,
 		marginTop: 24,
+		gap: 16,
 	},
 	addIcon: {
-		width: 80,
-		height: 80,
+		width: 280,
+		height: 360,
 		borderRadius: 40,
 		backgroundColor: '#7c5fff',
 		justifyContent: 'center',
 		alignItems: 'center',
-		alignSelf: 'center',
+		marginRight: 20,
 		shadowColor: '#7c5fff',
 		shadowOffset: { width: 0, height: 2 },
 		shadowOpacity: 0.25,
