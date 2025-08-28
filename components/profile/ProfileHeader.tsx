@@ -70,7 +70,6 @@ export default function ProfileHeader({ user }: { user: User }) {
 				</View>
 
 				<View style={styles.progressBarRow}>
-					<Text style={styles.progressPercentage}>{Math.round(progress)}%</Text>
 					<View style={styles.progressBar}>
 						<LinearGradient
 							colors={['#ff9500', '#c4770cff']}
@@ -79,6 +78,7 @@ export default function ProfileHeader({ user }: { user: User }) {
 							end={{ x: 1, y: 0 }}
 						/>
 					</View>
+					<Text style={styles.progressPercentage}>{Math.round(progress)}%</Text>
 				</View>
 
 				<View style={styles.calendarRow}>
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.1,
 		shadowRadius: 12,
 		elevation: 6,
-		backgroundColor: 'transparent',
 		minHeight: 420,
 	},
 	rowAvatarName: {
@@ -135,13 +134,11 @@ const styles = StyleSheet.create({
 	progressBarRow: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		gap: 10,
-		paddingLeft: 24,
+		gap: 5,
 		marginTop: 30,
 	},
 	calendarRow: {
 		marginTop: 40,
-		paddingHorizontal: 24,
 	},
 	userName: {
 		fontSize: 28,
