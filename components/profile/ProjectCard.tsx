@@ -16,7 +16,7 @@ export default function ProjectCard({ name, thumbnail, onPress, onValidate }: Pr
 	};
 
 	return (
-		<TouchableOpacity style={styles.shadowWrap} onLongPress={onPress} delayLongPress={200}>
+		<TouchableOpacity style={styles.shadowWrap} onLongPress={onPress} delayLongPress={70}>
 			<ImageBackground
 				source={{ uri: thumbnail }}
 				style={styles.container}
@@ -33,7 +33,7 @@ export default function ProjectCard({ name, thumbnail, onPress, onValidate }: Pr
 					<Text style={styles.projectName} numberOfLines={3}>{name}</Text>
 				</View>
 				<TouchableOpacity style={styles.button} onPress={handleValidateProject}>
-					<Text style={styles.text}>Valider</Text>
+					<Text style={styles.text}>Sparkle</Text>
 				</TouchableOpacity>
 			</ImageBackground>
 		</TouchableOpacity>
