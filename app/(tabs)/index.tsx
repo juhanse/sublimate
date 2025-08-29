@@ -18,7 +18,7 @@ export default function HomeScreen() {
 	});
 
 	const projectsQuery = useQuery({
-		queryKey: ['activeProjects'],
+		queryKey: ['projects', 'active'],
 		queryFn: () => fetchMeProjects('active'),
 	});
 
