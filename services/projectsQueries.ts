@@ -13,18 +13,19 @@ export type Project = {
 	created_at: string,
 };
 
+export type CreateProject = {
+	name: string,
+	thumbnail?: string,
+	categories: string[],
+	steps: string[],
+};
+
 export type UpdateProject = Partial<{
 	name: string,
 	thumbnail: string,
-	end_date: string,
-	progress_level: number,
-	steps_count: number,
-	status: "active" | "inactive",
+	categories: string[],
+	steps: string[],
 }>;
-
-export type CreateProject = {
-	name: string,
-}
 
 export const fetchMeProjects = async (status?: 'active' | 'inactive'): Promise<Project[]> => {
 	const res = await api.get<Project[]>('/projects/me', { params: { status } });
