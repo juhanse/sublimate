@@ -32,8 +32,9 @@ export default function HomeScreen() {
 		router.push({ pathname: '/(tabs)/[id]', params: { id: projectId } });
 	};
 
-	const handleValidate = async () => {
+	const handleValidate = async (projectId: string) => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+		console.log(`Validate project with ID: ${projectId}`);
 	};
 
 	const renderProject = ({ item }: { item: ProjectListItem }) => {
@@ -50,7 +51,7 @@ export default function HomeScreen() {
 				name={item.name}
 				thumbnail={item.thumbnail}
 				onPress={() => handleDetails(item.id)}
-				onValidate={handleValidate}
+				onValidate={() => handleValidate(item.id)}
 			/>
 		);
 	};
