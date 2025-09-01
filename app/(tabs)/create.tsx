@@ -1,36 +1,33 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { router } from 'expo-router';
-
-interface ProjectData {
-	name: string;
-	description: string;
-	category: string;
-	priority: 'low' | 'medium' | 'high';
-}
-
-const categories = [
-	'Personnel',
-	'Professionnel',
-	'Créatif',
-	'Éducation',
-	'Santé',
-	'Autre',
-];
-
-const priorities = [
-	{ value: 'low', label: 'Faible', color: '#34C759' },
-	{ value: 'medium', label: 'Moyenne', color: '#FF9500' },
-	{ value: 'high', label: 'Élevée', color: '#FF3B30' },
-];
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { createProject } from '@/services/projectsQueries';
+import { fetchCategories } from '@/services/categoriesQueries';
+import { CreateProject } from '@/services/projectsQueries';
 
 export default function CreateProjectModal() {
-	const [isLoading, setIsLoading] = useState(false);
-	const [projectData, setProjectData] = useState<ProjectData>({
+	const [projectData, setProjectData] = useState<CreateProject>({
 		name: '',
-		description: '',
-		category: '',
-		priority: 'medium',
+		thumbnail: '',
+		categories: [],
+		steps: [],
+	});
+
+	const categoriesQuery = useQuery({
+		queryKey: ['categories', 'fr'],
+		queryFn: () => fetchCategories('fr'),
+	});
+
+	const { mutate, isPending } = useMutation({
+		mutationFn: (projectData: CreateProject) => createProject(projectData),
+		onSuccess: async (data) => {
+			Alert.alert('Succès', 'Le projet a été créé avec succès');
+			console.log('Projet créé:', data);
+		},
+		onError: (error) => {
+			console.log(error);
+			alert('Echec de la création du projet');
+		},
 	});
 
 	const handleCreate = async () => {
@@ -39,43 +36,17 @@ export default function CreateProjectModal() {
 			return;
 		}
 
-		if (!projectData.category) {
+		if (projectData.categories.length === 0) {
 			Alert.alert('Erreur', 'Veuillez sélectionner une catégorie');
 			return;
 		}
 
-		try {
-			setIsLoading(true);
-
-			const response = await fetch('/api/projects', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(projectData),
-			});
-
-			if (response.ok) {
-				Alert.alert(
-				'Succès',
-				'Projet créé avec succès!',
-				[
-					{
-					text: 'OK',
-					onPress: () => router.back(),
-					},
-				]
-				);
-			} else {
-				throw new Error('Échec de la création du projet');
-			}
-		} catch (error) {
-			Alert.alert('Erreur', 'Impossible de créer le projet. Veuillez réessayer.');
-		} finally {
-			setIsLoading(false);
+		if (projectData.steps.length === 0) {
+			Alert.alert('Erreur', 'Veuillez ajouter au moins une étape');
+			return;
 		}
-	};
 
-	const handleCancel = () => {
-		router.back();
+		mutate(projectData);
 	};
 
 	return (
@@ -100,39 +71,28 @@ export default function CreateProjectModal() {
 					</View>
 
 					<View style={styles.inputGroup}>
-						<Text style={styles.label}>Description</Text>
-						<TextInput
-							style={[styles.input, styles.textArea]}
-							value={projectData.description}
-							onChangeText={(text) =>
-								setProjectData((prev) => ({ ...prev, description: text }))
-							}
-							placeholder="Décrivez votre projet..."
-							placeholderTextColor="#8E8E93"
-							multiline
-							numberOfLines={4}
-							textAlignVertical="top"
-						/>
-					</View>
-
-					<View style={styles.inputGroup}>
 						<Text style={styles.label}>Catégorie *</Text>
 						<View style={styles.categoryGrid}>
-						{categories.map((category) => (
+						{projectData.categories.map((category) => (
 							<TouchableOpacity
 								key={category}
 								style={[
 									styles.categoryButton,
-									projectData.category === category && styles.categoryButtonSelected,
+									projectData.categories.includes(category) && styles.categoryButtonSelected,
 								]}
 								onPress={() =>
-									setProjectData((prev) => ({ ...prev, category }))
+									setProjectData((prev) => {
+										const newCategories = prev.categories.includes(category)
+											? prev.categories.filter((c) => c !== category)
+											: [...prev.categories, category];
+										return { ...prev, categories: newCategories };
+									})
 								}
 							>
 							<Text
 								style={[
 								styles.categoryText,
-								projectData.category === category && styles.categoryTextSelected,
+								projectData.categories.includes(category) && styles.categoryTextSelected,
 								]}
 							>
 								{category}
@@ -142,54 +102,13 @@ export default function CreateProjectModal() {
 						</View>
 					</View>
 
-					<View style={styles.inputGroup}>
-						<Text style={styles.label}>Priorité</Text>
-						<View style={styles.priorityContainer}>
-						{priorities.map((priority) => (
-							<TouchableOpacity
-								key={priority.value}
-								style={[
-									styles.priorityButton,
-									projectData.priority === priority.value && {
-									backgroundColor: priority.color,
-									borderColor: priority.color,
-									},
-								]}
-								onPress={() =>
-									setProjectData((prev) => ({
-									...prev,
-									priority: priority.value as any,
-									}))
-								}
-							>
-								<View style={styles.priorityContent}>
-									<View
-									style={[
-										styles.priorityDot,
-										{ backgroundColor: priority.color },
-										projectData.priority === priority.value && styles.priorityDotSelected,
-									]}
-									/>
-									<Text
-										style={[
-											styles.priorityText,
-											projectData.priority === priority.value && styles.priorityTextSelected,
-										]}
-									>
-										{priority.label}
-									</Text>
-								</View>
-							</TouchableOpacity>
-						))}
-						</View>
-					</View>
 					<TouchableOpacity
 						onPress={handleCreate}
-						style={[styles.createButton, isLoading && styles.createButtonDisabled]}
-						disabled={isLoading}
+						style={[styles.createButton, isPending && styles.createButtonDisabled]}
+						disabled={isPending}
 					>
 						<Text style={styles.createText}>
-							{isLoading ? 'Création...' : 'Créer 🎉'}
+							{isPending ? 'Création...' : 'Créer 🎉'}
 						</Text>
 					</TouchableOpacity>
 				</View>
