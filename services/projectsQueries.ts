@@ -1,4 +1,22 @@
 import api from '@/services/api';
+import { Category } from './categoriesQueries';
+
+export type Step = {
+	id: string,
+	project_id: string,
+	name: string,
+	index: number,
+	is_completed: boolean,
+	deadline: string,
+	updated_at: string,
+	created_at: string
+}
+
+export type ProjectCategories = {
+	project_id: string,
+	category_id: string,
+	categories: Category
+}
 
 export type Project = {
 	id: string,
@@ -11,20 +29,22 @@ export type Project = {
 	status: "active" | "inactive",
 	updated_at: string,
 	created_at: string,
+	projects_categories: ProjectCategories[],
+	steps: Step[]
 };
 
 export type CreateProject = {
 	name: string,
 	thumbnail?: string,
 	categories: string[],
-	steps: string[],
+	steps: Step[],
 };
 
 export type UpdateProject = Partial<{
 	name: string,
 	thumbnail: string,
 	categories: string[],
-	steps: string[],
+	steps: Step[],
 }>;
 
 export const fetchMeProjects = async (status?: 'active' | 'inactive'): Promise<Project[]> => {
