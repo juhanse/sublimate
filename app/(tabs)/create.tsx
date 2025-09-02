@@ -4,18 +4,19 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { createProject } from '@/services/projectsQueries';
 import { fetchCategories } from '@/services/categoriesQueries';
 import { CreateProject } from '@/services/projectsQueries';
+import { router } from 'expo-router';
 
 export default function CreateProjectModal() {
 	const [projectData, setProjectData] = useState<CreateProject>({
-		name: '',
-		thumbnail: '',
+		name: "",
+		thumbnail: "",
 		categories: [],
 		steps: [],
 	});
 
 	const categoriesQuery = useQuery({
-		queryKey: ['categories', 'fr'],
-		queryFn: () => fetchCategories('fr'),
+		queryKey: ['categories', 'FR'],
+		queryFn: () => fetchCategories('FR'),
 	});
 
 	const { mutate, isPending } = useMutation({
@@ -23,12 +24,48 @@ export default function CreateProjectModal() {
 		onSuccess: async (data) => {
 			Alert.alert('Succès', 'Le projet a été créé avec succès');
 			console.log('Projet créé:', data);
+			router.back();
 		},
 		onError: (error) => {
+			Alert.alert('Echec de la création du projet');
 			console.log(error);
-			alert('Echec de la création du projet');
+			router.back();
 		},
 	});
+
+	const handleAddStep = () => {
+		setProjectData((prev) => ({
+			...prev,
+			steps: [
+				...prev.steps,
+				{
+					id: "",
+					project_id: "",
+					index: prev.steps.length,
+					name: "",
+					deadline: "",
+					is_completed: false,
+					created_at: "",
+					updated_at: "",
+				},
+			],
+		}));
+	};
+
+	const handleUpdateStep = (index: number, key: "name" | "deadline", value: string) => {
+		setProjectData((prev) => {
+			const newSteps = [...prev.steps];
+			newSteps[index][key] = value;
+			return { ...prev, steps: newSteps };
+		});
+	};
+
+	const handleRemoveStep = (index: number) => {
+		setProjectData((prev) => {
+			const newSteps = prev.steps.filter((_, i) => i !== index);
+			return { ...prev, steps: newSteps };
+		});
+	};
 
 	const handleCreate = async () => {
 		if (!projectData.name.trim()) {
@@ -46,7 +83,11 @@ export default function CreateProjectModal() {
 			return;
 		}
 
-		mutate(projectData);
+		const stepsSorted = [...projectData.steps].sort(
+			(a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
+		);
+
+		mutate({ ...projectData, steps: stepsSorted });
 	};
 
 	return (
@@ -72,34 +113,91 @@ export default function CreateProjectModal() {
 
 					<View style={styles.inputGroup}>
 						<Text style={styles.label}>Catégorie *</Text>
-						<View style={styles.categoryGrid}>
-						{projectData.categories.map((category) => (
+						
+						{categoriesQuery.data?.map((category) => (
 							<TouchableOpacity
-								key={category}
+								key={category.id}
 								style={[
 									styles.categoryButton,
-									projectData.categories.includes(category) && styles.categoryButtonSelected,
+									projectData.categories.includes(category.id) && styles.categoryButtonSelected,
 								]}
 								onPress={() =>
 									setProjectData((prev) => {
-										const newCategories = prev.categories.includes(category)
-											? prev.categories.filter((c) => c !== category)
-											: [...prev.categories, category];
+										const newCategories = prev.categories.includes(category.id)
+											? prev.categories.filter((c) => c !== category.id)
+											: [...prev.categories, category.id];
 										return { ...prev, categories: newCategories };
 									})
 								}
 							>
-							<Text
-								style={[
-								styles.categoryText,
-								projectData.categories.includes(category) && styles.categoryTextSelected,
-								]}
-							>
-								{category}
-							</Text>
+								<Text
+									style={[
+										styles.categoryText,
+										projectData.categories.includes(category.id) && styles.categoryTextSelected,
+									]}
+								>
+									{category.name}
+								</Text>
 							</TouchableOpacity>
 						))}
+
+        				<Text style={{ fontWeight: "bold", marginBottom: 8 }}>
+							Étapes du projet *
+						</Text>
+						{projectData.steps.map((step, index) => (
+						<View
+							key={index}
+							style={{
+								marginBottom: 12,
+								padding: 8,
+								borderWidth: 1,
+								borderColor: "#ccc",
+								borderRadius: 8,
+							}}
+						>
+							<TextInput
+								style={{
+									borderBottomWidth: 1,
+									borderColor: "#ddd",
+									marginBottom: 8,
+									padding: 4,
+								}}
+								placeholder="Nom de l'étape"
+								value={step.name}
+								onChangeText={(text) => handleUpdateStep(index, "name", text)}
+							/>
+							<TextInput
+								style={{
+									borderBottomWidth: 1,
+									borderColor: "#ddd",
+									marginBottom: 8,
+									padding: 4,
+								}}
+								placeholder="Deadline (YYYY-MM-DD)"
+								value={step.deadline}
+								onChangeText={(text) => handleUpdateStep(index, "deadline", text)}
+							/>
+							<TouchableOpacity
+								onPress={() => handleRemoveStep(index)}
+								style={{ alignSelf: "flex-end" }}
+							>
+								<Text style={{ color: "red" }}>Supprimer</Text>
+							</TouchableOpacity>
 						</View>
+						))}
+
+						<TouchableOpacity
+							onPress={handleAddStep}
+							style={{
+								backgroundColor: "#4F46E5",
+								padding: 12,
+								borderRadius: 8,
+								alignItems: "center",
+								marginBottom: 16,
+							}}
+						>
+							<Text style={{ color: "white" }}>+ Ajouter une étape</Text>
+						</TouchableOpacity>
 					</View>
 
 					<TouchableOpacity
