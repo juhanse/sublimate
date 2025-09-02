@@ -48,8 +48,7 @@ export default function HomeScreen() {
 
 		return (
 			<ProjectCard 
-				name={item.name}
-				thumbnail={item.thumbnail}
+				data={item}
 				onPress={() => handleDetails(item.id)}
 				onValidate={() => handleValidate(item.id)}
 			/>

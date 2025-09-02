@@ -36,6 +36,17 @@ export default function ProjectScreen() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<Header title={projectQuery.data?.name!} onPress={() => router.back()} />
+
+			<View>
+				<Text style={{ color: "white" }}>
+					Catégories :
+					{projectQuery.data?.projects_categories.map((item) => (
+						<Text key={item.categories.id} style={styles.categoryText}>
+							{item.categories.name}
+						</Text>
+					))}
+				</Text>
+			</View>
 		</SafeAreaView>
 	);
 }
@@ -63,5 +74,11 @@ const styles = StyleSheet.create({
 	},
 	backButton: {
 		padding: 8,
+	},
+	categoryText: {
+		color: 'white',
+		fontFamily: 'Mona',
+		fontSize: 12,
+		fontWeight: 'bold',
 	},
 });
