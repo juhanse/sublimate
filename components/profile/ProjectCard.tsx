@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Project } from '@/services/projectsQueries';
 import { Colors } from '@/constants/Colors';
 
 type ProjectCardProps = {
-	name: string;
-	thumbnail: string;
+	data: Project;
 	onPress?: () => void;
 	onValidate?: () => void;
 };
 
-export default function ProjectCard({ name, thumbnail, onPress, onValidate }: ProjectCardProps) {
+export default function ProjectCard({ data, onPress, onValidate }: ProjectCardProps) {
 	const handleValidateProject = async () => {
 		if (onValidate) onValidate();
 	};
@@ -18,7 +18,7 @@ export default function ProjectCard({ name, thumbnail, onPress, onValidate }: Pr
 	return (
 		<TouchableOpacity style={styles.shadowWrap} onLongPress={onPress} delayLongPress={70}>
 			<ImageBackground
-				source={{ uri: thumbnail }}
+				source={{ uri: data.thumbnail }}
 				style={styles.container}
 				imageStyle={styles.imageBg}
 				resizeMode="cover"
@@ -30,7 +30,14 @@ export default function ProjectCard({ name, thumbnail, onPress, onValidate }: Pr
 					end={{ x: 1, y: 0 }}
 				/>
 				<View style={styles.content}>
-					<Text style={styles.projectName} numberOfLines={3}>{name}</Text>
+					{Array.isArray(data.projects_categories)
+						? data.projects_categories.map((item) => (
+							<View key={item.categories.id} style={styles.categoryBadge}>
+								<Text style={styles.categoryText}>{item.categories.name}</Text>
+							</View>
+						))
+						: null}
+					<Text style={styles.projectName} numberOfLines={3}>{data.name}</Text>
 				</View>
 				<TouchableOpacity style={styles.button} onPress={handleValidateProject}>
 					<Text style={styles.text}>Sparkle</Text>
@@ -102,5 +109,22 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontWeight: 'bold',
 		letterSpacing: 0.5,
+	},
+	categoryBadge: {
+		backgroundColor: "rgba(124, 95, 255, 0.2)",
+		borderRadius: 12,
+		paddingVertical: 4,
+		paddingHorizontal: 8,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 8,
+		elevation: 2,
+	},
+	categoryText: {
+		color: 'white',
+		fontFamily: 'Mona',
+		fontSize: 12,
+		fontWeight: 'bold',
 	},
 });
