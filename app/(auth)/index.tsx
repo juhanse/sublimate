@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
-import { useEvent } from 'expo';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';

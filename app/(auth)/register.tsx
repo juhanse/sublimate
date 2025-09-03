@@ -8,8 +8,7 @@ import * as Haptics from 'expo-haptics';
 
 export default function RegisterScreen() {
 	const [email, setEmail] = useState('');
-	const [firstname, setFirstname] = useState('');
-	const [lastname, setLastname] = useState('');
+	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const { login } = useAuth();
@@ -29,12 +28,12 @@ export default function RegisterScreen() {
 	const handleRegister = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
-		if (!email || !firstname || !lastname || !password) {
+		if (!email || !username || !password) {
 			Alert.alert('Erreur', 'Veuillez remplir tous les champs');
 			return;
 		}
 
-		mutate({ email, firstname, lastname, password });
+		mutate({ email, username, password });
 	};
 
 	return (
@@ -67,17 +66,10 @@ export default function RegisterScreen() {
 						</View>
 						<TextInput
 							style={styles.input}
-							placeholder={"Entrez votre prénom"}
+							placeholder={"Entrez votre nom d'utilisateur"}
 							placeholderTextColor="white"
-							value={firstname}
-							onChangeText={setFirstname}
-						/>
-						<TextInput
-							style={styles.input}
-							placeholder={"Entrez votre nom"}
-							placeholderTextColor="white"
-							value={lastname}
-							onChangeText={setLastname}
+							value={username}
+							onChangeText={setUsername}
 						/>
 					</View>
 					<TouchableOpacity
