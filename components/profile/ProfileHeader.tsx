@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { router } from 'expo-router';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import Streak from '@/components/profile/Streak';
 import { User } from '@/services/usersQueries';
-import SettingsButton from './SettingsButton';
+import Streak from '@/components/profile/Streak';
+import SettingsButton from '@/components/profile/SettingsButton';
 
 const GRADES = {
 	'Débutant': { color: '#8E8E93', icon: 'leaf', level: 1 },
