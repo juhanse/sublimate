@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { router } from 'expo-router';
+import { Colors } from '@/constants/Colors';
 
 type ProjectListItem = Project | 'add';
 
@@ -89,7 +90,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#352940ff',
+		backgroundColor: Colors.background,
 	},
 	projectsList: {
 		padding: 24,

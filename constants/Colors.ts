@@ -6,6 +6,7 @@ export const Colors = {
 	orange: '#F97316',
 	green: '#10B981',
 	purple: '#8B5CF6',
+	background: '#202035ff',
 	light: {
 		text: '#11181C',
 		background: '#fff',
