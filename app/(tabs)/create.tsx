@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createProject } from '@/services/projectsQueries';
 import { fetchCategories } from '@/services/categoriesQueries';
 import { CreateProject } from '@/services/projectsQueries';
 import { router } from 'expo-router';
 
 export default function CreateProjectModal() {
+	const queryClient = useQueryClient();
+
 	const [projectData, setProjectData] = useState<CreateProject>({
 		name: "",
 		thumbnail: "",
@@ -22,7 +24,7 @@ export default function CreateProjectModal() {
 	const { mutate, isPending } = useMutation({
 		mutationFn: (projectData: CreateProject) => createProject(projectData),
 		onSuccess: async (data) => {
-			Alert.alert('Succès', 'Le projet a été créé avec succès');
+			queryClient.invalidateQueries({ queryKey: ['projects', 'active'] });
 			console.log('Projet créé:', data);
 			router.back();
 		},
