@@ -30,14 +30,16 @@ export default function ProjectCard({ data, onPress, onValidate }: ProjectCardPr
 					end={{ x: 1, y: 0 }}
 				/>
 				<View style={styles.content}>
-					{Array.isArray(data.projects_categories)
-						? data.projects_categories.map((item) => (
+					<Text style={styles.projectName} numberOfLines={3}>{data.name}</Text>
+
+					<View style={styles.categoryContainer}>
+						{Array.isArray(data.projects_categories) &&
+							data.projects_categories.map((item) => (
 							<View key={item.categories.id} style={styles.categoryBadge}>
 								<Text style={styles.categoryText}>{item.categories.name}</Text>
 							</View>
-						))
-						: null}
-					<Text style={styles.projectName} numberOfLines={3}>{data.name}</Text>
+						))}
+					</View>
 				</View>
 				<TouchableOpacity style={styles.button} onPress={handleValidateProject}>
 					<Text style={styles.text}>Sparkle</Text>
@@ -81,13 +83,10 @@ const styles = StyleSheet.create({
 	projectName: {
 		color: 'white',
 		fontFamily: 'Borna',
-		fontSize: 28,
+		fontSize: 24,
 		fontWeight: 'bold',
 		textAlign: 'left',
 		marginBottom: 8,
-		textShadowColor: '#0008',
-		textShadowOffset: { width: 0, height: 2 },
-		textShadowRadius: 8,
 		maxWidth: '80%',
 	},
 	button: {
@@ -109,6 +108,11 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontWeight: 'bold',
 		letterSpacing: 0.5,
+	},
+	categoryContainer: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		gap: 6,
 	},
 	categoryBadge: {
 		backgroundColor: "rgba(124, 95, 255, 0.2)",
