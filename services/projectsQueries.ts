@@ -12,12 +12,6 @@ export type Step = {
 	created_at: string
 }
 
-export type ProjectCategories = {
-	project_id: string,
-	category_id: string,
-	categories: Category
-}
-
 export type Project = {
 	id: string,
 	user_id: string,
@@ -29,7 +23,15 @@ export type Project = {
 	status: "active" | "inactive",
 	updated_at: string,
 	created_at: string,
-	projects_categories: ProjectCategories[],
+	projects_categories: {
+		categories: {
+			id: string,
+			name: string,
+			language: string,
+			created_at: string,
+			updated_at: string,
+		}
+	}[],
 	steps: Step[]
 };
 
