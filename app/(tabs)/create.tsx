@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createProject } from '@/services/projectsQueries';
-import { fetchCategories } from '@/services/categoriesQueries';
 import { CreateProject } from '@/services/projectsQueries';
 import { router } from 'expo-router';
+import { Colors } from '@/constants/Colors';
+import CategorySelector from '@/components/create/CategorySelector';
+import * as Haptics from 'expo-haptics';
 
 export default function CreateProjectModal() {
 	const queryClient = useQueryClient();
@@ -14,11 +16,6 @@ export default function CreateProjectModal() {
 		thumbnail: "",
 		categories: [],
 		steps: [],
-	});
-
-	const categoriesQuery = useQuery({
-		queryKey: ['categories', 'FR'],
-		queryFn: () => fetchCategories('FR'),
 	});
 
 	const { mutate, isPending } = useMutation({
@@ -35,7 +32,8 @@ export default function CreateProjectModal() {
 		},
 	});
 
-	const handleAddStep = () => {
+	const handleAddStep = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		setProjectData((prev) => ({
 			...prev,
 			steps: [
@@ -62,7 +60,8 @@ export default function CreateProjectModal() {
 		});
 	};
 
-	const handleRemoveStep = (index: number) => {
+	const handleRemoveStep = async (index: number) => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		setProjectData((prev) => {
 			const newSteps = prev.steps.filter((_, i) => i !== index);
 			return { ...prev, steps: newSteps };
@@ -70,6 +69,8 @@ export default function CreateProjectModal() {
 	};
 
 	const handleCreate = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
 		if (!projectData.name.trim()) {
 			Alert.alert('Erreur', 'Le nom du projet est requis');
 			return;
@@ -98,9 +99,17 @@ export default function CreateProjectModal() {
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 		>
 			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-				<View style={styles.form}>
-					<View style={styles.inputGroup}>
-						<Text style={styles.label}>Nom du projet *</Text>
+					<View style={styles.categoryContainer}>
+						<Text style={styles.label}>Catégories :</Text>
+
+						<CategorySelector
+							value={projectData.categories}
+							onChange={(selected) => setProjectData((prev) => ({ ...prev, categories: selected }))}
+						/>
+					</View>
+
+					<View style={styles.nameContainer}>
+						<Text style={styles.label}>Nom du projet :</Text>
 						<TextInput
 							style={styles.input}
 							value={projectData.name}
@@ -112,39 +121,10 @@ export default function CreateProjectModal() {
 							autoFocus
 						/>
 					</View>
-
-					<View style={styles.inputGroup}>
-						<Text style={styles.label}>Catégorie *</Text>
-						
-						{categoriesQuery.data?.map((category) => (
-							<TouchableOpacity
-								key={category.id}
-								style={[
-									styles.categoryButton,
-									projectData.categories.includes(category.id) && styles.categoryButtonSelected,
-								]}
-								onPress={() =>
-									setProjectData((prev) => {
-										const newCategories = prev.categories.includes(category.id)
-											? prev.categories.filter((c) => c !== category.id)
-											: [...prev.categories, category.id];
-										return { ...prev, categories: newCategories };
-									})
-								}
-							>
-								<Text
-									style={[
-										styles.categoryText,
-										projectData.categories.includes(category.id) && styles.categoryTextSelected,
-									]}
-								>
-									{category.name}
-								</Text>
-							</TouchableOpacity>
-						))}
-
-        				<Text style={{ fontWeight: "bold", marginBottom: 8 }}>
-							Étapes du projet *
+				
+					<View style={styles.stepsContainer}>
+        				<Text style={styles.label}>
+							Étapes du projet :
 						</Text>
 						{projectData.steps.map((step, index) => (
 						<View
@@ -191,7 +171,7 @@ export default function CreateProjectModal() {
 						<TouchableOpacity
 							onPress={handleAddStep}
 							style={{
-								backgroundColor: "#4F46E5",
+								backgroundColor: Colors.purple,
 								padding: 12,
 								borderRadius: 8,
 								alignItems: "center",
@@ -200,18 +180,17 @@ export default function CreateProjectModal() {
 						>
 							<Text style={{ color: "white" }}>+ Ajouter une étape</Text>
 						</TouchableOpacity>
-					</View>
 
-					<TouchableOpacity
-						onPress={handleCreate}
-						style={[styles.createButton, isPending && styles.createButtonDisabled]}
-						disabled={isPending}
-					>
-						<Text style={styles.createText}>
-							{isPending ? 'Création...' : 'Créer 🎉'}
-						</Text>
-					</TouchableOpacity>
-				</View>
+						<TouchableOpacity
+							onPress={handleCreate}
+							style={[styles.createButton, isPending && styles.createButtonDisabled]}
+							disabled={isPending}
+						>
+							<Text style={styles.createText}>
+								{isPending ? 'Création...' : 'Créer le projet'}
+							</Text>
+						</TouchableOpacity>
+					</View>
 			</ScrollView>
 		</KeyboardAvoidingView>
 	);
@@ -220,29 +199,42 @@ export default function CreateProjectModal() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		borderRadius: 60,
 		backgroundColor: '#F2F2F7',
 	},
 	content: {
 		flex: 1,
 	},
+	categoryContainer: {
+		marginTop: 40,
+		paddingHorizontal: 24,
+	},
+	nameContainer: {
+		marginTop: 24,
+		paddingHorizontal: 24,
+	},
+	stepsContainer: {
+		marginTop: 24,
+		paddingHorizontal: 24,
+	},
 	createButton: {
-		backgroundColor: '#007AFF',
+		backgroundColor: Colors.purple,
+		borderRadius: 30,
+		marginBottom: 24,
 		paddingVertical: 16,
-		borderRadius: 12,
-		marginBottom: 12,
-		shadowColor: '#007AFF',
-		shadowOffset: { width: 0, height: 4 },
+		shadowColor: Colors.purple,
+		shadowOffset: { width: 0, height: 2 },
+		shadowRadius: 4,
 		shadowOpacity: 0.3,
-		shadowRadius: 8,
-		elevation: 6,
+		elevation: 2,
 	},
 	createButtonDisabled: {
 		backgroundColor: '#C6C6C8',
 	},
 	createText: {
 		color: '#FFFFFF',
-		fontSize: 18,
-		fontWeight: '600',
+		fontSize: 20,
+		fontFamily: 'Mona',
 		textAlign: 'center',
 	},
 	form: {
@@ -252,9 +244,9 @@ const styles = StyleSheet.create({
 		marginBottom: 24,
 	},
 	label: {
-		fontSize: 16,
-		fontWeight: '600',
-		color: '#000000',
+		fontSize: 18,
+		fontFamily: 'Mona',
+		color: '#1b1b1bff',
 		marginBottom: 8,
 	},
 	input: {
@@ -266,15 +258,6 @@ const styles = StyleSheet.create({
 		borderWidth: StyleSheet.hairlineWidth,
 		borderColor: '#C6C6C8',
 	},
-	textArea: {
-		minHeight: 100,
-		paddingTop: 12,
-	},
-	categoryGrid: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		gap: 8,
-	},
 	categoryButton: {
 		backgroundColor: '#FFFFFF',
 		borderWidth: 1,
@@ -285,8 +268,8 @@ const styles = StyleSheet.create({
 		marginBottom: 8,
 	},
 	categoryButtonSelected: {
-		backgroundColor: '#007AFF',
-		borderColor: '#007AFF',
+		backgroundColor: Colors.purple,
+		borderColor: Colors.purple,
 	},
 	categoryText: {
 		fontSize: 14,
@@ -294,36 +277,5 @@ const styles = StyleSheet.create({
 	},
 	categoryTextSelected: {
 		color: '#FFFFFF',
-	},
-	priorityContainer: {
-		gap: 8,
-	},
-	priorityButton: {
-		backgroundColor: '#FFFFFF',
-		borderWidth: 1,
-		borderColor: '#C6C6C8',
-		borderRadius: 12,
-		padding: 16,
-	},
-	priorityContent: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	priorityDot: {
-		width: 12,
-		height: 12,
-		borderRadius: 6,
-		marginRight: 12,
-	},
-	priorityDotSelected: {
-		backgroundColor: '#FFFFFF',
-	},
-	priorityText: {
-		fontSize: 16,
-		color: '#000000',
-	},
-	priorityTextSelected: {
-		color: '#FFFFFF',
-		fontWeight: '600',
 	},
 });
