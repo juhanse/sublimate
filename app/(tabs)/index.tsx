@@ -3,7 +3,7 @@ import { TouchableOpacity, FlatList, StyleSheet, SafeAreaView, ActivityIndicator
 import { useQuery } from '@tanstack/react-query';
 import { fetchMe } from '@/services/usersQueries';
 import ProfileHeader from '@/components/profile/ProfileHeader';
-import ProjectCard from '@/components/profile/ProjectCard';
+import ProjectCard from '@/components/ProjectCard';
 import { Ionicons } from '@expo/vector-icons';
 import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { router } from 'expo-router';
