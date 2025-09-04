@@ -32,29 +32,19 @@ interface DeleteModalProps {
 	onConfirm: () => void;
 }
 
-const Header: React.FC<{ onBackPress: () => void }> = ({ onBackPress }) => (
-	<View style={styles.header}>
-		<TouchableOpacity style={styles.backButton} onPress={onBackPress}>
-			<Ionicons name="arrow-back" size={24} color="white" />
-		</TouchableOpacity>
-		<Text style={styles.headerTitle}>Paramètres</Text>
-		<View style={styles.placeholder} />
-	</View>
-);
-
-const SettingItem: React.FC<SettingItemProps> = ({
-  icon,
-  title,
-  subtitle,
-  onPress,
-  isEditing = false,
-  value = '',
-  onChangeText,
-  onSave,
-  onCancel,
-  showArrow = true,
-  isDestructive = false,
-}) => (
+const SettingItem = ({
+	icon,
+	title,
+	subtitle,
+	onPress,
+	isEditing = false,
+	value = '',
+	onChangeText,
+	onSave,
+	onCancel,
+	showArrow = true,
+	isDestructive = false,
+}: SettingItemProps) => (
 	<TouchableOpacity
 		style={[styles.settingItem, isDestructive && styles.destructiveItem]}
 		onPress={onPress}
@@ -203,14 +193,21 @@ export default function SettingsScreen() {
 		);
 	};
 
-	const handleBack = (): void => {
+	const handleBack = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		queryClient.invalidateQueries({ queryKey: ['projects', 'active'] });
 		router.back();
 	}
 
  	return (
     	<SafeAreaView style={styles.container}>
-      		<Header onBackPress={handleBack} />
+			<View style={styles.header}>
+				<TouchableOpacity style={styles.backButton} onPress={handleBack}>
+					<Ionicons name="arrow-back" size={24} color="white" />
+				</TouchableOpacity>
+				<Text style={styles.headerTitle}>Paramètres</Text>
+				<View style={styles.placeholder} />
+			</View>
       		<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         		<Section title="PROFIL">
           			<SettingItem

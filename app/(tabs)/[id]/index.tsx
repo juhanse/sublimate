@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
 		paddingTop: 16,
 	},
 	headerTitle: {
-		fontSize: 18,
-		fontWeight: '600',
+		fontSize: 24,
+		fontFamily: 'Borna',
 		color: 'white',
 	},
 	placeholder: {

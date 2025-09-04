@@ -5,10 +5,10 @@ import { fetchMe } from '@/services/usersQueries';
 import ProfileHeader from '@/components/profile/ProfileHeader';
 import ProjectCard from '@/components/profile/ProjectCard';
 import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
 import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { router } from 'expo-router';
 import { Colors } from '@/constants/Colors';
+import * as Haptics from 'expo-haptics';
 
 type ProjectListItem = Project | 'add';
 
@@ -29,7 +29,7 @@ export default function HomeScreen() {
 	};
 
 	const handleDetails = async (projectId: string) => {
-		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 		router.push({ pathname: '/(tabs)/[id]', params: { id: projectId } });
 	};
 
