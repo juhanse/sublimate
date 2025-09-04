@@ -2,9 +2,11 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { Entypo } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 
 export default function SettingsButton() {
 	const handlePress = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 		router.push("/settings");
 	};
 
