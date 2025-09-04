@@ -3,15 +3,9 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert,
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-
-interface UserInfo {
-	pseudo: string;
-	email: string;
-}
-
-interface HeaderProps {
-	onBackPress: () => void;
-}
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetchMe, updateMe, UpdateUser } from '@/services/usersQueries';
+import * as Haptics from 'expo-haptics';
 
 interface SettingItemProps {
 	icon: keyof typeof Ionicons.glyphMap;
@@ -38,7 +32,7 @@ interface DeleteModalProps {
 	onConfirm: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onBackPress }) => (
+const Header: React.FC<{ onBackPress: () => void }> = ({ onBackPress }) => (
 	<View style={styles.header}>
 		<TouchableOpacity style={styles.backButton} onPress={onBackPress}>
 			<Ionicons name="arrow-back" size={24} color="white" />
@@ -110,8 +104,6 @@ const Section: React.FC<SectionProps> = ({ title, children }) => (
 	</View>
 );
 
-const Separator: React.FC = () => <View style={styles.separator} />;
-
 const DeleteModal: React.FC<DeleteModalProps> = ({ visible, onCancel, onConfirm }) => (
 	<Modal visible={visible} transparent={true} animationType="fade">
 		<View style={styles.modalOverlay}>
@@ -138,28 +130,32 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ visible, onCancel, onConfirm 
 	</Modal>
 );
 
-const Settings: React.FC = () => {
+export default function SettingsScreen() {
+	const queryClient = useQueryClient();
 	const { logout } = useAuth();
-	const [userInfo, setUserInfo] = useState<UserInfo>({
-		pseudo: 'JohnDoe',
-		email: 'john.doe@example.com',
+
+	const userQuery = useQuery({
+		queryKey: ['currentUser'],
+		queryFn: fetchMe,
 	});
 
-	const [isEditingPseudo, setIsEditingPseudo] = useState<boolean>(false);
+	const { mutate, isPending } = useMutation({
+		mutationFn: (userData: UpdateUser) => updateMe(userData),
+		onSuccess: async (data) => {
+			queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+			router.back();
+		},
+		onError: (error) => {
+			console.log(error);
+			alert('Echec de la mise à jour du compte');
+		},
+	});
+
 	const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
-	const [tempPseudo, setTempPseudo] = useState<string>(userInfo.pseudo);
-	const [tempEmail, setTempEmail] = useState<string>(userInfo.email);
+	const [isEditingUsername, setIsEditingUsername] = useState<boolean>(false);
+	const [email, setEmail] = useState<string>(userQuery.data?.email || '');
+	const [username, setUsername] = useState<string>(userQuery.data?.username || '');
 	const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-
-	const handleSavePseudo = (): void => {
-		setUserInfo({ ...userInfo, pseudo: tempPseudo });
-		setIsEditingPseudo(false);
-	};
-
-	const handleSaveEmail = (): void => {
-		setUserInfo({ ...userInfo, email: tempEmail });
-		setIsEditingEmail(false);
-	};
 
 	const handleResetPassword = (): void => {
 		Alert.alert(
@@ -175,6 +171,12 @@ const Settings: React.FC = () => {
 				}
 			]
 		);
+	};
+
+	const handleUpdate = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
+		mutate({ email, username });
 	};
 
 	const handleDeleteAccount = (): void => {
@@ -201,38 +203,43 @@ const Settings: React.FC = () => {
 		);
 	};
 
+	const handleBack = (): void => {
+		queryClient.invalidateQueries({ queryKey: ['projects', 'active'] });
+		router.back();
+	}
+
  	return (
     	<SafeAreaView style={styles.container}>
-      		<Header onBackPress={() => router.back()} />
+      		<Header onBackPress={handleBack} />
       		<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         		<Section title="PROFIL">
           			<SettingItem
 						icon="person-outline"
-						title="Pseudo"
-						subtitle={!isEditingPseudo ? userInfo.pseudo : undefined}
-						onPress={() => setIsEditingPseudo(true)}
-						isEditing={isEditingPseudo}
-						value={tempPseudo}
-						onChangeText={setTempPseudo}
-						onSave={handleSavePseudo}
+						title="Username"
+						subtitle={!isEditingUsername ? username : undefined}
+						onPress={() => setIsEditingUsername(true)}
+						isEditing={isEditingUsername}
+						value={username}
+						onChangeText={(text) => setUsername(text)}
+						onSave={handleUpdate}
 						onCancel={() => {
-						setTempPseudo(userInfo.pseudo);
-						setIsEditingPseudo(false);
+							setUsername(username);
+							setIsEditingUsername(false);
 						}}
-						showArrow={!isEditingPseudo}
+						showArrow={!isEditingUsername}
 					/>
-          			<Separator />
+          			<View style={styles.separator} />
 					<SettingItem
 						icon="mail-outline"
 						title="Email"
-						subtitle={!isEditingEmail ? userInfo.email : undefined}
+						subtitle={!isEditingEmail ? email : undefined}
 						onPress={() => setIsEditingEmail(true)}
 						isEditing={isEditingEmail}
-						value={tempEmail}
-						onChangeText={setTempEmail}
-						onSave={handleSaveEmail}
+						value={email}
+						onChangeText={(text) => setEmail(text)}
+						onSave={handleUpdate}
 						onCancel={() => {
-							setTempEmail(userInfo.email);
+							setEmail(email);
 							setIsEditingEmail(false);
 						}}
 						showArrow={!isEditingEmail}
@@ -264,7 +271,7 @@ const Settings: React.FC = () => {
 						subtitle="FAQ et support"
 						onPress={() => Alert.alert('Aide', 'Fonctionnalité en cours de développement')}
 					/>
-					<Separator />
+					<View style={styles.separator} />
 					<SettingItem
 						icon="information-circle-outline"
 						title="À propos"
@@ -280,7 +287,7 @@ const Settings: React.FC = () => {
 						onPress={handleLogout}
 						showArrow={false}
 					/>
-					<Separator />
+					<View style={styles.separator} />
 					<SettingItem
 						icon="trash-outline"
 						title="Supprimer le compte"
@@ -344,8 +351,8 @@ const styles = StyleSheet.create({
 		borderRadius: 12,
 		shadowColor: '#000',
 		shadowOffset: {
-		width: 0,
-		height: 1,
+			width: 0,
+			height: 1,
 		},
 		shadowOpacity: 0.05,
 		shadowRadius: 2,
@@ -490,5 +497,3 @@ const styles = StyleSheet.create({
 		color: 'white',
 	},
 });
-
-export default Settings;
