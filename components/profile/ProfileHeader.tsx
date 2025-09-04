@@ -53,13 +53,13 @@ export default function ProfileHeader({ user }: { user: User }) {
 				<View style={styles.progressBarRow}>
 					<View style={styles.progressBar}>
 						<LinearGradient
-							colors={['#ff9500', '#c4770cff']}
+							colors={['#AF52DE', '#9a3bcaff']}
 							style={[styles.progressFill, { width: `${progress}%` }]}
 							start={{ x: 0, y: 0 }}
 							end={{ x: 1, y: 0 }}
 						/>
 					</View>
-					<Text style={styles.progressPercentage}>{Math.round(progress)}%</Text>
+					<Text style={styles.progressPercentage}>{experiencePoints} XP</Text>
 				</View>
 
 				<View style={styles.calendarRow}>
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
 	progressPercentage: {
 		fontSize: 12,
 		fontWeight: '600',
-		color: '#ff9500',
+		color: '#AF52DE',
 		minWidth: 35,
 		textAlign: 'right',
 	},
