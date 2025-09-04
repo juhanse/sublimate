@@ -7,17 +7,7 @@ import { User } from '@/services/usersQueries';
 import Streak from '@/components/profile/Streak';
 import SettingsButton from '@/components/profile/SettingsButton';
 
-const GRADES = {
-	'Débutant': { color: '#8E8E93', icon: 'leaf', level: 1 },
-	'Apprenti': { color: '#34C759', icon: 'trending-up', level: 2 },
-	'Expert': { color: '#007AFF', icon: 'star', level: 3 },
-	'Maître': { color: '#AF52DE', icon: 'diamond', level: 4 },
-	'Légende': { color: '#FF9500', icon: 'flame', level: 5 },
-};
-
 export default function ProfileHeader({ user }: { user: User }) {
-	const currentGrade = 'Légende';
-	const gradeInfo = GRADES[currentGrade];
 	const experiencePoints = user?.xp || 0;
 	const nextLevelPoints = 3000;
 	const progress = (experiencePoints / nextLevelPoints) * 100;
@@ -48,17 +38,10 @@ export default function ProfileHeader({ user }: { user: User }) {
 					<View style={styles.columnName}>
 						<Text style={styles.userName}>👋 Salut, {user?.username || 'Invité'}</Text>
 						<View style={styles.gradeBadge}>
-							<LinearGradient
-								colors={[gradeInfo.color + '20', gradeInfo.color + '40']}
-								style={styles.gradeBadgeGradient}
-								>
-								<Ionicons 
-									name={gradeInfo.icon as any} 
-									size={16} 
-									color={gradeInfo.color} 
-									/>
-								<Text style={[styles.gradeText, { color: gradeInfo.color }]}> 
-									{currentGrade}
+							<LinearGradient colors={['#AF52DE' + '20', '#AF52DE' + '40']} style={styles.gradeBadgeGradient}>
+								<Ionicons name={'diamond'} size={16} color={'#AF52DE'} />
+								<Text style={[styles.gradeText, { color: '#AF52DE' }]}>
+									{user?.ranks.name}
 								</Text>
 							</LinearGradient>
 						</View>
