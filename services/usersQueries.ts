@@ -8,13 +8,17 @@ export type User = {
 	age: number,
 	avatar: string,
 	xp: number,
-	grade_id: string,
 	nb_projects: number,
 	profile_type: string,
 	motivation: string,
 	heard: string,
 	updated_at: string,
 	created_at: string,
+	ranks: {
+		id: string,
+		name: string,
+		xp_required: number,
+	}
 };
 
 export type UpdateUser = Partial<{
