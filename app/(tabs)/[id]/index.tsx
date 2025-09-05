@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeProjectById } from '@/services/projectsQueries';
 import { router, useLocalSearchParams } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 
 interface HeaderProps {
 	title: string;
@@ -29,13 +30,18 @@ export default function ProjectScreen() {
 		queryFn: () => fetchMeProjectById(projectId),
 	});
 
+	const handleBack = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		router.back();
+	};
+
 	if (projectQuery.isLoading) {
 		return <ActivityIndicator color="white" size="small" />;
 	}
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<Header title={projectQuery.data?.name!} onPress={() => router.back()} />
+			<Header title={projectQuery.data?.name!} onPress={handleBack} />
 
 			<View>
 				<Text style={{ color: "white" }}>
