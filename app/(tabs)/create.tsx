@@ -1,16 +1,21 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createProject } from '@/services/projectsQueries';
 import { CreateProject } from '@/services/projectsQueries';
 import { router } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import CategorySelector from '@/components/create/CategorySelector';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function CreateProjectModal() {
 	const queryClient = useQueryClient();
 
+	const [open, setOpen] = useState(false);
+	const [date, setDate] = useState(new Date());
+	const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null);
 	const [projectData, setProjectData] = useState<CreateProject>({
 		name: "",
 		thumbnail: "",
@@ -93,104 +98,180 @@ export default function CreateProjectModal() {
 		mutate({ ...projectData, steps: stepsSorted });
 	};
 
+	const handleOpenDatePicker = (stepIndex: number) => {
+		setSelectedStepIndex(stepIndex);
+		const existingDeadline = projectData.steps[stepIndex].deadline;
+		if (existingDeadline) {
+			setDate(new Date(existingDeadline));
+		} else {
+			setDate(new Date());
+		}
+		setOpen(true);
+	};
+
+	const handleDateChange = (event: any, selectedDate?: Date) => {
+		if (Platform.OS === 'android') {
+			setOpen(false);
+		}
+		
+		if (selectedDate && selectedStepIndex !== null) {
+			setDate(selectedDate);
+			handleUpdateStep(selectedStepIndex, "deadline", selectedDate.toISOString().split("T")[0]);
+			if (Platform.OS === 'ios') {
+				setOpen(false);
+				setSelectedStepIndex(null);
+			}
+		}
+	};
+
 	return (
 		<KeyboardAvoidingView
 			style={styles.container}
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 		>
-			<ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-					<View style={styles.categoryContainer}>
-						<Text style={styles.label}>Catégories :</Text>
+			<View style={styles.categoryContainer}>
+				<Text style={styles.label}>Catégories :</Text>
 
-						<CategorySelector
-							value={projectData.categories}
-							onChange={(selected) => setProjectData((prev) => ({ ...prev, categories: selected }))}
-						/>
-					</View>
+				<CategorySelector
+					value={projectData.categories}
+					onChange={(selected) => setProjectData((prev) => ({ ...prev, categories: selected }))}
+				/>
+			</View>
 
-					<View style={styles.nameContainer}>
-						<Text style={styles.label}>Nom du projet :</Text>
-						<TextInput
-							style={styles.input}
-							value={projectData.name}
-							onChangeText={(text) =>
-								setProjectData((prev) => ({ ...prev, name: text }))
-							}
-							placeholder="Ex: Application mobile, Site web..."
-							placeholderTextColor="#8E8E93"
-							autoFocus
-						/>
-					</View>
-				
-					<View style={styles.stepsContainer}>
-        				<Text style={styles.label}>
-							Étapes du projet :
-						</Text>
-						{projectData.steps.map((step, index) => (
-						<View
-							key={index}
-							style={{
-								marginBottom: 12,
-								padding: 8,
-								borderWidth: 1,
-								borderColor: "#ccc",
-								borderRadius: 8,
-							}}
-						>
-							<TextInput
-								style={{
-									borderBottomWidth: 1,
-									borderColor: "#ddd",
-									marginBottom: 8,
-									padding: 4,
-								}}
-								placeholder="Nom de l'étape"
-								value={step.name}
-								onChangeText={(text) => handleUpdateStep(index, "name", text)}
-							/>
-							<TextInput
-								style={{
-									borderBottomWidth: 1,
-									borderColor: "#ddd",
-									marginBottom: 8,
-									padding: 4,
-								}}
-								placeholder="Deadline (YYYY-MM-DD)"
-								value={step.deadline}
-								onChangeText={(text) => handleUpdateStep(index, "deadline", text)}
-							/>
+			<View style={styles.nameContainer}>
+				<Text style={styles.label}>Nom du projet :</Text>
+				<TextInput
+					style={styles.nameText}
+					value={projectData.name}
+					onChangeText={(text) =>
+						setProjectData((prev) => ({ ...prev, name: text }))
+					}
+					placeholder="Ex: Application mobile, Site web..."
+					placeholderTextColor="#8E8E93"
+					autoFocus
+				/>
+			</View>
+
+			<ScrollView style={styles.stepsContainer} showsVerticalScrollIndicator={false}>
+				<Text style={styles.label}>
+					Étapes du projet :
+				</Text>
+
+				{projectData.steps
+					.map((step, index) => ({ ...step, originalIndex: index }))
+					.sort((a, b) => {
+						if (!a.deadline && !b.deadline) return 0;
+						if (!a.deadline) return 1;
+						if (!b.deadline) return -1;
+						return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+					})
+					.map((step) => (
+					<View key={step.originalIndex} style={styles.stepBox}>
+						<View style={styles.stepContent}>
+							<View style={styles.stepLeft}>
+								<TextInput
+									style={styles.stepName}
+									placeholder="Nom de l'étape"
+									value={step.name}
+									onChangeText={(text) => handleUpdateStep(step.originalIndex, "name", text)}
+								/>
+								<TouchableOpacity 
+									style={styles.deadlineSelector}
+									onPress={() => handleOpenDatePicker(step.originalIndex)}
+								>
+									<Text style={styles.deadlineText}>
+										{step.deadline 
+											? `Deadline : ${new Date(step.deadline).toLocaleDateString('fr-FR')}`
+											: 'Choisir une deadline'
+										}
+									</Text>
+								</TouchableOpacity>
+							</View>
+							
 							<TouchableOpacity
-								onPress={() => handleRemoveStep(index)}
-								style={{ alignSelf: "flex-end" }}
+								onPress={() => handleRemoveStep(step.originalIndex)}
+								style={styles.deleteButton}
 							>
-								<Text style={{ color: "red" }}>Supprimer</Text>
+								<Ionicons name="trash" style={styles.deleteIcon} />
 							</TouchableOpacity>
 						</View>
-						))}
-
-						<TouchableOpacity
-							onPress={handleAddStep}
-							style={{
-								backgroundColor: Colors.purple,
-								padding: 12,
-								borderRadius: 8,
-								alignItems: "center",
-								marginBottom: 16,
-							}}
-						>
-							<Text style={{ color: "white" }}>+ Ajouter une étape</Text>
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							onPress={handleCreate}
-							style={[styles.createButton, isPending && styles.createButtonDisabled]}
-							disabled={isPending}
-						>
-							<Text style={styles.createText}>
-								{isPending ? 'Création...' : 'Créer le projet'}
-							</Text>
-						</TouchableOpacity>
 					</View>
+				))}
+
+				{open && (
+					<>
+						{Platform.OS === 'ios' ? (
+							<Modal
+								transparent={true}
+								animationType="slide"
+								visible={open}
+								onRequestClose={() => {
+									setOpen(false);
+									setSelectedStepIndex(null);
+								}}
+							>
+								<View style={styles.modalContainer}>
+									<View style={styles.modalContent}>
+										<View style={styles.modalHeader}>
+											<TouchableOpacity
+												onPress={() => {
+													setOpen(false);
+													setSelectedStepIndex(null);
+												}}
+												style={styles.modalButton}
+											>
+												<Text style={styles.modalButtonText}>Annuler</Text>
+											</TouchableOpacity>
+											<TouchableOpacity
+												onPress={() => {
+													if (selectedStepIndex !== null) {
+														handleUpdateStep(selectedStepIndex, "deadline", date.toISOString().split("T")[0]);
+													}
+													setOpen(false);
+													setSelectedStepIndex(null);
+												}}
+												style={styles.modalButton}
+											>
+												<Text style={[styles.modalButtonText, { color: Colors.purple }]}>Confirmer</Text>
+											</TouchableOpacity>
+										</View>
+										<DateTimePicker
+											value={date}
+											mode="date"
+											display="spinner"
+											onChange={handleDateChange}
+											style={styles.datePicker}
+										/>
+									</View>
+								</View>
+							</Modal>
+						) : (
+							<DateTimePicker
+								value={date}
+								mode="date"
+								display="default"
+								onChange={handleDateChange}
+							/>
+						)}
+					</>
+				)}
+
+				<TouchableOpacity
+					onPress={handleAddStep}
+					style={styles.addStepButton}
+				>
+					<Text style={styles.addStepText}>Ajouter une étape</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity
+					onPress={handleCreate}
+					style={[styles.createButton, isPending && styles.createButtonDisabled]}
+					disabled={isPending}
+				>
+					<Text style={styles.createText}>
+						{isPending ? 'Création...' : 'Créer le projet'}
+					</Text>
+				</TouchableOpacity>
 			</ScrollView>
 		</KeyboardAvoidingView>
 	);
@@ -200,10 +281,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		borderRadius: 60,
-		backgroundColor: '#F2F2F7',
+		backgroundColor: Colors.background,
 	},
-	content: {
-		flex: 1,
+	label: {
+		fontSize: 18,
+		fontFamily: 'Borna',
+		color: 'white',
+		marginBottom: 8,
 	},
 	categoryContainer: {
 		marginTop: 40,
@@ -213,9 +297,81 @@ const styles = StyleSheet.create({
 		marginTop: 24,
 		paddingHorizontal: 24,
 	},
+	nameText: {
+		fontSize: 16,
+		fontFamily: 'Mona',
+		color: 'white',
+		paddingVertical: 12,
+		backgroundColor: '#1C1C1E',
+		borderRadius: 8,
+		paddingHorizontal: 12,
+		borderWidth: 2,
+		borderColor: '#3A3A3C',
+	},
 	stepsContainer: {
 		marginTop: 24,
 		paddingHorizontal: 24,
+	},
+	stepBox: {
+		backgroundColor: '#1C1C1E',
+		padding: 16,
+		borderRadius: 8,
+		marginBottom: 16,
+		borderWidth: 2,
+		borderColor: '#3A3A3C',
+	},
+	stepContent: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+	},
+	stepLeft: {
+		flex: 1,
+		marginRight: 12,
+	},
+	stepName: {
+		fontSize: 18,
+		fontFamily: 'Borna',
+		color: 'white',
+		marginBottom: 8,
+		backgroundColor: 'transparent',
+		padding: 0,
+	},
+	deadlineSelector: {
+		paddingVertical: 8,
+		paddingHorizontal: 12,
+		backgroundColor: '#2C2C2E',
+		borderRadius: 6,
+		borderWidth: 1,
+		borderColor: '#3A3A3C',
+	},
+	deadlineText: {
+		fontSize: 14,
+		fontFamily: 'Mona',
+		color: '#8E8E93',
+	},
+	deleteButton: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: 40,
+		height: 40,
+		borderRadius: 20,
+		backgroundColor: '#FF3B30',
+	},
+	deleteIcon: {
+		fontSize: 18,
+		color: 'white',
+	},
+	addStepButton: {
+		padding: 12,
+		borderRadius: 8,
+		alignItems: 'center',
+		marginBottom: 16,
+	},
+	addStepText: {
+		color: Colors.purple,
+		fontSize: 16,
+		fontFamily: 'Mona',
 	},
 	createButton: {
 		backgroundColor: Colors.purple,
@@ -237,45 +393,35 @@ const styles = StyleSheet.create({
 		fontFamily: 'Mona',
 		textAlign: 'center',
 	},
-	form: {
-		padding: 20,
+	modalContainer: {
+		flex: 1,
+		justifyContent: 'flex-end',
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
 	},
-	inputGroup: {
-		marginBottom: 24,
+	modalContent: {
+		backgroundColor: Colors.background,
+		borderTopLeftRadius: 20,
+		borderTopRightRadius: 20,
+		paddingBottom: 34,
 	},
-	label: {
-		fontSize: 18,
-		fontFamily: 'Mona',
-		color: '#1b1b1bff',
-		marginBottom: 8,
+	modalHeader: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingHorizontal: 20,
+		paddingVertical: 16,
+		borderBottomWidth: 1,
+		borderBottomColor: '#3A3A3C',
 	},
-	input: {
-		backgroundColor: '#FFFFFF',
-		borderRadius: 12,
-		paddingHorizontal: 16,
-		paddingVertical: 12,
-		fontSize: 16,
-		borderWidth: StyleSheet.hairlineWidth,
-		borderColor: '#C6C6C8',
-	},
-	categoryButton: {
-		backgroundColor: '#FFFFFF',
-		borderWidth: 1,
-		borderColor: '#C6C6C8',
-		borderRadius: 20,
+	modalButton: {
 		paddingVertical: 8,
 		paddingHorizontal: 16,
-		marginBottom: 8,
 	},
-	categoryButtonSelected: {
-		backgroundColor: Colors.purple,
-		borderColor: Colors.purple,
+	modalButtonText: {
+		fontSize: 17,
+		fontFamily: 'Mona',
+		color: 'white',
 	},
-	categoryText: {
-		fontSize: 14,
-		color: '#000000',
-	},
-	categoryTextSelected: {
-		color: '#FFFFFF',
+	datePicker: {
+		backgroundColor: Colors.background,
 	},
 });
