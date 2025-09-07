@@ -1,10 +1,10 @@
 import { View, Text, useWindowDimensions, StyleSheet, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import ImageOne from "@/assets/onboarding/test/1.png";
-import ImageTwo from "@/assets/onboarding/test/2.png";
-import ImageThree from "@/assets/onboarding/test/3.png";
-import ImageFour from "@/assets/onboarding/test/4.png";
-import ImageFive from "@/assets/onboarding/test/5.png";
+import ImageOne from "@/assets/images/onboarding/1.png";
+import ImageTwo from "@/assets/images/onboarding/2.png";
+import ImageThree from "@/assets/images/onboarding/3.png";
+import ImageFour from "@/assets/images/onboarding/4.png";
+import ImageFive from "@/assets/images/onboarding/5.png";
 import { useState } from "react";
 import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
 import { Marquee } from "@/components/onboarding/marquee";
