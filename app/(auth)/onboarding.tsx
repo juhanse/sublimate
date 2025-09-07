@@ -1,104 +1,177 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
-import Swiper from 'react-native-swiper';
-import { useOnboardingStore } from '@/contexts/OnboardingContext';
+import { View, Text, useWindowDimensions, StyleSheet, TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import ImageOne from "@/assets/onboarding/test/1.png";
+import ImageTwo from "@/assets/onboarding/test/2.png";
+import ImageThree from "@/assets/onboarding/test/3.png";
+import ImageFour from "@/assets/onboarding/test/4.png";
+import ImageFive from "@/assets/onboarding/test/5.png";
+import { useState } from "react";
+import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
+import { Marquee } from "@/components/test/marquee";
+import { _itemWidth } from "@/components/test/marquee-item";
+import ImageBg from "@/components/test/image-bg";
+import { useDebouncedValue } from "@/hooks/useDebounce";
+import { useOnboardingStore } from "@/contexts/OnboardingContext";
+import * as Haptics from 'expo-haptics';
 
-const OnboardingScreen = () => {
+const events = [
+	{
+		id: 1,
+		image: ImageOne,
+	},
+	{
+		id: 2,
+		image: ImageTwo,
+	},
+	{
+		id: 3,
+		image: ImageThree,
+	},
+	{
+		id: 4,
+		image: ImageFour,
+	},
+	{
+		id: 5,
+		image: ImageFive,
+	},
+];
+
+export default function OnboardingScreen() {
 	const { markOnboardingSeen } = useOnboardingStore();
+	// Track which event card is currently centered/active
+	const [activeIndex, setActiveIndex] = useState(0);
+	// Debounced version prevents rapid background image changes during fast scrolling
+	const debouncedActiveIndex = useDebouncedValue(activeIndex, 500);
+
+	const insets = useSafeAreaInsets();
+	const { width } = useWindowDimensions();
+
+	// Shared value for horizontal scroll position - drives all marquee animations
+	const scrollOffsetX = useSharedValue(0);
+	// Total width needed to display all event cards in sequence
+	const allItemsWidth = events.length * _itemWidth;
+
+	// Calculates which card is centered and updates background image accordingly
+	useAnimatedReaction(
+		() => scrollOffsetX.value,
+		(currentValue) => {
+			// Normalize to handle infinite scroll wrapping (keeps value within 0 to allItemsWidth)
+			const normalizedOffset = ((currentValue % allItemsWidth) + allItemsWidth) % allItemsWidth;
+			// Center point offset to determine which card is in the middle of screen
+			const shift = width / 2;
+			// Calculate which card index is currently centered based on scroll position
+			const activeItemIndex = Math.abs(Math.floor((normalizedOffset + shift) / _itemWidth));
+
+			// Handle edge case when scrolling reaches the end
+			if (activeItemIndex === events.length) {
+				runOnJS(setActiveIndex)(0);
+			}
+
+			// Update active index only when it actually changes to avoid unnecessary re-renders
+			if (
+				activeItemIndex >= 0 &&
+				activeItemIndex < events.length &&
+				activeItemIndex !== activeIndex
+			) {
+				runOnJS(setActiveIndex)(activeItemIndex);
+			}
+		}
+	);
+
+	const handleStart = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+		markOnboardingSeen();
+	};
 
 	return (
-		<Swiper loop={false}>
-			<View style={styles.container}>
-				<ImageBackground
-					source={require('@/assets/images/onboarding.jpg')}
-					style={styles.image}
-					resizeMode="cover"
-				>
-					<View style={styles.button}>
-						<TouchableOpacity style={styles.skipButton} onPress={markOnboardingSeen}>
-							<Text style={styles.text}>Passer</Text>
-						</TouchableOpacity>
-					</View>
-				</ImageBackground>
-			</View>
-	
-			<View style={styles.container}>
-				<ImageBackground
-					source={require('@/assets/images/onboarding.jpg')}
-					style={styles.image}
-					resizeMode="cover"
-				/>
+		<View style={[ styles.container, { paddingTop: insets.top + 16, paddingBottom: insets.bottom } ]}>
+			{/* Background image */}
+			<ImageBg itemKey={events[debouncedActiveIndex].id.toString()} source={events[debouncedActiveIndex].image} />
+			{/* Marquee (60% height) */}
+			<View style={styles.marqueeContainer}>
+				<Marquee events={events} scrollOffsetX={scrollOffsetX} />
 			</View>
 
-			<View style={styles.container}>
-				<ImageBackground
-					source={require('@/assets/images/onboarding.jpg')}
-					style={styles.image}
-					resizeMode="cover"
-				/>
-			</View>
+			{/* Bottom content (40% height) */}
+			<View style={styles.bottomContainer}>
+				<View style={styles.skeletonWrapper}>
+					<Text style={styles.skeleton}>
+						Get the party started with Invites
+					</Text>
+					<View style={[styles.skeleton, styles.skeleton80, { marginBottom: 16 }]} />
+					<Text style={styles.skeletonSmall}>
+						An iCloud+ subscription is required to invite people
+					</Text>
+				</View>
 
-			<View style={styles.container}>
-				<ImageBackground
-					source={require('@/assets/images/onboarding.jpg')}
-					style={styles.image}
-					resizeMode="cover"
-				>
-					<View style={styles.button}>
-						<TouchableOpacity style={styles.startButton} onPress={markOnboardingSeen}>
-							<Text style={styles.text}>Commencer 🎉</Text>
-						</TouchableOpacity>
-					</View>
-				</ImageBackground>
+				<TouchableOpacity style={styles.nextButton} onPress={handleStart}>
+					<Text style={{ textAlign: "center", lineHeight: 56, color: "black", fontFamily: "Mona", fontSize: 16 }}>
+						Commencer
+					</Text>
+				</TouchableOpacity>
 			</View>
-		</Swiper>
+		</View>
 	);
-};
+}
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#f0f0f0',
+		backgroundColor: "#1e293b",
 	},
-	image: {
-		flex: 1,
-		width: '100%',
-		height: '100%',
-		justifyContent: 'center',
-		alignItems: 'center',
+	marqueeContainer: {
+		flexBasis: "60%",
+		paddingTop: 40,
 	},
-	button: {
-		flex: 1,
-		width: '100%',
-		justifyContent: 'flex-end',
-		paddingHorizontal: 20,
-		paddingBottom: 40,
+	bottomContainer: {
+		flexBasis: "40%",
+		alignItems: "center",
+		justifyContent: "space-between",
+		paddingTop: 48,
+		paddingBottom: 16,
 	},
-	skipButton: {
-		backgroundColor: 'rgba(255, 255, 255, 0.1)',
-		paddingVertical: 16,
-		borderRadius: 12,
-		borderWidth: 1,
-		borderColor: 'rgba(255, 255, 255, 0.3)',
-		marginBottom: 24,
+	skeletonWrapper: {
+		width: "100%",
+		alignItems: "center",
+		justifyContent: "center"
 	},
-	startButton: {
-		backgroundColor: '#007AFF',
-		paddingVertical: 16,
-		borderRadius: 12,
-		marginBottom: 12,
-		shadowColor: '#007AFF',
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.3,
-		shadowRadius: 8,
-		elevation: 6,
+	skeleton: {
+		width: "80%",
+		color: "white",
+		textAlign: "center",
+		fontSize: 28,
+		fontFamily: "Mona",
 	},
-	text: {
-		color: '#FFFFFF',
-		fontSize: 18,
-		fontWeight: '600',
-		textAlign: 'center',
+	skeletonSmall: {
+		width: "60%",
+		color: "rgba(255,255,255,0.15)",
+		textAlign: "center",
+		fontSize: 16,
+		fontFamily: "Mona",
+	},
+	skeleton60: {
+		width: "60%",
+	},
+	skeleton80: {
+		width: "80%",
+	},
+	skeleton70: {
+		width: "70%",
+	},
+	skeleton30: {
+		width: "30%",
+		marginBottom: 0,
+	},
+	nextButton: {
+		height: 56,
+		width: "50%",
+		borderRadius: 9999,
+		backgroundColor: "rgba(236, 236, 236, 1)",
+		shadowColor: "#000",
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		shadowOffset: { width: 0, height: 2 },
+		elevation: 5,
 	},
 });
-
-export default OnboardingScreen;
