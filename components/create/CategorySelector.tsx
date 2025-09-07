@@ -57,15 +57,13 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		flexWrap: "wrap",
 		gap: 8,
-		paddingHorizontal: 12,
-		paddingVertical: 8,
 	},
 	categoryButton: {
 		backgroundColor: "#f2f2f2",
 		borderRadius: 20,
 		paddingHorizontal: 16,
-		paddingVertical: 8,
-		borderWidth: 1,
+		paddingVertical: 14,
+		borderWidth: 2,
 		borderColor: "#ccc",
 	},
 	categoryButtonSelected: {
