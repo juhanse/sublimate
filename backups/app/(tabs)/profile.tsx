@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useQuery } from '@tanstack/react-query';
+import { fetchMe } from '@/services/usersQueries';
 import ProfileHeader from '@/backups/components/profile/ProfileHeader';
 import StatsGrid from '@/backups/components/profile/StatsGrid';
 import ProjectsList from '@/backups/components/profile/ProjectsList';
 import TrophiesList from '@/backups/components/profile/TrophiesList';
-import { useQuery } from '@tanstack/react-query';
-import { fetchMe } from '@/services/usersQueries';
 
 export interface UserStats {
 	projectsCompleted: number;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Stack } from 'expo-router';
 
 export default function TabsLayout() {
-	const [isPremium, setIsPremium] = useState(true);
+	const [isPremium, setIsPremium] = useState(false);
 
 	return (
 		<Stack screenOptions={{ headerShown: false }}>
@@ -11,9 +11,7 @@ export default function TabsLayout() {
 			<Stack.Screen name="[id]/index" />
 			<Stack.Screen name="[id]/settings" />
 
-			<Stack.Protected guard={isPremium}>
-				<Stack.Screen name="create" options={{ presentation: 'modal', contentStyle: { backgroundColor: 'transparent' } }} />
-			</Stack.Protected>
+			<Stack.Screen name="create" options={{ presentation: 'modal', contentStyle: { backgroundColor: 'transparent' } }} />
 		</Stack>
 	);
 }

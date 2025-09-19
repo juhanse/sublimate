@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMe } from '@/services/usersQueries';
 import ProfileHeader from '@/components/profile/ProfileHeader';

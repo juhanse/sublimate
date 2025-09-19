@@ -40,14 +40,14 @@ export default function RootLayout() {
 	}
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-				<GestureHandlerRootView style={{ flex: 1 }}>
+		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<QueryClientProvider client={queryClient}>
 					<AuthProvider>
 						<InitialLayout />
 					</AuthProvider>
-				</GestureHandlerRootView>
-			</ThemeProvider>
-		</QueryClientProvider>
+				</QueryClientProvider>
+			</GestureHandlerRootView>
+		</ThemeProvider>
 	);
 }
