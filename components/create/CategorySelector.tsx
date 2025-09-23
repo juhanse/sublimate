@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
 	categoryText: {
 		fontSize: 14,
 		color: "#333",
+		fontWeight: "600",
 	},
 	categoryTextSelected: {
 		color: "#fff",
-		fontWeight: "600",
 	},
 });
