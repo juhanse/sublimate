@@ -26,12 +26,12 @@ export default function ProfileHeader({ user }: { user: User }) {
 	return (
 		<View style={styles.outerContainer}>
 			<LinearGradient
-				colors={["#194eee6c", "#1f4dd96c", "rgba(222, 37, 84, 0.52)"]}
+				colors={["#3864e86c", "#497cff6c", "#3db7f06c"]}
 				style={StyleSheet.absoluteFill}
 				start={{ x: 0, y: 0 }}
 				end={{ x: 1, y: 1 }}
 			/>
-			<BlurView intensity={60} tint="light" style={styles.container}>
+			<BlurView intensity={80} tint="light" style={styles.container}>
 				<View style={styles.rowAvatarName}>
 					<Image source={{ uri: user?.avatar }} style={styles.avatarImageSmall} />
 
