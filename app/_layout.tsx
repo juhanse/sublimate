@@ -1,11 +1,7 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const queryClient = new QueryClient();
 
@@ -28,7 +24,6 @@ const InitialLayout = () => {
 }
 
 export default function RootLayout() {
-	const colorScheme = useColorScheme();
 	const [loaded] = useFonts({
 		Mona: require('@/assets/fonts/MonaSans-Bold.ttf'),
 		Borna: require('@/assets/fonts/Borna-Bold.otf'),
@@ -40,14 +35,10 @@ export default function RootLayout() {
 	}
 
 	return (
-		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<QueryClientProvider client={queryClient}>
-					<AuthProvider>
-						<InitialLayout />
-					</AuthProvider>
-				</QueryClientProvider>
-			</GestureHandlerRootView>
-		</ThemeProvider>
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<InitialLayout />
+			</AuthProvider>
+		</QueryClientProvider>
 	);
 }
