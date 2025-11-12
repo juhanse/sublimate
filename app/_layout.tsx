@@ -25,9 +25,13 @@ const InitialLayout = () => {
 
 export default function RootLayout() {
 	const [loaded] = useFonts({
-		Mona: require('@/assets/fonts/MonaSans-Bold.ttf'),
-		Borna: require('@/assets/fonts/Borna-Bold.otf'),
-		SpaceMono: require('@/assets/fonts/SpaceMono-Regular.ttf'),
+		"Borna": require('@/assets/fonts/Borna-Bold.otf'),
+		"SF-Black": require('@/assets/fonts/SF-Pro-Display-Black.otf'),
+		"SF-Bold": require('@/assets/fonts/SF-Pro-Display-Bold.otf'),
+		"SF-Heavy": require('@/assets/fonts/SF-Pro-Display-Heavy.otf'),
+		"SF-Medium": require('@/assets/fonts/SF-Pro-Display-Medium.otf'),
+		"SF-Regular": require('@/assets/fonts/SF-Pro-Display-Regular.otf'),
+		"SF-Semibold": require('@/assets/fonts/SF-Pro-Display-Semibold.otf'),
 	});
 
 	if (!loaded) {
