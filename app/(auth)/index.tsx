@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import GoogleButton from '@/components/ui/GoogleButton';
 
-export default function AuthentificationScreen() {
+export default function WelcomeScreen() {
 	return (
 		<View style={styles.container}>
 			<ImageBackground

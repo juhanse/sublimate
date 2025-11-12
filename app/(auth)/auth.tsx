@@ -1,11 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { useOnboardingStore } from '@/contexts/OnboardingContext';
 
-const OnboardingScreen = () => {
-	const { markOnboardingSeen } = useOnboardingStore();
-
+export default function AuthScreen() {
 	return (
 		<Swiper loop={false}>
 			<View style={styles.container}>
@@ -15,7 +12,7 @@ const OnboardingScreen = () => {
 					resizeMode="cover"
 				>
 					<View style={styles.button}>
-						<TouchableOpacity style={styles.skipButton} onPress={markOnboardingSeen}>
+						<TouchableOpacity style={styles.skipButton} onPress={() => {}}>
 							<Text style={styles.text}>Passer</Text>
 						</TouchableOpacity>
 					</View>
@@ -45,7 +42,7 @@ const OnboardingScreen = () => {
 					resizeMode="cover"
 				>
 					<View style={styles.button}>
-						<TouchableOpacity style={styles.startButton} onPress={markOnboardingSeen}>
+						<TouchableOpacity style={styles.startButton} onPress={() => {}}>
 							<Text style={styles.text}>Commencer 🎉</Text>
 						</TouchableOpacity>
 					</View>
@@ -100,5 +97,3 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
 });
-
-export default OnboardingScreen;
