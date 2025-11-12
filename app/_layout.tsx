@@ -6,7 +6,7 @@ import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 const queryClient = new QueryClient();
 
 const InitialLayout = () => {
-	const { isAuth } = useAuth();
+	const isAuth = false;
 
 	return (
 		<Stack screenOptions={{ headerShown: false }}>

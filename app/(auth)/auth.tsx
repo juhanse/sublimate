@@ -1,10 +1,21 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native';
+import { View, ImageBackground, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
+import { BlurView } from "expo-blur";
 
 export default function AuthScreen() {
 	return (
-		<Swiper loop={false}>
+		<ImageBackground
+			source={require("@/assets/images/background.png")}
+			style={styles.image}
+			resizeMode="cover"
+		>
+			<BlurView intensity={100} style={StyleSheet.absoluteFill}>
+				<View style={styles.overlay} />
+			</BlurView>
+		</ImageBackground>
+		
+		/* <Swiper loop={false}>
 			<View style={styles.container}>
 				<ImageBackground
 					source={require('@/assets/images/onboarding.jpg')}
@@ -48,11 +59,23 @@ export default function AuthScreen() {
 					</View>
 				</ImageBackground>
 			</View>
-		</Swiper>
+		</Swiper> */
 	);
 };
 
 const styles = StyleSheet.create({
+	image: {
+		flex: 1,
+		width: "100%",
+		height: "100%",
+	},
+	overlay: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: "rgba(30, 30, 30, 0.5)",
+	},
+});
+
+/* const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#f0f0f0',
@@ -97,3 +120,4 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
 });
+ */
