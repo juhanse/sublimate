@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ImageBackground, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { BlurView } from "expo-blur";
+import Button from '@/components/ui/Button';
 
 export default function AuthScreen() {
 	return (
@@ -12,6 +13,10 @@ export default function AuthScreen() {
 		>
 			<BlurView intensity={100} style={StyleSheet.absoluteFill}>
 				<View style={styles.overlay} />
+
+				<Button type="primary" onPress={() => {}}>
+					Se connecter
+				</Button>
 			</BlurView>
 		</ImageBackground>
 		
