@@ -2,10 +2,12 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import { useOnboardingStore } from '@/contexts/OnboardingStore';
 
 const queryClient = new QueryClient();
 
 const InitialLayout = () => {
+	const { seenOnboarding } = useOnboardingStore();
 	const isAuth = true;
 
 	return (
@@ -14,9 +16,11 @@ const InitialLayout = () => {
 				<Stack.Screen name="(auth)" />
 			</Stack.Protected>
 
-
-			<Stack.Protected guard={isAuth}>
+			<Stack.Protected guard={!seenOnboarding}>
 				<Stack.Screen name="(onboarding)" />
+			</Stack.Protected>
+
+			<Stack.Protected guard={isAuth && seenOnboarding}>
 				<Stack.Screen name="(tabs)" />
 			</Stack.Protected>
 
