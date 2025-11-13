@@ -2,14 +2,7 @@ import { View, Text, ImageBackground, Dimensions, StyleSheet } from 'react-nativ
 import { router } from 'expo-router';
 import { BlurView } from "expo-blur";
 import Button from '@/components/ui/Button';
-
-const { width, height } = Dimensions.get('window');
-
-const BASE_WIDTH = 393;
-const BASE_HEIGHT = 852;
-
-const scaleX = (x: number) => (x / BASE_WIDTH) * width;
-const scaleY = (y: number) => (y / BASE_HEIGHT) * height;
+import { PosX, PosY } from '@/constants/Responsive';
 
 export default function WelcomeScreen() {
 	return (
@@ -45,9 +38,9 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		position: 'absolute',
-		left: scaleX(17),
-		top: scaleY(602),
-		width: scaleX(358),
+		left: PosX(17),
+		top: PosY(602),
+		width: PosX(358),
 		textAlign: 'center',
 		fontFamily: 'SF-Heavy',
 		fontSize: 30,
@@ -55,7 +48,7 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		position: 'absolute',
-		left: scaleX(89),
-		top: scaleY(730),
+		left: PosX(89),
+		top: PosY(730),
 	},
 });
