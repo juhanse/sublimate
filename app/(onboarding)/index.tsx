@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useOnboardingStore } from '@/contexts/OnboardingStore';
 import WhoAreYouScreen from '@/app/(onboarding)/WhoAreYou';
@@ -8,7 +8,13 @@ import WhatsYourNameScreen from '@/app/(onboarding)/WhatsYourName';
 import HearAboutUsScreen from '@/app/(onboarding)/HearAboutUs';
 
 export default function OnboardingScreen() {
-	const { step } = useOnboardingStore();
+	const { step, setSeenOnboarding } = useOnboardingStore();
+
+	useEffect(() => {
+		if (step > 5) {
+			setSeenOnboarding(true);
+		}
+	}, [step]);
 
 	const renderStep = () => {
 		switch (step) {
