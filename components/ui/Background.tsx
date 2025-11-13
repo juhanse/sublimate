@@ -4,19 +4,25 @@ import { BlurView } from "expo-blur";
 
 export const Background = () => {
 	return (
-		<ImageBackground
-			source={require("@/assets/images/background.png")}
-			style={styles.image}
-			resizeMode="cover"
-		>
-			<BlurView intensity={100} style={StyleSheet.absoluteFill}>
-				<View style={styles.overlay} />
-			</BlurView>
-		</ImageBackground>
+		<View style={styles.container}>
+			<ImageBackground
+				source={require("@/assets/images/background.png")}
+				style={styles.image}
+				resizeMode="cover"
+			>
+				<BlurView intensity={100} style={StyleSheet.absoluteFill}>
+					<View style={styles.overlay} />
+				</BlurView>
+			</ImageBackground>
+		</View>
 	);
 };
 
 const styles = StyleSheet.create({
+	container: {
+		...StyleSheet.absoluteFillObject,
+		zIndex: -1,
+	},
 	image: {
 		flex: 1,
 		width: "100%",
