@@ -12,7 +12,7 @@ export default function WelcomeScreen() {
 			<Text style={styles.title}>
 				Achieving your goals is just waiting for you
 			</Text>
-			<View style={[styles.buttonContainer]}>
+			<View style={[styles.button]}>
 				<Button type="primary" onPress={() => router.push('/(auth)/auth')}>
 					Discover
 				</Button>
@@ -41,9 +41,10 @@ const styles = StyleSheet.create({
 		transform: [{ rotate: '0.3deg' }],
 		resizeMode: 'contain',
 	},
-	buttonContainer: {
+	button: {
+		width: '100%',
 		position: 'absolute',
-		left: PosX(89),
 		top: PosY(730),
+		paddingHorizontal: PosX(80),
 	},
 });
