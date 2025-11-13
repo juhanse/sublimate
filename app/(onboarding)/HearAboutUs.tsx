@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import { useOnboardingStore } from '@/contexts/OnboardingStore';
 
-export default function HowOldAreYouScreen() {
+export default function HearAboutUsScreen() {
 	const { nextStep, previousStep } = useOnboardingStore();
 
 	return (
@@ -13,7 +13,7 @@ export default function HowOldAreYouScreen() {
 
 			<View style={styles.container}>
 				<Text style={styles.title}>
-					Quel âge as-tu ?
+					Comment as-tu entendu parler de nous ?
 				</Text>
 			</View>
 

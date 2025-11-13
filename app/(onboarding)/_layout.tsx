@@ -6,6 +6,9 @@ export default function OnboardingLayout() {
 			<Stack.Screen name="index" />
 			<Stack.Screen name="WhoAreYou" />
 			<Stack.Screen name="HowOldAreYou" />
+			<Stack.Screen name="ProjectType" />
+			<Stack.Screen name="WhatsYourName" />
+			<Stack.Screen name="HearAboutUs" />
 		</Stack>
 	);
 }
