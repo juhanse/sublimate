@@ -51,13 +51,14 @@ const Button: React.FC<ButtonProps> = ({ type = "primary", onPress, children, st
 
 const styles = StyleSheet.create({
 	base: {
-		width: 215,
+		width: '100%',
 		height: 55,
 		borderRadius: 36,
 		paddingHorizontal: 20,
 		paddingVertical: 8,
 		alignItems: "center",
 		justifyContent: "center",
+		alignSelf: "stretch",
 	},
 	text: {
 		fontFamily: "SF-Medium",
