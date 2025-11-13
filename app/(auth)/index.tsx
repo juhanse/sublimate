@@ -1,51 +1,27 @@
-import { View, Text, ImageBackground, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router';
-import { BlurView } from "expo-blur";
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
+import { Background } from '@/components/ui/Background';
 
 export default function WelcomeScreen() {
 	return (
-		<ImageBackground
-			source={require("@/assets/images/background.png")}
-			style={styles.image}
-			resizeMode="cover"
-		>
-			<BlurView intensity={100} style={StyleSheet.absoluteFill}>
-				<View style={styles.overlay} />
-				<Image source={require("@/assets/images/welcome.png")} style={styles.logo} />
-				<Text style={styles.title}>
-					Achieving your goals is just waiting for you
-				</Text>
-				<View style={[styles.buttonContainer]}>
-					<Button type="primary" onPress={() => router.push('/(auth)/auth')}>
-						Discover
-					</Button>
-				</View>
-			</BlurView>
-		</ImageBackground>
+		<View style={{ flex: 1 }}>
+			<Background />
+			<Image source={require("@/assets/images/welcome.png")} style={styles.logo} />
+			<Text style={styles.title}>
+				Achieving your goals is just waiting for you
+			</Text>
+			<View style={[styles.buttonContainer]}>
+				<Button type="primary" onPress={() => router.push('/(auth)/auth')}>
+					Discover
+				</Button>
+			</View>
+		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	image: {
-		flex: 1,
-		width: "100%",
-		height: "100%",
-	},
-	overlay: {
-		...StyleSheet.absoluteFillObject,
-		backgroundColor: "rgba(30, 30, 30, 0.5)",
-	},
-	logo: {
-		position: 'absolute',
-		left: PosX(0),
-		top: PosY(100),
-		width: '100%',
-		height: PosY(475),
-		transform: [{ rotate: '0.3deg' }],
-		resizeMode: 'contain',
-	},
 	title: {
 		position: 'absolute',
 		left: PosX(17),
@@ -55,6 +31,15 @@ const styles = StyleSheet.create({
 		fontFamily: 'SF-Heavy',
 		fontSize: 30,
 		color: '#FFFFFF',
+	},
+	logo: {
+		position: 'absolute',
+		left: PosX(0),
+		top: PosY(100),
+		width: '100%',
+		height: PosY(475),
+		transform: [{ rotate: '0.3deg' }],
+		resizeMode: 'contain',
 	},
 	buttonContainer: {
 		position: 'absolute',
