@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
+import { View, Text, ImageBackground, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router';
 import { BlurView } from "expo-blur";
 import Button from '@/components/ui/Button';
@@ -13,6 +13,7 @@ export default function WelcomeScreen() {
 		>
 			<BlurView intensity={100} style={StyleSheet.absoluteFill}>
 				<View style={styles.overlay} />
+				<Image source={require("@/assets/images/welcome.png")} style={styles.logo} />
 				<Text style={styles.title}>
 					Achieving your goals is just waiting for you
 				</Text>
@@ -35,6 +36,15 @@ const styles = StyleSheet.create({
 	overlay: {
 		...StyleSheet.absoluteFillObject,
 		backgroundColor: "rgba(30, 30, 30, 0.5)",
+	},
+	logo: {
+		position: 'absolute',
+		left: PosX(0),
+		top: PosY(100),
+		width: '100%',
+		height: PosY(475),
+		transform: [{ rotate: '0.3deg' }],
+		resizeMode: 'contain',
 	},
 	title: {
 		position: 'absolute',
