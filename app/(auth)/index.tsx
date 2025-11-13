@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, ImageBackground, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { BlurView } from "expo-blur";
 import Button from '@/components/ui/Button';
