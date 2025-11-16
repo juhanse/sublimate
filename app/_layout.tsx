@@ -1,5 +1,7 @@
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '@/hooks/useTranslation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { useOnboardingStore } from '@/contexts/OnboardingStore';
@@ -46,9 +48,11 @@ export default function RootLayout() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<AuthProvider>
-				<InitialLayout />
-			</AuthProvider>
+			<I18nextProvider i18n={i18n}>
+				<AuthProvider>
+					<InitialLayout />
+				</AuthProvider>
+			</I18nextProvider>
 		</QueryClientProvider>
 	);
 }
