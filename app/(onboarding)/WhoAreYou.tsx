@@ -4,6 +4,7 @@ import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import { useOnboardingStore } from '@/contexts/OnboardingStore';
+import * as Haptics from 'expo-haptics';
 
 export default function WhoAreYouScreen() {
 	const { t } = useTranslation();
@@ -20,7 +21,10 @@ export default function WhoAreYouScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={nextStep}>
+				<Button type="primary" onPress={async () => {
+					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+					nextStep();
+				}}>
 					{t('next')}
 				</Button>
 			</View>
@@ -33,6 +37,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+		paddingHorizontal: PosX(20),
 	},
 	title: {
 		fontFamily: 'SF-Bold',
