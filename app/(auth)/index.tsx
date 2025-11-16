@@ -1,20 +1,23 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import { Background } from '@/components/ui/Background';
 
 export default function WelcomeScreen() {
+	const { t } = useTranslation();
+
 	return (
 		<View style={{ flex: 1 }}>
 			<Background />
 			<Image source={require("@/assets/images/welcome.png")} style={styles.logo} />
 			<Text style={styles.title}>
-				Achieving your goals is just waiting for you
+				{t('auth_welcome')}
 			</Text>
 			<View style={[styles.button]}>
 				<Button type="primary" onPress={() => router.push('/(auth)/auth')}>
-					Discover
+					{t('discover')}
 				</Button>
 			</View>
 		</View>
