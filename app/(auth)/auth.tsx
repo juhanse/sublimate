@@ -3,6 +3,7 @@ import Swiper from 'react-native-swiper';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import { Background } from '@/components/ui/Background';
+import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 
 const handleGoogleSignIn = async () => {
@@ -33,6 +34,8 @@ const slides = [
 ];
 
 export default function AuthScreen() {
+	const { t } = useTranslation();
+
 	return (
 		<View style={{ flex: 1 }}>
 			<Background />
@@ -56,10 +59,10 @@ export default function AuthScreen() {
 			
 			<View style={[styles.buttonContainer]}>
 				<Button type="primary" onPress={handleGoogleSignIn}>
-					Sign in with Google
+					{t('signin_google')}
 				</Button>
 				<Button type="primary" onPress={handleAppleSignIn}>
-					Sign in with Apple
+					{t('signin_apple')}
 				</Button>
 			</View>
 		</View>
