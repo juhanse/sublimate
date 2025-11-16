@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import { useOnboardingStore } from '@/contexts/OnboardingStore';
 
 export default function WhoAreYouScreen() {
+	const { t } = useTranslation();
 	const { nextStep } = useOnboardingStore();
 
 	return (
@@ -13,13 +15,13 @@ export default function WhoAreYouScreen() {
 
 			<View style={styles.container}>
 				<Text style={styles.title}>
-					Qui es-tu ?
+					{t('whoareyou')}
 				</Text>
 			</View>
 
 			<View style={[styles.buttonContainer]}>
 				<Button type="primary" onPress={nextStep}>
-					Suivant
+					{t('next')}
 				</Button>
 			</View>
 		</View>
