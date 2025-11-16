@@ -4,6 +4,7 @@ import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import { useOnboardingStore } from '@/contexts/OnboardingStore';
+import * as Haptics from 'expo-haptics';
 
 export default function ProjectTypeScreen() {
 	const { t } = useTranslation();
@@ -20,10 +21,16 @@ export default function ProjectTypeScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={nextStep}>
+				<Button type="primary" onPress={async () => {
+					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+					nextStep();
+				}}>
 					{t('next')}
 				</Button>
-				<Text style={styles.backButton} onPress={previousStep}>
+				<Text style={styles.backButton} onPress={async () => {
+					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+					previousStep();
+				}}>
 					{t('back')}
 				</Text>
 			</View>
@@ -36,6 +43,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+		paddingHorizontal: PosX(20),
 	},
 	title: {
 		fontFamily: 'SF-Bold',
