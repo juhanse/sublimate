@@ -1,10 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMe } from '@/services/usersQueries';
 import ProfileHeader from '@/components/profile/ProfileHeader';
-import ProjectCard from '@/components/ProjectCard';
+import ProjectCard from '@/components/ui/ProjectCard';
 import { Ionicons } from '@expo/vector-icons';
 import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { router } from 'expo-router';
@@ -49,11 +49,13 @@ export default function HomeScreen() {
 		}
 
 		return (
-			<ProjectCard 
+			/* <ProjectCard 
 				data={item}
 				onPress={() => handleDetails(item.id)}
 				onValidate={() => handleValidate(item.id)}
-			/>
+			/> */
+			<View>
+			</View>
 		);
 	};
 
