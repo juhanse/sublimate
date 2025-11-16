@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import { useOnboardingStore } from '@/contexts/OnboardingStore';
 
 export default function HowOldAreYouScreen() {
+	const { t } = useTranslation();
 	const { nextStep, previousStep } = useOnboardingStore();
 
 	return (
@@ -13,16 +15,16 @@ export default function HowOldAreYouScreen() {
 
 			<View style={styles.container}>
 				<Text style={styles.title}>
-					Quel âge as-tu ?
+					{t('howoldareyou')}
 				</Text>
 			</View>
 
 			<View style={[styles.buttonContainer]}>
 				<Button type="primary" onPress={nextStep}>
-					Suivant
+					{t('next')}
 				</Button>
 				<Text style={styles.backButton} onPress={previousStep}>
-					Retour
+					{t('back')}
 				</Text>
 			</View>
 		</View>
