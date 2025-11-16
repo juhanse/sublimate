@@ -2,5 +2,12 @@
 	"signin_google": "Se connecter avec Google",
 	"signin_apple": "Se connecter avec Apple",
 	"auth_welcome": "Atteindre vos objectifs n'attend que vous",
-	"discover": "Découvrir"
+	"discover": "Découvrir",
+	"next": "Suivant",
+	"back": "Retour",
+	"whoareyou": "Qui êtes-vous ?",
+	"howoldareyou": "Quel âge avez-vous ?",
+	"project_type": "Quel type de projet réalisez-vous ?",
+	"whatsyourname": "Quel est votre nom ?",
+	"hearaboutus": "Comment avez-vous entendu parler de nous ?"
 }

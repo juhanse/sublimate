@@ -2,5 +2,12 @@
 	"signin_google": "Sign in with Google",
 	"signin_apple": "Sign in with Apple",
 	"auth_welcome": "Achieving your goals is just waiting for you",
-	"discover": "Discover"
+	"discover": "Discover",
+	"next": "Next",
+	"back": "Back",
+	"whoareyou": "Who are you?",
+	"howoldareyou": "How old are you?",
+	"project_type": "What type of project are you working on?",
+	"whatsyourname": "What's your name?",
+	"hearaboutus": "How did you hear about us?"
 }
