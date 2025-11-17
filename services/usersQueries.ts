@@ -4,21 +4,22 @@ export type User = {
 	id: string,
 	username: string,
 	email: string,
-	role: string,
 	age: number,
 	avatar: string,
 	xp: number,
-	nb_projects: number,
-	profile_type: string,
-	motivation: string,
-	heard: string,
-	updated_at: string,
-	created_at: string,
 	ranks: {
 		id: string,
 		name: string,
 		xp_required: number,
-	}
+	},
+	nb_projects: number,
+	onboarding: number,
+	profile_type: string,
+	motivation: string,
+	heard: string,
+	role: string,
+	updated_at: string,
+	created_at: string,
 };
 
 export type UpdateUser = Partial<{
@@ -32,6 +33,7 @@ export type UpdateUser = Partial<{
 	profile_type: "student" | "sports" | "artist" | "entrepreneur" | "other"
 	motivation: "softness" | "midness" | "hardness",
 	heard: "internet" | "app_store" | "social_network" | "friends" | "other",
+	onboarding: 1 | 2 | 3 | 4 | 5,
 }>;
 
 export const fetchMe = async (): Promise<User> => {
