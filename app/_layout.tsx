@@ -1,16 +1,30 @@
-import { useFonts } from 'expo-font';
+import { useEffect } from 'react';
 import { Stack } from 'expo-router';
+import { useFonts } from 'expo-font';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/hooks/useTranslation';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
-import { useOnboardingStore } from '@/contexts/OnboardingStore';
+import { useOnboardingStore } from '@/contexts/onboarding';
+import { fetchMe } from '@/services/usersQueries';
 
 const queryClient = new QueryClient();
 
 const InitialLayout = () => {
-	const { seenOnboarding } = useOnboardingStore();
-	const isAuth = true;
+	const isAuth = true; // temp
+
+	useEffect(() => {
+		if (!isAuth) return;
+
+		fetchMe().then(user => {
+			useOnboardingStore.getState().syncFromBackend(
+				user.onboarding, // step actuel
+				user.onboarding > 5 // completed
+			);
+		});
+	}, [isAuth]);
+
+  	const { completed } = useOnboardingStore();
 
 	return (
 		<Stack screenOptions={{ headerShown: false }}>
@@ -18,11 +32,11 @@ const InitialLayout = () => {
 				<Stack.Screen name="(auth)" />
 			</Stack.Protected>
 
-			<Stack.Protected guard={!seenOnboarding}>
+			<Stack.Protected guard={!completed}>
 				<Stack.Screen name="(onboarding)" />
 			</Stack.Protected>
 
-			<Stack.Protected guard={isAuth && seenOnboarding}>
+			<Stack.Protected guard={isAuth && completed}>
 				<Stack.Screen name="(tabs)" />
 			</Stack.Protected>
 
