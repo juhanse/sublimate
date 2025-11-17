@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { JSX } from 'react';
 import { View } from 'react-native';
-import { useOnboardingStore } from '@/contexts/OnboardingStore';
+import { useOnboardingStore } from '@/contexts/onboarding';
 import WhoAreYouScreen from '@/app/(onboarding)/WhoAreYou';
 import HowOldAreYouScreen from '@/app/(onboarding)/HowOldAreYou';
 import ProjectTypeScreen from '@/app/(onboarding)/ProjectType';
@@ -8,34 +8,20 @@ import WhatsYourNameScreen from '@/app/(onboarding)/WhatsYourName';
 import HearAboutUsScreen from '@/app/(onboarding)/HearAboutUs';
 
 export default function OnboardingScreen() {
-	const { step, setSeenOnboarding } = useOnboardingStore();
+	const { step, finish } = useOnboardingStore();
 
-	useEffect(() => {
-		if (step > 5) {
-			setSeenOnboarding(true);
-		}
-	}, [step]);
+	if (step > 5) {
+		finish();
+		return null;
+	}
 
-	const renderStep = () => {
-		switch (step) {
-			case 1:
-				return <WhoAreYouScreen />;
-			case 2:
-				return <HowOldAreYouScreen />;
-			case 3:
-				return <ProjectTypeScreen />;
-			case 4:
-				return <WhatsYourNameScreen />;
-			case 5:
-				return <HearAboutUsScreen />;
-			default:
-				return <WhoAreYouScreen />;
-		}
+	const screens: Record<number, JSX.Element> = {
+		1: <WhoAreYouScreen />,
+		2: <HowOldAreYouScreen />,
+		3: <ProjectTypeScreen />,
+		4: <WhatsYourNameScreen />,
+		5: <HearAboutUsScreen />,
 	};
 
-	return (
-		<View style={{ flex: 1 }}>
-			{renderStep()}
-		</View>
-	);
+	return <View style={{ flex: 1 }}>{screens[step]}</View>;
 }
