@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
-import { useOnboardingStore } from '@/contexts/OnboardingStore';
+import { useOnboardingStore } from '@/contexts/onboarding';
 import * as Haptics from 'expo-haptics';
 
 export default function HearAboutUsScreen() {
 	const { t } = useTranslation();
-	const { nextStep, previousStep } = useOnboardingStore();
+	const { next, prev } = useOnboardingStore();
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -23,13 +23,13 @@ export default function HearAboutUsScreen() {
 			<View style={[styles.buttonContainer]}>
 				<Button type="primary" onPress={async () => {
 					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-					nextStep();
+					next();
 				}}>
 					{t('next')}
 				</Button>
 				<Text style={styles.backButton} onPress={async () => {
 					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-					previousStep();
+					prev();
 				}}>
 					{t('back')}
 				</Text>

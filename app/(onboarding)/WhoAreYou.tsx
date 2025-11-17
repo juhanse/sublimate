@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
-import { useOnboardingStore } from '@/contexts/OnboardingStore';
+import { useOnboardingStore } from '@/contexts/onboarding';
 import * as Haptics from 'expo-haptics';
 
 export default function WhoAreYouScreen() {
 	const { t } = useTranslation();
-	const { nextStep } = useOnboardingStore();
+	const { next } = useOnboardingStore();
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -23,7 +23,7 @@ export default function WhoAreYouScreen() {
 			<View style={[styles.buttonContainer]}>
 				<Button type="primary" onPress={async () => {
 					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-					nextStep();
+					next();
 				}}>
 					{t('next')}
 				</Button>
