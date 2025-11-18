@@ -1,10 +1,11 @@
 import 'react-native-url-polyfill/auto'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createClient } from '@supabase/supabase-js'
+import * as SecureStore from 'expo-secure-store';
+import { createClient, Session } from '@supabase/supabase-js'
 
 export const supabase = createClient(
-	process.env.EXPO_PUBLIC_SUPABASE_URL || "",
-	process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "",
+	process.env.EXPO_PUBLIC_SUPABASE_URL!,
+	process.env.EXPO_PUBLIC_SUPABASE_KEY!,
 	{
 		auth: {
 			storage: AsyncStorage,
@@ -15,54 +16,30 @@ export const supabase = createClient(
   	}
 )
 
-export const signUpWithEmail = async (email: string, password: string, userData: any) => {
-	const { data, error } = await supabase.auth.signUp({
-		email,
-		password,
-		options: {
-			data: userData
-		}
-	})
-	
-	if (error) throw error
-	return data
-}
+supabase.auth.onAuthStateChange((_event, session: Session | null) => {
+	if (session?.access_token) {
+		SecureStore.setItemAsync('access_token', session.access_token);
+	} else {
+		SecureStore.deleteItemAsync('access_token');
+	}
+});
 
 export const signInWithEmail = async (email: string, password: string) => {
 	const { data, error } = await supabase.auth.signInWithPassword({
 		email,
-		password
-	})
-	
-	if (error) throw error
-	return data
-}
+		password,
+	});
 
-export const signInWithOAuth = async (provider: 'google' | 'apple') => {
-	const { data, error } = await supabase.auth.signInWithOAuth({
-		provider: provider,
-		options: {
-			redirectTo: '/',
-		}
-	})
+	if (error) throw error;
 
-	if (error) throw error
-	return data
-}
+	if (data.session?.access_token) {
+		await SecureStore.setItemAsync('access_token', data.session.access_token);
+	}
+
+	return data;
+};
 
 export const signOut = async () => {
-	const { error } = await supabase.auth.signOut()
-	if (error) throw error
-}
-
-export const getCurrentUser = async () => {
-	const { data, error } = await supabase.auth.getUser()
-	if (error) throw error
-	return data.user
-}
-
-export const getCurrentSession = async () => {
-	const { data, error } = await supabase.auth.getSession()
-	if (error) throw error
-	return data.session
-}
+	await supabase.auth.signOut();
+	await SecureStore.deleteItemAsync('access_token');
+};
