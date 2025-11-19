@@ -4,22 +4,21 @@ import { useFonts } from 'expo-font';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/hooks/useTranslation';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
-import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { useOnboardingStore } from '@/contexts/onboarding';
 import { fetchMe } from '@/services/usersQueries';
 
 const queryClient = new QueryClient();
 
 const InitialLayout = () => {
-	const isAuth = true; // temp
+	const isAuth = false;
 
 	useEffect(() => {
 		if (!isAuth) return;
 
 		fetchMe().then(user => {
 			useOnboardingStore.getState().syncFromBackend(
-				user.onboarding, // step actuel
-				user.onboarding > 5 // completed
+				user.onboarding,
+				user.onboarding > 5
 			);
 		});
 	}, [isAuth]);
@@ -63,9 +62,7 @@ export default function RootLayout() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<I18nextProvider i18n={i18n}>
-				<AuthProvider>
-					<InitialLayout />
-				</AuthProvider>
+				<InitialLayout />
 			</I18nextProvider>
 		</QueryClientProvider>
 	);
