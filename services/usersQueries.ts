@@ -43,6 +43,11 @@ export const updateMe = async (userData: UpdateUser): Promise<User> => {
 	return res.data;
 };
 
+export const updateOnboarding = async (onboardingStep: number): Promise<User> => {
+	const res = await api.patch<User>('/users/me', { onboarding: onboardingStep });
+	return res.data;
+};
+
 export const deleteMe = async (): Promise<void> => {
 	await api.delete('/users/me');
 };
