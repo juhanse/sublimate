@@ -8,10 +8,9 @@ import WhatsYourNameScreen from '@/app/(onboarding)/WhatsYourName';
 import HearAboutUsScreen from '@/app/(onboarding)/HearAboutUs';
 
 export default function OnboardingScreen() {
-	const { step, finish } = useOnboardingStore();
+	const { step } = useOnboardingStore();
 
-	if (step > 5) {
-		finish();
+	if (step == 6) {
 		return null;
 	}
 

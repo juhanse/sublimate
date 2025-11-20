@@ -30,7 +30,7 @@ export type UpdateUser = Partial<{
 	profile_type: "student" | "sports" | "artist" | "entrepreneur" | "other"
 	motivation: "softness" | "midness" | "hardness",
 	heard: "internet" | "app_store" | "social_network" | "friends" | "other",
-	onboarding: 1 | 2 | 3 | 4 | 5,
+	onboarding: 1 | 2 | 3 | 4 | 5 | 6,
 }>;
 
 export const fetchMe = async (): Promise<User> => {

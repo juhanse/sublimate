@@ -8,7 +8,7 @@ import * as Haptics from 'expo-haptics';
 
 export default function HearAboutUsScreen() {
 	const { t } = useTranslation();
-	const { next, prev } = useOnboardingStore();
+	const { finish, prev } = useOnboardingStore();
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -23,7 +23,7 @@ export default function HearAboutUsScreen() {
 			<View style={[styles.buttonContainer]}>
 				<Button type="primary" onPress={async () => {
 					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-					next();
+					finish();
 				}}>
 					{t('next')}
 				</Button>
