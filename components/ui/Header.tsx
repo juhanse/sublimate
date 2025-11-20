@@ -27,7 +27,7 @@ export default function Header({ user }: HeaderProps) {
 					<Entypo name="chevron-right" size={PosX(35)} color="#D9D9D9" />
 				</View>
 
-				<RankTags name={user.ranks.name} color="#ED5C5C" />
+				<RankTags name={"Légende"} color="#ED5C5C" />
 			
 				<View style={styles.progressBarBackground}>
 					<LinearGradient
