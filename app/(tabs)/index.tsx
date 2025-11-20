@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMe } from '@/services/usersQueries';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,6 +7,8 @@ import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { router } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import * as Haptics from 'expo-haptics';
+import { Background } from '@/components/ui/Background';
+import Header from '@/components/ui/Header';
 
 type ProjectListItem = Project | 'add';
 
@@ -68,8 +69,11 @@ export default function HomeScreen() {
 	const projectsData: ProjectListItem[] = projectsQuery.data ? [...projectsQuery.data, 'add'] : ['add'];
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<FlatList
+		<View style={{ flex: 1 }}>
+			<Background />
+			{userQuery.data && <Header user={userQuery.data} />}
+
+			{/* <FlatList
 				data={projectsData}
 				keyExtractor={getKeyExtractor}
 				renderItem={renderProject}
@@ -81,8 +85,8 @@ export default function HomeScreen() {
 				windowSize={5}
 				bounces={false}
 				alwaysBounceVertical={false}
-			/>
-		</SafeAreaView>
+			/> */}
+		</View>
 	);
 }
 
