@@ -5,9 +5,14 @@ import { PosX, PosY } from '@/constants/Responsive';
 import { Background } from '@/components/ui/Background';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
+import { signInWithEmail } from '@/services/Supabase';
+import { router } from 'expo-router';
 
 const handleGoogleSignIn = async () => {
 	await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
+	signInWithEmail(process.env.EXPO_PUBLIC_USER_MAIL!, process.env.EXPO_PUBLIC_USER_PASSWORD!);
+	router.push('/(tabs)/index');
 };
 
 const handleAppleSignIn = async () => {
