@@ -2,10 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from '@expo/vector-icons';
-/* import GradeBadge from "./GradeBadge";
-import Streaks from "./Streaks"; */
+import RankTags from "@/components/ui/RankTags";
 import { PosX, PosY } from "@/constants/Responsive";
 import { User } from "@/services/usersQueries";
+// import Streaks from "./Streaks";
 
 interface HeaderProps {
 	user: User;
@@ -27,7 +27,7 @@ export default function Header({ user }: HeaderProps) {
 					<Entypo name="chevron-right" size={PosX(35)} color="#D9D9D9" />
 				</View>
 
-				{/* <GradeBadge grade={user.grade} /> */}
+				<RankTags name={user.ranks.name} color="#ED5C5C" />
 			
 				<View style={styles.progressBarBackground}>
 					<LinearGradient
