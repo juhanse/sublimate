@@ -1,28 +1,14 @@
-import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/hooks/useTranslation';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { useOnboardingStore } from '@/contexts/onboarding';
-import { fetchMe } from '@/services/usersQueries';
 
 const queryClient = new QueryClient();
 
 const InitialLayout = () => {
 	const isAuth = true;
-
-	useEffect(() => {
-		if (!isAuth) return;
-
-		fetchMe().then(user => {
-			useOnboardingStore.getState().syncFromBackend(
-				user.onboarding,
-				user.onboarding > 5
-			);
-		});
-	}, [isAuth]);
-
   	const { completed } = useOnboardingStore();
 
 	return (
