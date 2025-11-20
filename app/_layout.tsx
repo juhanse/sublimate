@@ -10,7 +10,7 @@ import { fetchMe } from '@/services/usersQueries';
 const queryClient = new QueryClient();
 
 const InitialLayout = () => {
-	const isAuth = false;
+	const isAuth = true;
 
 	useEffect(() => {
 		if (!isAuth) return;

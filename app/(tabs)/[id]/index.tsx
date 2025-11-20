@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeProjectById } from '@/services/projectsQueries';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -26,8 +26,6 @@ export default function ProjectScreen() {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<Header title={projectQuery.data?.name!} onPress={handleBack} />
-
 			<View>
 				<Text style={{ color: "white" }}>
 					Catégories :

@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert,
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { useAuth } from '@/contexts/AuthContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchMe, updateMe, UpdateUser } from '@/services/usersQueries';
 import * as Haptics from 'expo-haptics';
@@ -123,7 +122,6 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ visible, onCancel, onConfirm 
 
 export default function SettingsScreen() {
 	const queryClient = useQueryClient();
-	const { logout } = useAuth();
 
 	const userQuery = useQuery({
 		queryKey: ['currentUser'],
@@ -144,7 +142,7 @@ export default function SettingsScreen() {
 
 	const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
 	const [isEditingUsername, setIsEditingUsername] = useState<boolean>(false);
-	const [email, setEmail] = useState<string>(userQuery.data?.email || '');
+	//const [email, setEmail] = useState<string>(userQuery.data?.email || '');
 	const [username, setUsername] = useState<string>(userQuery.data?.username || '');
 	const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
@@ -167,7 +165,7 @@ export default function SettingsScreen() {
 	const handleUpdate = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
 
-		mutate({ email, username });
+		//mutate({ email, username });
 	};
 
 	const handleDeleteAccount = (): void => {
@@ -188,7 +186,7 @@ export default function SettingsScreen() {
 				{ 
 					text: 'Se déconnecter', 
 					style: 'destructive',
-					onPress: () => logout()
+					onPress: () => {}
 				}
 			]
 		);
@@ -227,7 +225,7 @@ export default function SettingsScreen() {
 						showArrow={!isEditingUsername}
 					/>
           			<View style={styles.separator} />
-					<SettingItem
+					{/* <SettingItem
 						icon="mail-outline"
 						title="Email"
 						subtitle={!isEditingEmail ? email : undefined}
@@ -241,7 +239,7 @@ export default function SettingsScreen() {
 							setIsEditingEmail(false);
 						}}
 						showArrow={!isEditingEmail}
-					/>
+					/> */}
 				</Section>
 
         		<Section title="SÉCURITÉ">
