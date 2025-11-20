@@ -1,26 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeProjectById } from '@/services/projectsQueries';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as Haptics from 'expo-haptics';
-
-interface HeaderProps {
-	title: string;
-	onPress: () => void;
-}
-
-const Header = ({ title, onPress }: HeaderProps) => (
-	<View style={styles.header}>
-		<TouchableOpacity style={styles.backButton} onPress={onPress}>
-			<Ionicons name="arrow-back" size={24} color="white" />
-		</TouchableOpacity>
-		<Text style={styles.headerTitle}>{title}</Text>
-		<View style={styles.placeholder} />
-	</View>
-);
 
 export default function ProjectScreen() {
 	const { id } = useLocalSearchParams();

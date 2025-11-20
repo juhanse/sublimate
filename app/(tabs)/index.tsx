@@ -3,8 +3,6 @@ import { TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, View } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMe } from '@/services/usersQueries';
-import ProfileHeader from '@/components/profile/ProfileHeader';
-import ProjectCard from '@/components/ui/ProjectCard';
 import { Ionicons } from '@expo/vector-icons';
 import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { router } from 'expo-router';
@@ -71,8 +69,6 @@ export default function HomeScreen() {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<ProfileHeader user={userQuery.data!} />
-
 			<FlatList
 				data={projectsData}
 				keyExtractor={getKeyExtractor}
