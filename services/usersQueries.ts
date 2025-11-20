@@ -3,7 +3,6 @@ import api from '@/services/api';
 export type User = {
 	id: string,
 	username: string,
-	email: string,
 	age: number,
 	avatar: string,
 	xp: number,
@@ -13,23 +12,21 @@ export type User = {
 		xp_required: number,
 	},
 	nb_projects: number,
-	onboarding: number,
+	role: string,
 	profile_type: string,
 	motivation: string,
 	heard: string,
-	role: string,
+	onboarding: number,
 	updated_at: string,
 	created_at: string,
 };
 
 export type UpdateUser = Partial<{
 	username: string,
-	email: string,
-	password: string,
-	role: "user" | "premium",
 	age: number,
 	avatar: string,
 	xp: number,
+	role: "user" | "premium",
 	profile_type: "student" | "sports" | "artist" | "entrepreneur" | "other"
 	motivation: "softness" | "midness" | "hardness",
 	heard: "internet" | "app_store" | "social_network" | "friends" | "other",
