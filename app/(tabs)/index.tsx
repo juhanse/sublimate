@@ -1,14 +1,17 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, View } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
-import { fetchMe } from '@/services/usersQueries';
-import { Ionicons } from '@expo/vector-icons';
-import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { router } from 'expo-router';
-import { Colors } from '@/constants/Colors';
-import * as Haptics from 'expo-haptics';
+import { useQuery } from '@tanstack/react-query';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Background } from '@/components/ui/Background';
 import Header from '@/components/ui/Header';
+import Button from '@/components/ui/Button';
+import ProjectCard from '@/components/ui/ProjectCard';
+import { fetchMe } from '@/services/usersQueries';
+import { fetchMeProjects, Project } from '@/services/projectsQueries';
+import { PosX, PosY } from '@/constants/Responsive';
+import * as Haptics from 'expo-haptics';
 
 type ProjectListItem = Project | 'add';
 
@@ -33,27 +36,31 @@ export default function HomeScreen() {
 		router.push({ pathname: '/(tabs)/[id]', params: { id: projectId } });
 	};
 
-	const handleValidate = async (projectId: string) => {
-		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-		console.log(`Validate project with ID: ${projectId}`);
-	};
-
 	const renderProject = ({ item }: { item: ProjectListItem }) => {
 		if (item === 'add') {
 			return (
 				<TouchableOpacity style={styles.addIcon} onPress={handleCreate}>
-					<Ionicons name="add" size={32} color="#fff" />
+					<LinearGradient
+						colors={["#F77E75", "#ED5C5C"]}
+						start={{ x: 0, y: 0 }}
+						end={{ x: 1, y: 0 }}
+						style={[styles.progressFill]}
+					>
+						<Ionicons name="add" size={32} color="#fff" />
+					</LinearGradient>
 				</TouchableOpacity>
 			);
 		}
 
 		return (
-			/* <ProjectCard 
-				data={item}
-				onPress={() => handleDetails(item.id)}
-				onValidate={() => handleValidate(item.id)}
-			/> */
 			<View>
+				<ProjectCard 
+					image={item.thumbnail}
+					name={item.name}
+					currentStep={item.steps[item.progress_level].name}
+					deadline={item.next_deadline}
+					onPress={() => handleDetails(item.id)}
+				/>
 			</View>
 		);
 	};
@@ -73,7 +80,7 @@ export default function HomeScreen() {
 			<Background />
 			{userQuery.data && <Header user={userQuery.data} />}
 
-			{/* <FlatList
+			<FlatList
 				data={projectsData}
 				keyExtractor={getKeyExtractor}
 				renderItem={renderProject}
@@ -85,33 +92,37 @@ export default function HomeScreen() {
 				windowSize={5}
 				bounces={false}
 				alwaysBounceVertical={false}
-			/> */}
+			/>
+
+			<View style={[styles.buttonContainer]}>
+				<Button type="primary" onPress={handleCreate} children="✨ Sublimate" />
+			</View>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: Colors.background,
+	buttonContainer: {
+		width: '100%',
+		position: 'absolute',
+		top: PosY(700),
+		flexDirection: 'column',
+		paddingHorizontal: PosX(80),
+	},
+	progressFill: {
+		width: "100%",
+		height: "100%",
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: PosY(36),
+	},
+	addIcon: {
+		width: 280,
+		height: 400,
 	},
 	projectsList: {
 		padding: 24,
 		marginTop: 24,
 		gap: 16,
-	},
-	addIcon: {
-		width: 280,
-		height: 400,
-		borderRadius: 40,
-		backgroundColor: '#7c5fff',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginRight: 20,
-		shadowColor: '#7c5fff',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.25,
-		shadowRadius: 8,
-		elevation: 4,
 	},
 });
