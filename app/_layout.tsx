@@ -1,10 +1,12 @@
-import { Stack } from 'expo-router';
+import React from 'react';
+import { SplashScreen, Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/hooks/useTranslation';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { useOnboardingStore } from '@/contexts/onboarding';
-import { useAuth } from '@/contexts/auth';
+import { AuthProvider, useAuth } from '@/contexts/auth';
+import CustomSplash from '@/components/CustomSplash';
 
 const queryClient = new QueryClient();
 
@@ -42,14 +44,22 @@ export default function RootLayout() {
 		"SF-Semibold": require('@/assets/fonts/SF-Pro-Display-Semibold.otf'),
 	});
 
+	React.useEffect(() => {
+		if (loaded) {
+			SplashScreen.hideAsync();
+		}
+	}, [loaded]);
+
 	if (!loaded) {
-		return null;
+		return <CustomSplash />;
 	}
 
 	return (
 		<QueryClientProvider client={queryClient}>
 			<I18nextProvider i18n={i18n}>
-				<InitialLayout />
+				<AuthProvider>
+					<InitialLayout />
+				</AuthProvider>
 			</I18nextProvider>
 		</QueryClientProvider>
 	);
