@@ -72,7 +72,7 @@ export default function AuthScreen() {
 			</View>
 			
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleSignIn}>
+				<Button type="primary" onPress={handleSignIn} disabled={isPending}>
 					{t('signin_google')}
 				</Button>
 				<Button type="primary" onPress={handleSignIn} disabled={isPending}>
