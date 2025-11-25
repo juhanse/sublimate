@@ -16,7 +16,7 @@ export default function HearAboutUsScreen() {
 	const { mutate, isPending } = useMutation({
         mutationFn: (user: UpdateUser) => updateMe(user),
         onSuccess: () => {
-			setOnboarded(true); 
+			setOnboarded(true);
         },
         onError: (error) => {
             console.error(error);
@@ -25,7 +25,7 @@ export default function HearAboutUsScreen() {
 
 	const handleBack = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		router.push('/(onboarding)/WhatsYourName');
+		router.back();
 	};
 
 	const handleFinish = async () => {

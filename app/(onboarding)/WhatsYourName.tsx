@@ -11,7 +11,7 @@ export default function WhatsYourNameScreen() {
 	
 	const handleBack = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		router.push('/(onboarding)/ProjectType');
+		router.back();
 	};
 
 	const handleNext = async () => {

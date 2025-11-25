@@ -11,7 +11,7 @@ export default function HowOldAreYouScreen() {
 
 	const handleBack = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		router.push('/(onboarding)/index');
+		router.back();
 	};
 
 	const handleNext = async () => {

@@ -11,7 +11,7 @@ export default function ProjectTypeScreen() {
 
 	const handleBack = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		router.push('/(onboarding)/HowOldAreYou');
+		router.back();
 	};
 
 	const handleNext = async () => {
