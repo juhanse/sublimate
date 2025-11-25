@@ -4,11 +4,12 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '@/hooks/useTranslation';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { useOnboardingStore } from '@/contexts/onboarding';
+import { useAuth } from '@/contexts/auth';
 
 const queryClient = new QueryClient();
 
 const InitialLayout = () => {
-	const isAuth = true;
+	const { isAuth } = useAuth();
   	const { completed } = useOnboardingStore();
 
 	return (
