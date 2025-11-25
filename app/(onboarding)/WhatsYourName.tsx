@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import { useMutation } from '@tanstack/react-query';
+import { updateMe, UpdateUser } from '@/services/usersQueries';
 import { useTranslation } from 'react-i18next';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
@@ -8,7 +11,18 @@ import * as Haptics from 'expo-haptics';
 
 export default function WhatsYourNameScreen() {
 	const { t } = useTranslation();
-	
+	const [username, setUsername] = useState<string | null>(null);
+
+	const { mutate, isPending } = useMutation({
+		mutationFn: (user: UpdateUser) => updateMe(user),
+		onSuccess: () => {
+			router.push('/(onboarding)/HowOldAreYou');
+		},
+		onError: (error) => {
+			console.error(error);
+		},
+	});
+
 	const handleBack = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 		router.back();
@@ -16,7 +30,7 @@ export default function WhatsYourNameScreen() {
 
 	const handleNext = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		router.push('/(onboarding)/HearAboutUs');
+		mutate({ username: "juhanse" });
 	};
 
 	return (
@@ -30,7 +44,7 @@ export default function WhatsYourNameScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleNext}>
+				<Button type="primary" onPress={handleNext} disabled={isPending}>
 					{t('next')}
 				</Button>
 				<Text style={styles.backButton} onPress={handleBack}>

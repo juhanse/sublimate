@@ -16,7 +16,7 @@ export default function HowOldAreYouScreen() {
 	const { mutate, isPending } = useMutation({
 		mutationFn: (user: UpdateUser) => updateMe(user),
 		onSuccess: () => {
-			router.push('/(onboarding)/ProjectType');
+			router.push('/(onboarding)/HearAboutUs');
 		},
 		onError: (error) => {
 			console.error(error);
@@ -30,10 +30,7 @@ export default function HowOldAreYouScreen() {
 
 	const handleNext = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		if (!old) {
-			return;
-		}
-		mutate({ age: old });
+		mutate({ age: 22 });
 	};
 
 	return (

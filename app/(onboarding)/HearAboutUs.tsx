@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ import { useAuth } from '@/contexts/auth';
 export default function HearAboutUsScreen() {
 	const { setOnboarded } = useAuth();
 	const { t } = useTranslation();
+	const [hear, setHear] = useState<"internet" | "app_store" | "social_network" | "friends" | "other" | null>(null);
 
 	const { mutate, isPending } = useMutation({
         mutationFn: (user: UpdateUser) => updateMe(user),
@@ -30,7 +32,7 @@ export default function HearAboutUsScreen() {
 
 	const handleFinish = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		mutate({ onboarding: true });
+		mutate({ heard: "friends", onboarding: true });
 	};
 
 	return (
@@ -44,7 +46,7 @@ export default function HearAboutUsScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleFinish}>
+				<Button type="primary" onPress={handleFinish} disabled={isPending}>
 					{t('next')}
 				</Button>
 				<Text style={styles.backButton} onPress={handleBack}>

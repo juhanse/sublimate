@@ -16,7 +16,7 @@ export default function OnboardingScreen() {
 	const { mutate, isPending } = useMutation({
 		mutationFn: (user: UpdateUser) => updateMe(user),
 		onSuccess: () => {
-			router.push('/(onboarding)/HowOldAreYou');
+			router.push('/(onboarding)/WhatsYourName');
 		},
 		onError: (error) => {
 			console.error(error);
@@ -25,9 +25,6 @@ export default function OnboardingScreen() {
 
 	const handleNext = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		if (!profileType) {
-			return;
-		}
 		mutate({ profile_type: "student" });
 	};
 
