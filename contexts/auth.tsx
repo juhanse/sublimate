@@ -19,7 +19,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		const loadAuthState = async () => {
 			try {
 				const token = await SecureStore.getItemAsync("access_token");
+				const onboarded = await SecureStore.getItemAsync("is_onboarded");
+
 				setIsAuth(!!token);
+				setIsOnboarded(onboarded === "true");
 			} catch (error) {
 				console.error('Failed to load auth state:', error);
 			}
@@ -28,7 +31,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		loadAuthState();
 	}, []);
 
-	const setOnboarded = (value: boolean) => {
+	const setOnboarded = async (value: boolean) => {
+		await SecureStore.setItemAsync('is_onboarded', value ? "true" : "false");
 		setIsOnboarded(value);
 	}
 
