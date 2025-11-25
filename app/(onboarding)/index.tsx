@@ -1,26 +1,63 @@
-import { JSX } from 'react';
-import { View } from 'react-native';
-import { useOnboardingStore } from '@/contexts/onboarding';
-import WhoAreYouScreen from '@/app/(onboarding)/WhoAreYou';
-import HowOldAreYouScreen from '@/app/(onboarding)/HowOldAreYou';
-import ProjectTypeScreen from '@/app/(onboarding)/ProjectType';
-import WhatsYourNameScreen from '@/app/(onboarding)/WhatsYourName';
-import HearAboutUsScreen from '@/app/(onboarding)/HearAboutUs';
+import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { Background } from '@/components/ui/Background';
+import Button from '@/components/ui/Button';
+import { PosX, PosY } from '@/constants/Responsive';
+import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
 
 export default function OnboardingScreen() {
-	const { step } = useOnboardingStore();
+	const { t } = useTranslation();
 
-	if (step == 6) {
-		return null;
-	}
-
-	const screens: Record<number, JSX.Element> = {
-		1: <WhoAreYouScreen />,
-		2: <HowOldAreYouScreen />,
-		3: <ProjectTypeScreen />,
-		4: <WhatsYourNameScreen />,
-		5: <HearAboutUsScreen />,
+	const handleNext = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+		router.push('/(onboarding)/HowOldAreYou');
 	};
 
-	return <View style={{ flex: 1 }}>{screens[step]}</View>;
+	return (
+		<View style={{ flex: 1 }}>
+			<Background />
+
+			<View style={styles.container}>
+				<Text style={styles.title}>
+					{t('whoareyou')}
+				</Text>
+			</View>
+
+			<View style={[styles.buttonContainer]}>
+				<Button type="primary" onPress={handleNext}>
+					{t('next')}
+				</Button>
+			</View>
+		</View>
+	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingHorizontal: PosX(20),
+	},
+	title: {
+		fontFamily: 'SF-Bold',
+		fontSize: 32,
+		color: 'white',
+		textAlign: 'center',
+	},
+	buttonContainer: {
+		width: '100%',
+		position: 'absolute',
+		top: PosY(700),
+		flexDirection: 'column',
+		paddingHorizontal: PosX(80),
+	},
+	backButton: {
+		fontFamily: 'SF-Regular',
+		fontSize: 16,
+		color: 'rgba(255, 255, 255, 0.6)',
+		textAlign: 'center',
+		paddingVertical: PosY(20),
+	},
+});

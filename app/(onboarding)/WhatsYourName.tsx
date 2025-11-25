@@ -1,14 +1,23 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
-import { useOnboardingStore } from '@/contexts/onboarding';
 import * as Haptics from 'expo-haptics';
 
 export default function WhatsYourNameScreen() {
 	const { t } = useTranslation();
-	const { next, prev } = useOnboardingStore();
+	
+	const handleBack = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+		router.push('/(onboarding)/ProjectType');
+	};
+
+	const handleNext = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+		router.push('/(onboarding)/HearAboutUs');
+	};
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -21,16 +30,10 @@ export default function WhatsYourNameScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={async () => {
-					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-					next();
-				}}>
+				<Button type="primary" onPress={handleNext}>
 					{t('next')}
 				</Button>
-				<Text style={styles.backButton} onPress={async () => {
-					await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-					prev();
-				}}>
+				<Text style={styles.backButton} onPress={handleBack}>
 					{t('back')}
 				</Text>
 			</View>
