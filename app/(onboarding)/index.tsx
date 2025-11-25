@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
 import { updateMe, UpdateUser } from '@/services/usersQueries';
 import { useTranslation } from 'react-i18next';
@@ -6,8 +8,6 @@ import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
-import { useState } from 'react';
 
 export default function OnboardingScreen() {
 	const { t } = useTranslation();
