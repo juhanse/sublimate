@@ -1,45 +1,54 @@
 import { View, Image, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
+import { useMutation } from '@tanstack/react-query';
+import { authSignIn, LoginType } from '@/services/authQueries';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import { Background } from '@/components/ui/Background';
 import { useTranslation } from 'react-i18next';
 import * as Haptics from 'expo-haptics';
-import { signInWithEmail } from '@/services/Supabase';
-import { router } from 'expo-router';
-
-const handleGoogleSignIn = async () => {
-	await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-
-	signInWithEmail(process.env.EXPO_PUBLIC_USER_MAIL!, process.env.EXPO_PUBLIC_USER_PASSWORD!);
-	router.push('/(tabs)/index');
-};
-
-const handleAppleSignIn = async () => {
-	await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-};
-
-const slides = [
-	{
-		key: 'slide1',
-		image: require('@/assets/images/background.png'),
-	},
-	{
-		key: 'slide2',
-		image: require('@/assets/images/background.png'),
-	},
-	{
-		key: 'slide3',
-		image: require('@/assets/images/background.png'),
-	},
-	{
-		key: 'slide4',
-		image: require('@/assets/images/background.png'),
-	}
-];
+import { useAuth } from '@/contexts/auth';
 
 export default function AuthScreen() {
+	const { login } = useAuth();
 	const { t } = useTranslation();
+
+	const { mutate, isPending } = useMutation({
+		mutationFn: (userData: LoginType) => authSignIn(userData),
+		onSuccess: async (data) => {
+			const token = data.access_token;
+			await login(token);
+		},
+		onError: (error) => {
+			console.log(error);
+			alert('Email ou mot de passe incorrect');
+		},
+	});
+
+	const handleSignIn = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+
+		mutate({ email: process.env.EXPO_PUBLIC_USER_EMAIL!, password: process.env.EXPO_PUBLIC_USER_PASSWORD! });
+	};
+
+	const slides = [
+		{
+			key: 'slide1',
+			image: require('@/assets/images/background.png'),
+		},
+		{
+			key: 'slide2',
+			image: require('@/assets/images/background.png'),
+		},
+		{
+			key: 'slide3',
+			image: require('@/assets/images/background.png'),
+		},
+		{
+			key: 'slide4',
+			image: require('@/assets/images/background.png'),
+		}
+	];
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -63,10 +72,10 @@ export default function AuthScreen() {
 			</View>
 			
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleGoogleSignIn}>
+				<Button type="primary" onPress={handleSignIn}>
 					{t('signin_google')}
 				</Button>
-				<Button type="primary" onPress={handleAppleSignIn}>
+				<Button type="primary" onPress={handleSignIn}>
 					{t('signin_apple')}
 				</Button>
 			</View>
