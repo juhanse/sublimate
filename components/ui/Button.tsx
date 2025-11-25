@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Pressable, Text, ViewStyle, TextStyle, StyleSheet } from "react-native";
+import { Pressable, Text, ViewStyle, TextStyle, StyleSheet, ActivityIndicator } from "react-native";
 
 type ButtonType = "primary" | "secondary" | "warning";
 
@@ -9,9 +9,10 @@ interface ButtonProps {
 	children: ReactNode;
 	style?: ViewStyle;
 	textStyle?: TextStyle;
+	disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ type = "primary", onPress, children, style, textStyle }) => {
+const Button: React.FC<ButtonProps> = ({ type = "primary", onPress, children, style, textStyle, disabled = false }) => {
 	const getBackgroundColor = (pressed: boolean) => {
 		switch (type) {
 			case "secondary":
@@ -34,17 +35,22 @@ const Button: React.FC<ButtonProps> = ({ type = "primary", onPress, children, st
 
 	return (
 		<Pressable
-			onPress={onPress}
+			onPress={disabled ? undefined : onPress}
+			disabled={disabled}
 			style={({ pressed }) => [
 				styles.base,
 				styles.shadow,
-				{ backgroundColor: getBackgroundColor(pressed) },
+				{ backgroundColor: getBackgroundColor(pressed), opacity: disabled ? 0.6 : 1 },
 				style,
 			]}
 		>
-			<Text style={[styles.text, { color: getTextColor() }, textStyle]}>
-				{children}
-			</Text>
+			{disabled ? (
+				<ActivityIndicator color={getTextColor()} />
+			) : (
+				<Text style={[styles.text, { color: getTextColor() }, textStyle]}>
+					{children}
+				</Text>
+			)}
 		</Pressable>
 	);
 };

@@ -75,7 +75,7 @@ export default function AuthScreen() {
 				<Button type="primary" onPress={handleSignIn}>
 					{t('signin_google')}
 				</Button>
-				<Button type="primary" onPress={handleSignIn}>
+				<Button type="primary" onPress={handleSignIn} disabled={isPending}>
 					{t('signin_apple')}
 				</Button>
 			</View>
