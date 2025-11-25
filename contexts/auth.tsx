@@ -3,6 +3,8 @@ import * as SecureStore from 'expo-secure-store';
 
 interface AuthContextType {
 	isAuth: boolean;
+	isOnboarded: boolean;
+	setOnboarded: (value: boolean) => void;
 	login: (token: string) => Promise<void>;
 	logout: () => Promise<void>;
 }
@@ -11,6 +13,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [isAuth, setIsAuth] = useState<boolean>(false);
+	const [isOnboarded, setIsOnboarded] = useState<boolean>(false);
 
 	useEffect(() => {
 		const loadAuthState = async () => {
@@ -25,6 +28,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		loadAuthState();
 	}, []);
 
+	const setOnboarded = (value: boolean) => {
+		setIsOnboarded(value);
+	}
+
 	const login = async (newToken: string) => {
 		await SecureStore.setItemAsync('access_token', newToken);
 		setIsAuth(true);
@@ -36,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ isAuth, login, logout }}>
+		<AuthContext.Provider value={{ isAuth, isOnboarded, setOnboarded, login, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);
