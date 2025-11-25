@@ -3,6 +3,8 @@ import * as SecureStore from 'expo-secure-store';
 
 interface AuthContextType {
 	isAuth: boolean;
+	login: (token: string) => Promise<void>;
+	logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,8 +25,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		loadAuthState();
 	}, []);
 
+	const login = async (newToken: string) => {
+		await SecureStore.setItemAsync('access_token', newToken);
+		setIsAuth(true);
+	};
+
+	const logout = async () => {
+		await SecureStore.deleteItemAsync('access_token');
+		setIsAuth(false);
+	};
+
 	return (
-		<AuthContext.Provider value={{ isAuth }}>
+		<AuthContext.Provider value={{ isAuth, login, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);
