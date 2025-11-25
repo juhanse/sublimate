@@ -4,15 +4,13 @@ import { useFonts } from 'expo-font';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/hooks/useTranslation';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useOnboardingStore } from '@/contexts/onboarding';
 import { AuthProvider, useAuth } from '@/contexts/auth';
 import CustomSplash from '@/components/CustomSplash';
 
 const queryClient = new QueryClient();
 
 const InitialLayout = () => {
-	const { isAuth } = useAuth();
-  	const { completed } = useOnboardingStore();
+	const { isAuth, isOnboarded } = useAuth();
 
 	return (
 		<Stack screenOptions={{ headerShown: false }}>
@@ -20,11 +18,11 @@ const InitialLayout = () => {
 				<Stack.Screen name="(auth)" />
 			</Stack.Protected>
 
-			<Stack.Protected guard={isAuth && !completed}>
+			<Stack.Protected guard={isAuth && !isOnboarded}>
 				<Stack.Screen name="(onboarding)" />
 			</Stack.Protected>
 
-			<Stack.Protected guard={isAuth && completed}>
+			<Stack.Protected guard={isAuth && isOnboarded}>
 				<Stack.Screen name="(tabs)" />
 			</Stack.Protected>
 
