@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeProjectById } from '@/services/projectsQueries';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { PosX } from '@/constants/Responsive';
+import { Entypo } from '@expo/vector-icons';
+import { Background } from '@/components/ui/Background';
 
 export default function ProjectScreen() {
 	const { id } = useLocalSearchParams();
@@ -25,49 +27,32 @@ export default function ProjectScreen() {
 	}
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<View>
-				<Text style={{ color: "white" }}>
-					Catégories :
-					{projectQuery.data?.projects_categories.map((item) => (
-						<Text key={item.categories.id} style={styles.categoryText}>
-							{item.categories.name}
-						</Text>
-					))}
-				</Text>
-			</View>
-		</SafeAreaView>
+		<View style={{ flex: 1}}>
+			<Background />
+
+			<Pressable style={styles.back} onPress={handleBack}>
+				<Entypo name="chevron-left" size={PosX(35)} color="#D9D9D9" />
+			</Pressable>
+
+			<Text style={styles.title}>{projectQuery.data?.name}</Text>
+		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#352940ff',
+	back: {
+		position: 'absolute',
+		top: PosX(80),
+		left: PosX(40),
+		zIndex: 10,
 	},
-	header: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		paddingHorizontal: 16,
-		paddingVertical: 12,
-		paddingTop: 16,
-	},
-	headerTitle: {
-		fontSize: 24,
-		fontFamily: 'Borna',
-		color: 'white',
-	},
-	placeholder: {
-		width: 40,
-	},
-	backButton: {
-		padding: 8,
-	},
-	categoryText: {
-		color: 'white',
-		fontFamily: 'Mona',
-		fontSize: 12,
-		fontWeight: 'bold',
+	title: {
+		marginTop: PosX(150),
+		marginBottom: PosX(30),
+		fontSize: PosX(28),
+		fontFamily: 'SF-Semibold', 
+		fontWeight: '600',
+		color: '#FFFFFF',
+		textAlign: 'center',
 	},
 });
