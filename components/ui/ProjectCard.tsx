@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, ImageBackground, Pressable, StyleSheet } from "react-native";
-import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
 import { PosX, PosY } from "@/constants/Responsive";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface ProjectCardProps {
 	image: string;
@@ -13,6 +13,11 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ image, name, currentStep, deadline, onPress }: ProjectCardProps) {
+	const formattedDeadline = new Date(deadline).toLocaleDateString("en-GB", {
+		day: "2-digit",
+		month: "2-digit",
+	});
+
 	return (
 		<Pressable style={styles.card} onPress={onPress}>
 			<ImageBackground
@@ -21,12 +26,17 @@ export default function ProjectCard({ image, name, currentStep, deadline, onPres
 				resizeMode="cover"
 				imageStyle={styles.imageRadius}
 			>
-				<View style={styles.gradientOverlay} />
+				<LinearGradient
+					colors={["rgba(0, 0, 0, 0)", "rgba(0,0,0,0.6)"]}
+					start={{ x: 0.5, y: 0 }}
+					end={{ x: 0.5, y: 1 }}
+					style={[StyleSheet.absoluteFill, { borderRadius: 40 }]}
+				/>
 
-				<BlurView intensity={40} tint="dark" style={styles.deadlineContainer}>
+				<View style={styles.deadlineContainer}>
 					<Ionicons name="timer-outline" size={24} color="#FFFFFF" />
-					<Text style={styles.deadlineText}>{deadline}</Text>
-				</BlurView>
+					<Text style={styles.deadlineText}>{formattedDeadline}</Text>
+				</View>
 
 				<View style={styles.textContainer}>
 					<Text style={styles.projectName}>{name}</Text>
@@ -50,14 +60,6 @@ const styles = StyleSheet.create({
 	},
 	imageRadius: {
 		borderRadius: 40,
-	},
-	gradientOverlay: {
-		position: "absolute",
-		bottom: 0,
-		width: "100%",
-		height: "50%",
-		backgroundColor: "rgba(0, 0, 0, 0.4)",
-		backdropFilter: "blur(6px)",
 	},
 	deadlineContainer: {
 		position: "absolute",
