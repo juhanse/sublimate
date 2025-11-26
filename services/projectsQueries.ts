@@ -1,13 +1,12 @@
 import api from '@/services/api';
-import { Category } from './categoriesQueries';
 
 export type Step = {
 	id: string,
 	project_id: string,
+	step_index: number,
 	name: string,
-	index: number,
-	is_completed: boolean,
 	deadline: string,
+	is_completed: boolean,
 	updated_at: string,
 	created_at: string
 }
@@ -17,10 +16,8 @@ export type Project = {
 	user_id: string,
 	name: string,
 	thumbnail: string,
-	next_deadline: string,
-	final_deadline: string,
-	progress_level: number,
-	steps_count: number,
+	count_step: number,
+	current_step: string,
 	status: "active" | "inactive",
 	updated_at: string,
 	created_at: string,
@@ -28,9 +25,9 @@ export type Project = {
 		categories: {
 			id: string,
 			name: string,
-			language: string,
-			created_at: string,
+			lang: string,
 			updated_at: string,
+			created_at: string,
 		}
 	}[],
 	steps: Step[]
