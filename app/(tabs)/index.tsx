@@ -54,11 +54,11 @@ export default function HomeScreen() {
 
 		return (
 			<View>
-				<ProjectCard 
+				<ProjectCard
 					image={item.thumbnail}
 					name={item.name}
-					currentStep={item.steps[item.progress_level].name}
-					deadline={item.next_deadline}
+					currentStep={item.steps.find(step => step.id === item.current_step)!.name}
+					deadline={item.steps.find(step => step.id === item.current_step)!.deadline}
 					onPress={() => handleDetails(item.id)}
 				/>
 			</View>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
 	buttonContainer: {
 		width: '100%',
 		position: 'absolute',
-		top: PosY(700),
+		top: PosY(750),
 		flexDirection: 'column',
 		paddingHorizontal: PosX(80),
 	},
@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
 		borderRadius: PosY(36),
 	},
 	addIcon: {
-		width: 280,
-		height: 400,
+		width: PosX(290),
+		height: PosY(430),
 	},
 	projectsList: {
 		padding: 24,
