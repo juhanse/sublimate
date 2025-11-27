@@ -3,7 +3,7 @@ import api from '@/services/api';
 export type Category = {
 	id: string,
 	name: string,
-	language: string,
+	lang: string,
 	updated_at: string,
 	created_at: string,
 };
