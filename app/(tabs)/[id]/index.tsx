@@ -8,6 +8,7 @@ import { PosX } from '@/constants/Responsive';
 import { Entypo } from '@expo/vector-icons';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
+import CategorySelector from '@/components/project/CategorySelector';
 
 export default function ProjectScreen() {
 	const { id } = useLocalSearchParams();
@@ -34,8 +35,11 @@ export default function ProjectScreen() {
 			<Pressable style={styles.back} onPress={handleBack}>
 				<Entypo name="chevron-left" size={PosX(30)} color="#D9D9D9" />
 			</Pressable>
-
+			
 			<Text style={styles.title}>{projectQuery.data?.name}</Text>
+
+			<CategorySelector categories={projectQuery.data?.projects_categories} />
+	
 			<View style={styles.buttonContainer}>
 				<Button type='warning' onPress={() => router.push(`/project/${projectId}/edit`)}>
 					Supprimer

@@ -7,7 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Background } from '@/components/ui/Background';
 import Header from '@/components/ui/Header';
 import Button from '@/components/ui/Button';
-import ProjectCard from '@/components/ui/ProjectCard';
+import ProjectCard from '@/components/project/ProjectCard';
 import { fetchMe } from '@/services/usersQueries';
 import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { PosX, PosY } from '@/constants/Responsive';

@@ -5,7 +5,6 @@ import { createProject } from '@/services/projectsQueries';
 import { CreateProject } from '@/services/projectsQueries';
 import { router } from 'expo-router';
 import { Colors } from '@/constants/Colors';
-import CategorySelector from '@/components/create/CategorySelector';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
@@ -39,7 +38,7 @@ export default function CreateProjectModal() {
 
 	const handleAddStep = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		setProjectData((prev) => ({
+		/* setProjectData((prev) => ({
 			...prev,
 			steps: [
 				...prev.steps,
@@ -54,7 +53,7 @@ export default function CreateProjectModal() {
 					updated_at: "",
 				},
 			],
-		}));
+		})); */
 	};
 
 	const handleUpdateStep = (index: number, key: "name" | "deadline", value: string) => {
@@ -132,10 +131,10 @@ export default function CreateProjectModal() {
 			<View style={styles.categoryContainer}>
 				<Text style={styles.label}>Catégories :</Text>
 
-				<CategorySelector
+				{/* <CategorySelector
 					value={projectData.categories}
 					onChange={(selected) => setProjectData((prev) => ({ ...prev, categories: selected }))}
-				/>
+				/> */}
 			</View>
 
 			<View style={styles.nameContainer}>
