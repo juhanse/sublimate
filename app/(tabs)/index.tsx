@@ -26,10 +26,15 @@ export default function HomeScreen() {
 		queryFn: () => fetchMeProjects('active'),
 	});
 
-	const handleCreate = async () => {
+	const handleCamera = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-		router.push('/(tabs)/create');
+		router.push('/(tabs)/camera');
 	};
+
+	const handleCreate = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+		router.push('/(tabs)/create');
+	}
 
 	const handleDetails = async (projectId: string) => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -95,7 +100,7 @@ export default function HomeScreen() {
 			/>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleCreate} children="✨ Sublimate" />
+				<Button type="primary" onPress={handleCamera} children="✨ Sublimate" />
 			</View>
 		</View>
 	);
