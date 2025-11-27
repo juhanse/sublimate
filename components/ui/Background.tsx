@@ -2,11 +2,20 @@ import React from "react";
 import { View, ImageBackground, StyleSheet } from "react-native";
 import { BlurView } from "expo-blur";
 
-export const Background = () => {
+type BackgroundProps = {
+	url?: string | null;
+};
+
+export const Background = ({ url }: BackgroundProps) => {
+	const source =
+		typeof url === "string" && url.length > 0
+			? { uri: url }
+			: require("../../assets/images/background.png");
+
 	return (
 		<View style={styles.container}>
 			<ImageBackground
-				source={require("@/assets/images/background.png")}
+				source={source}
 				style={styles.image}
 				resizeMode="cover"
 			>
