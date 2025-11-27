@@ -7,6 +7,7 @@ import * as Haptics from 'expo-haptics';
 import { PosX } from '@/constants/Responsive';
 import { Entypo } from '@expo/vector-icons';
 import { Background } from '@/components/ui/Background';
+import Button from '@/components/ui/Button';
 
 export default function ProjectScreen() {
 	const { id } = useLocalSearchParams();
@@ -27,23 +28,36 @@ export default function ProjectScreen() {
 	}
 
 	return (
-		<View style={{ flex: 1}}>
-			<Background />
+		<View style={styles.container}>
+			<Background url={projectQuery.data?.thumbnail}/>
 
 			<Pressable style={styles.back} onPress={handleBack}>
-				<Entypo name="chevron-left" size={PosX(35)} color="#D9D9D9" />
+				<Entypo name="chevron-left" size={PosX(30)} color="#D9D9D9" />
 			</Pressable>
 
 			<Text style={styles.title}>{projectQuery.data?.name}</Text>
+			<View style={styles.buttonContainer}>
+				<Button type='warning' onPress={() => router.push(`/project/${projectId}/edit`)}>
+					Supprimer
+				</Button>
+				<Button type='primary' onPress={() => {}}>
+					Sauvegarder
+				</Button>
+			</View>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		paddingHorizontal: PosX(20),
+	},
 	back: {
 		position: 'absolute',
-		top: PosX(80),
-		left: PosX(40),
+		top: PosX(70),
+		left: PosX(50),
 		zIndex: 10,
 	},
 	title: {
@@ -54,5 +68,11 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 		color: '#FFFFFF',
 		textAlign: 'center',
+	},
+	buttonContainer: {
+		position: 'absolute',
+		bottom: PosX(50),
+		width: '100%',
+		gap: PosX(15),
 	},
 });
