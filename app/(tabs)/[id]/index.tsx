@@ -3,14 +3,16 @@ import { View, Text, StyleSheet, ActivityIndicator, Pressable } from 'react-nati
 import { useQuery } from '@tanstack/react-query';
 import { fetchMeProjectById } from '@/services/projectsQueries';
 import { router, useLocalSearchParams } from 'expo-router';
-import * as Haptics from 'expo-haptics';
+import { useTranslation } from 'react-i18next';
 import { PosX } from '@/constants/Responsive';
 import { Entypo } from '@expo/vector-icons';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import CategorySelector from '@/components/project/CategorySelector';
+import * as Haptics from 'expo-haptics';
 
 export default function ProjectScreen() {
+	const { t } = useTranslation();
 	const { id } = useLocalSearchParams();
 	const projectId = id as string;
 
@@ -42,10 +44,10 @@ export default function ProjectScreen() {
 	
 			<View style={styles.buttonContainer}>
 				<Button type='warning' onPress={() => router.push(`/project/${projectId}/edit`)}>
-					Supprimer
+					{t('edit')}
 				</Button>
 				<Button type='primary' onPress={() => {}}>
-					Sauvegarder
+					{t('save')}
 				</Button>
 			</View>
 		</View>

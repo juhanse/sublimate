@@ -9,5 +9,7 @@
 	"howoldareyou": "Quel âge avez-vous ?",
 	"project_type": "Quel type de projet réalisez-vous ?",
 	"whatsyourname": "Quel est votre nom ?",
-	"hearaboutus": "Comment avez-vous entendu parler de nous ?"
+	"hearaboutus": "Comment avez-vous entendu parler de nous ?",
+	"delete": "Supprimer",
+	"save": "Sauvegarder"
 }

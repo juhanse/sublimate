@@ -9,5 +9,7 @@
 	"howoldareyou": "How old are you?",
 	"project_type": "What type of project are you working on?",
 	"whatsyourname": "What's your name?",
-	"hearaboutus": "How did you hear about us?"
+	"hearaboutus": "How did you hear about us?",
+	"delete": "Delete",
+	"save": "Save"
 }
