@@ -8,6 +8,8 @@ import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import * as Haptics from 'expo-haptics';
+import Progress from '@/components/onboarding/Progress';
+import Slider from '@/components/onboarding/Slider';
 
 export default function HowOldAreYouScreen() {
 	const { t } = useTranslation();
@@ -38,9 +40,19 @@ export default function HowOldAreYouScreen() {
 			<Background />
 
 			<View style={styles.container}>
+				<Progress progress={0.75} />
+
 				<Text style={styles.title}>
 					{t('howoldareyou')}
 				</Text>
+
+				<Slider 
+					min={18}
+					max={100}
+					step={1}
+					value={old ?? 18}
+					onValueChange={setOld}
+				/>
 			</View>
 
 			<View style={[styles.buttonContainer]}>
@@ -58,9 +70,11 @@ export default function HowOldAreYouScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		alignItems: 'center',
-		paddingHorizontal: PosX(20),
+		gap: PosY(40),
+		paddingTop: PosY(80),
+		paddingHorizontal: PosX(40),
 	},
 	title: {
 		fontFamily: 'SF-Bold',

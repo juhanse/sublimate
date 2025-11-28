@@ -8,6 +8,7 @@ import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import * as Haptics from 'expo-haptics';
+import Progress from '@/components/onboarding/Progress';
 
 export default function OnboardingScreen() {
 	const { t } = useTranslation();
@@ -33,6 +34,8 @@ export default function OnboardingScreen() {
 			<Background />
 
 			<View style={styles.container}>
+				<Progress progress={0.25} />
+		
 				<Text style={styles.title}>
 					{t('whoareyou')}
 				</Text>
@@ -50,9 +53,11 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		alignItems: 'center',
-		paddingHorizontal: PosX(20),
+		gap: PosY(40),
+		paddingTop: PosY(80),
+		paddingHorizontal: PosX(40),
 	},
 	title: {
 		fontFamily: 'SF-Bold',

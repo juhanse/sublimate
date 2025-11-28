@@ -9,6 +9,7 @@ import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import * as Haptics from 'expo-haptics';
 import { useAuth } from '@/contexts/auth';
+import Progress from '@/components/onboarding/Progress';
 
 export default function HearAboutUsScreen() {
 	const { setOnboarded } = useAuth();
@@ -40,6 +41,8 @@ export default function HearAboutUsScreen() {
 			<Background />
 
 			<View style={styles.container}>
+				<Progress progress={1} />
+
 				<Text style={styles.title}>
 					{t('hearaboutus')}
 				</Text>
@@ -60,9 +63,11 @@ export default function HearAboutUsScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		alignItems: 'center',
-		paddingHorizontal: PosX(20),
+		gap: PosY(40),
+		paddingTop: PosY(80),
+		paddingHorizontal: PosX(40),
 	},
 	title: {
 		fontFamily: 'SF-Bold',

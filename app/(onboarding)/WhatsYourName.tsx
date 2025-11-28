@@ -6,6 +6,8 @@ import { updateMe, UpdateUser } from '@/services/usersQueries';
 import { useTranslation } from 'react-i18next';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
+import Progress from '@/components/onboarding/Progress';
+import TextEntry from '@/components/onboarding/TextEntry';
 import { PosX, PosY } from '@/constants/Responsive';
 import * as Haptics from 'expo-haptics';
 
@@ -30,7 +32,12 @@ export default function WhatsYourNameScreen() {
 
 	const handleNext = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		mutate({ username: "juhanse" });
+
+		if (!username || username.length < 3) {
+			return;
+		}
+
+		mutate({ username });
 	};
 
 	return (
@@ -38,9 +45,13 @@ export default function WhatsYourNameScreen() {
 			<Background />
 
 			<View style={styles.container}>
+				<Progress progress={0.5} />
+	
 				<Text style={styles.title}>
 					{t('whatsyourname')}
 				</Text>
+
+				<TextEntry placeholder='John Doe' value={username || ''} onChangeText={setUsername} />
 			</View>
 
 			<View style={[styles.buttonContainer]}>
@@ -58,9 +69,11 @@ export default function WhatsYourNameScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		alignItems: 'center',
-		paddingHorizontal: PosX(20),
+		gap: PosY(40),
+		paddingTop: PosY(80),
+		paddingHorizontal: PosX(40),
 	},
 	title: {
 		fontFamily: 'SF-Bold',
