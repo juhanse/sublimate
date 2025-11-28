@@ -1,3 +1,4 @@
+import { PosY } from '@/constants/Responsive';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
@@ -15,11 +16,11 @@ export default function Progress({ progress }: ProgressProps) {
 
 const styles = StyleSheet.create({
 	container: {
-		height: 8,
 		width: '100%',
-		backgroundColor: '#D9D9D9',
-		borderRadius: 4,
+		height: PosY(12),
+		borderRadius: 30,
 		overflow: 'hidden',
+		backgroundColor: '#D9D9D9',
 	},
 	progressBar: {
 		height: '100%',
