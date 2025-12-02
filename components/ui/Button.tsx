@@ -10,9 +10,10 @@ interface ButtonProps {
 	style?: ViewStyle;
 	textStyle?: TextStyle;
 	disabled?: boolean;
+	pending?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ type = "primary", onPress, children, style, textStyle, disabled = false }) => {
+const Button: React.FC<ButtonProps> = ({ type = "primary", onPress, children, style, textStyle, disabled = false, pending = false }) => {
 	const getBackgroundColor = (pressed: boolean) => {
 		switch (type) {
 			case "secondary":
@@ -35,16 +36,16 @@ const Button: React.FC<ButtonProps> = ({ type = "primary", onPress, children, st
 
 	return (
 		<Pressable
-			onPress={disabled ? undefined : onPress}
-			disabled={disabled}
+			onPress={disabled || pending ? undefined : onPress}
+			disabled={disabled || pending}
 			style={({ pressed }) => [
 				styles.base,
 				styles.shadow,
-				{ backgroundColor: getBackgroundColor(pressed), opacity: disabled ? 0.6 : 1 },
+				{ backgroundColor: disabled ? "#afafafff" : getBackgroundColor(pressed) },
 				style,
 			]}
 		>
-			{disabled ? (
+			{pending ? (
 				<ActivityIndicator color={getTextColor()} />
 			) : (
 				<Text style={[styles.text, { color: getTextColor() }, textStyle]}>
