@@ -12,10 +12,13 @@ import { fetchMe } from '@/services/usersQueries';
 import { fetchMeProjects, Project } from '@/services/projectsQueries';
 import { PosX, PosY } from '@/constants/Responsive';
 import * as Haptics from 'expo-haptics';
+import { useAuth } from '@/contexts/auth';
 
 type ProjectListItem = Project | 'add';
 
 export default function HomeScreen() {
+	const { setOnboarded } = useAuth();
+
 	const userQuery = useQuery({
 		queryKey: ['currentUser'],
 		queryFn: fetchMe,
@@ -28,7 +31,8 @@ export default function HomeScreen() {
 
 	const handleCamera = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-		router.push('/(tabs)/camera');
+		setOnboarded(false);
+		//router.push('/(tabs)/camera');
 	};
 
 	const handleCreate = async () => {
