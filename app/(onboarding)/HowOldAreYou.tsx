@@ -56,7 +56,7 @@ export default function HowOldAreYouScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleNext} disabled={isPending}>
+				<Button type="primary" onPress={handleNext} pending={isPending}>
 					{t('next')}
 				</Button>
 				<Text style={styles.backButton} onPress={handleBack}>

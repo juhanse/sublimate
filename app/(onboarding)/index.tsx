@@ -42,7 +42,7 @@ export default function OnboardingScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleNext} disabled={isPending}>
+				<Button type="primary" onPress={handleNext} pending={isPending}>
 					{t('next')}
 				</Button>
 			</View>

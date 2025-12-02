@@ -49,7 +49,7 @@ export default function HearAboutUsScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleFinish} disabled={isPending}>
+				<Button type="primary" onPress={handleFinish} pending={isPending}>
 					{t('next')}
 				</Button>
 				<Text style={styles.backButton} onPress={handleBack}>
