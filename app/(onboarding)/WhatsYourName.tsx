@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
 import { updateMe, UpdateUser } from '@/services/usersQueries';
@@ -41,7 +41,11 @@ export default function WhatsYourNameScreen() {
 	};
 
 	return (
-		<View style={{ flex: 1 }}>
+		<KeyboardAvoidingView
+			style={{ flex: 1 }}
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			keyboardVerticalOffset={Platform.OS === 'ios' ? 1 : 0}
+		>
 			<Background />
 
 			<View style={styles.container}>
@@ -55,14 +59,14 @@ export default function WhatsYourNameScreen() {
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleNext} disabled={isPending}>
+				<Button type="primary" onPress={handleNext} pending={isPending} disabled={!username || username.length < 3}>
 					{t('next')}
 				</Button>
 				<Text style={styles.backButton} onPress={handleBack}>
 					{t('back')}
 				</Text>
 			</View>
-		</View>
+		</KeyboardAvoidingView>
 	);
 }
 
@@ -83,10 +87,9 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		width: '100%',
-		position: 'absolute',
-		top: PosY(700),
 		flexDirection: 'column',
 		paddingHorizontal: PosX(80),
+		paddingBottom: PosY(40),
 	},
 	backButton: {
 		fontFamily: 'SF-Regular',
