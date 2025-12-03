@@ -88,7 +88,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
+		justifyContent: 'flex-start',
 		paddingHorizontal: PosX(20),
+		paddingVertical: PosX(40),
+		gap: PosX(20),
 	},
 	back: {
 		position: 'absolute',
@@ -97,18 +100,16 @@ const styles = StyleSheet.create({
 		zIndex: 10,
 	},
 	title: {
-		marginTop: PosX(150),
-		marginBottom: PosX(30),
+		marginTop: PosX(100),
 		fontSize: PosX(32),
-		fontFamily: 'Borna', 
-		fontWeight: '600',
+		fontFamily: 'Borna',
 		color: '#FFFFFF',
 		textAlign: 'center',
 	},
 	buttonContainer: {
 		position: 'absolute',
-		bottom: PosX(50),
 		width: '100%',
+		bottom: PosX(50),
 		gap: PosX(15),
 	},
 });
