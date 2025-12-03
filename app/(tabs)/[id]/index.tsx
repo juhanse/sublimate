@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { View, TextInput, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { fetchMeProjectById, updateMeProjectById, UpdateProject } from '@/services/projectsQueries';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -72,6 +72,8 @@ export default function ProjectScreen() {
 
 			<CategorySelector categories={projectQuery.data?.projects_categories} />
 
+			<ScrollView style={styles.scrollContainer} />
+
 			<View style={styles.buttonContainer}>
 				<Button type='warning' onPress={() => {}}>
 					{t('delete')}
@@ -112,4 +114,9 @@ const styles = StyleSheet.create({
 		bottom: PosX(50),
 		gap: PosX(15),
 	},
+	scrollContainer: {
+		flex: 1,
+		width: '100%',
+		marginBottom: PosX(150),
+	}
 });
