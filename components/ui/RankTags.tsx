@@ -11,7 +11,7 @@ export interface RankTagProps {
 export default function RankTags({ name, color }: RankTagProps) {
 	return (
 		<View style={[styles.container, { backgroundColor: `${color}4D` }]}>
-			<FontAwesome name="trophy" size={PosX(10)} color={color} />
+			<FontAwesome name="trophy" size={PosX(14)} color={color} />
 			<Text style={[styles.text, { color }]}>{name}</Text>
 		</View>
 	);
@@ -24,12 +24,11 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		padding: PosX(4),
 		borderRadius: PosX(5),
-		gap: PosX(2),
+		gap: PosX(5),
 		alignSelf: "flex-start",
 	},
-
 	text: {
 		fontFamily: "Borna",
-		fontSize: PosY(10),
+		fontSize: PosY(14),
 	},
 });
