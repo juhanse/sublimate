@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "center",
-		padding: PosX(4),
-		borderRadius: PosX(5),
-		gap: PosX(2),
 		alignSelf: "flex-start",
+		paddingHorizontal: PosX(20),
+		paddingVertical: PosY(10),
+		gap: PosX(5),
+		borderRadius: PosX(30),
 	},
-
 	text: {
-		fontFamily: "Borna",
-		fontSize: PosY(10),
+		fontFamily: "SF-Medium",
+		fontSize: PosY(16),
 	},
 });

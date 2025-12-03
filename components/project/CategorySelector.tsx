@@ -1,8 +1,9 @@
 import React from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
-import CategoryTags from "@/components/ui/CategoryTags";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { Category, fetchCategories } from '@/services/categoriesQueries';
+import { PosY } from "@/constants/Responsive";
+import CategoryTags from "@/components/ui/CategoryTags";
 
 type ProjectCategory = {
 	categories: {
@@ -25,15 +26,11 @@ export default function CategorySelector({ categories }: CategorySelectorProps) 
 	});
 
 	if (categoriesQuery.isLoading) {
-		return (
-			<View style={styles.loadingContainer}>
-				<ActivityIndicator color="white" size="small" />
-			</View>
-		);
+		return <ActivityIndicator color="white" size="small" />;
 	}
 
 	return (
-		<View>
+		<View style={styles.container}>
 			{categoriesQuery.data?.map((cat) => (
 				<CategoryTags
 					key={cat.id}
@@ -51,16 +48,10 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: "row",
 		flexWrap: "wrap",
-		alignItems: "flex-start",
-		justifyContent: "flex-start",
-		paddingVertical: 10,
-		// paddingHorizontal: 0,
+		gap: PosY(5),
 	},
 	tagWrapper: {
 		marginRight: 5,
 		marginBottom: 5,
-	},
-	loadingContainer: {
-		paddingVertical: 10,
 	},
 });
