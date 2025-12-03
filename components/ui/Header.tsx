@@ -2,9 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from '@expo/vector-icons';
-import RankTags from "@/components/ui/RankTags";
+import { useTranslation } from 'react-i18next';
 import { PosX, PosY } from "@/constants/Responsive";
 import { User } from "@/services/usersQueries";
+import RankTags from "@/components/ui/RankTags";
 // import Streaks from "./Streaks";
 
 interface HeaderProps {
@@ -12,6 +13,7 @@ interface HeaderProps {
 }
 
 export default function Header({ user }: HeaderProps) {
+	const { t } = useTranslation();
 	const progress = Math.min(user.xp / 100, 1);
 
 	return (
@@ -23,7 +25,7 @@ export default function Header({ user }: HeaderProps) {
 
 			<View style={styles.infoContainer}>
 				<View style={styles.topRow}>
-					<Text style={styles.username}>👋 Salut, {user.username}</Text>
+					<Text style={styles.username}>👋 {t('hello')}, {user.username}</Text>
 					<Entypo name="chevron-right" size={PosX(35)} color="#D9D9D9" />
 				</View>
 
@@ -80,8 +82,8 @@ const styles = StyleSheet.create({
 	},
 	username: {
 		fontSize: PosY(20),
-		color: "#111111",
-		fontFamily: "SF-Semibold",
+		color: "#333333ff",
+		fontFamily: "SF-Bold",
 	},
 	progressBarBackground: {
 		width: "100%",
