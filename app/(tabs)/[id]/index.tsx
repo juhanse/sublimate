@@ -7,17 +7,18 @@ import { useTranslation } from 'react-i18next';
 import { PosX } from '@/constants/Responsive';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
-import CategorySelector from '@/components/project/CategorySelector';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Entypo } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import Categories from '@/components/project/Categories';
 
 export default function ProjectScreen() {
-	const [title, setTitle] = useState('');
-	const { t } = useTranslation();
-	const queryClient = useQueryClient();
 	const { id } = useLocalSearchParams();
 	const projectId = id as string;
+	const { t } = useTranslation();
+	const queryClient = useQueryClient();
+	const [title, setTitle] = useState('');
+	const [selectedCatIds, setSelectedCatIds] = useState<string[]>([]);
 
 	const projectQuery = useQuery({
 		queryKey: ['projectId', projectId],
@@ -71,7 +72,7 @@ export default function ProjectScreen() {
 				maxLength={50}
 			/>
 
-			<CategorySelector categories={projectQuery.data?.projects_categories} />
+			<Categories projectId={projectId} maxCategories={2} />
 
 			<ScrollView style={styles.scrollContainer}>
 				<View style={styles.steps}>
