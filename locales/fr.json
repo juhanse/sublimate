@@ -21,5 +21,13 @@
 	"internet": "Internet",
 	"app_store": "App Store",
 	"social_network": "Réseaux Sociaux",
-	"friends": "Amis"
+	"friends": "Amis",
+	"categories": {
+		"sport": " 🏆 Sport",
+		"travel": "✈️ Voyage",
+		"finance": "💰 Finance",
+		"health": "🧠 Santé",
+		"learning": "📚 Apprentissage",
+		"creativity": "🎨 Créativité"
+	}
 }
