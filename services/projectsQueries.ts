@@ -25,7 +25,6 @@ export type Project = {
 		categories: {
 			id: string,
 			name: string,
-			lang: string,
 			updated_at: string,
 			created_at: string,
 		}
