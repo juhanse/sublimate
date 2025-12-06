@@ -9,10 +9,18 @@ import Button from '@/components/ui/Button';
 import { PosX, PosY } from '@/constants/Responsive';
 import * as Haptics from 'expo-haptics';
 import Progress from '@/components/onboarding/Progress';
+import CardGrid, { CardItem } from '@/components/onboarding/CardGrid';
 
 export default function OnboardingScreen() {
 	const { t } = useTranslation();
 	const [profileType, setProfileType] = useState<"student" | "sports" | "artist" | "entrepreneur" | "other" | null>(null);
+	const cardData: CardItem[] = [
+		{ label: t('student'), value: 'student' },
+		{ label: t('sports'), value: 'sports' },
+		{ label: t('artist'), value: 'artist' },
+		{ label: t('entrepreneur'), value: 'entrepreneur' },
+		{ label: t('other'), value: 'other' },
+	];
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: (user: UpdateUser) => updateMe(user),
@@ -26,7 +34,9 @@ export default function OnboardingScreen() {
 
 	const handleNext = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		mutate({ profile_type: "student" });
+		if (profileType !== null) {
+			mutate({ profile_type: profileType });
+		}
 	};
 
 	return (
@@ -39,10 +49,17 @@ export default function OnboardingScreen() {
 				<Text style={styles.title}>
 					{t('whoareyou')}
 				</Text>
+
+				<CardGrid
+					items={cardData}
+					onSelectionChange={(values) => {
+						setProfileType(values ? (values[0] as "student" | "sports" | "artist" | "entrepreneur" | "other") : null);
+					}}
+				/>
 			</View>
 
 			<View style={[styles.buttonContainer]}>
-				<Button type="primary" onPress={handleNext} pending={isPending}>
+				<Button type="primary" onPress={handleNext} pending={isPending} disabled={profileType === null}>
 					{t('next')}
 				</Button>
 			</View>
