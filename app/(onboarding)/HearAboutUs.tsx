@@ -10,11 +10,19 @@ import { PosX, PosY } from '@/constants/Responsive';
 import * as Haptics from 'expo-haptics';
 import { useAuth } from '@/contexts/auth';
 import Progress from '@/components/onboarding/Progress';
+import CardGrid, { CardItem } from '@/components/onboarding/CardGrid';
 
 export default function HearAboutUsScreen() {
-	const { setOnboarded } = useAuth();
 	const { t } = useTranslation();
+	const { setOnboarded } = useAuth();
 	const [hear, setHear] = useState<"internet" | "app_store" | "social_network" | "friends" | "other" | null>(null);
+	const cardData: CardItem[] = [
+		{ label: t('internet'), value: 'internet' },
+		{ label: t('app_store'), value: 'app_store' },
+		{ label: t('social_network'), value: 'social_network' },
+		{ label: t('friends'), value: 'friends' },
+		{ label: t('other'), value: 'other' },
+	];
 
 	const { mutate, isPending } = useMutation({
         mutationFn: (user: UpdateUser) => updateMe(user),
@@ -33,7 +41,9 @@ export default function HearAboutUsScreen() {
 
 	const handleFinish = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-		mutate({ heard: "friends", onboarding: true });
+		if (hear !== null) {
+			mutate({ heard: hear, onboarding: true });
+		}
 	};
 
 	return (
@@ -46,6 +56,13 @@ export default function HearAboutUsScreen() {
 				<Text style={styles.title}>
 					{t('hearaboutus')}
 				</Text>
+
+				<CardGrid
+					items={cardData}
+					onSelectionChange={(values) => {
+						setHear(values ? (values[0] as "internet" | "app_store" | "social_network" | "friends" | "other") : null);
+					}}
+				/>
 			</View>
 
 			<View style={[styles.buttonContainer]}>
