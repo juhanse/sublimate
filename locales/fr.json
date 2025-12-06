@@ -12,5 +12,14 @@
 	"hearaboutus": "Comment avez-vous entendu parler de nous ?",
 	"delete": "Supprimer",
 	"save": "Sauvegarder",
-	"hello": "Salut"
+	"hello": "Salut",
+	"student": "Étudiant",
+	"sports": "Sportif",
+	"artist": "Artiste",
+	"entrepreneur": "Entrepreneur",
+	"other": "Autre",
+	"internet": "Internet",
+	"app_store": "App Store",
+	"social_network": "Réseaux Sociaux",
+	"friends": "Amis"
 }

@@ -12,5 +12,14 @@
 	"hearaboutus": "How did you hear about us?",
 	"delete": "Delete",
 	"save": "Save",
-	"hello": "Hello"
+	"hello": "Hello",
+	"student": "Student",
+	"sports": "Sports",
+	"artist": "Artist",
+	"entrepreneur": "Entrepreneur",
+	"other": "Other",
+	"internet": "Internet",
+	"app_store": "App Store",
+	"social_network": "Social Network",
+	"friends": "Friends"
 }
