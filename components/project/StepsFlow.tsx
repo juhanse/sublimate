@@ -23,6 +23,7 @@ export default function StepsFlow({ steps }: StepsFlowProps) {
 								style={styles.stepName}
 								placeholder={step.name}
 								placeholderTextColor="rgba(227, 223, 217, 0.8)"
+								multiline={true}
 							/>
 							<DateTimePicker
 								testID="dateTimePicker"
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
 		paddingVertical: PosX(10),
 		paddingHorizontal: PosX(20),
 		width: '100%',
-		height: PosX(60),
+		height: PosX(80),
 		gap: PosX(10),
 		borderRadius: PosX(16),
 		borderWidth: 1,
