@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { View, TextInput, ActivityIndicator, Pressable, Alert, StyleSheet } from 'react-native';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { fetchMeProjectById, updateMeProjectById, UpdateProject } from '@/services/projectsQueries';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -48,6 +48,26 @@ export default function ProjectScreen() {
 		router.back();
 	};
 
+	const handleDelete = async () => {
+		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		Alert.alert(
+			t('delete_project'),
+			t('delete_project_confirmation'),
+			[
+				{
+					text: t('cancel'),
+					style: 'cancel',
+				},
+				{
+					text: t('delete'),
+					style: 'destructive',
+					onPress: () => {},
+				},
+			],
+			{ cancelable: true }
+		);
+	};
+
 	const handleSave = async () => {
 		await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 		mutate({ name: title });
@@ -79,7 +99,7 @@ export default function ProjectScreen() {
 			</View>
 
 			<View style={styles.buttonContainer}>
-				<Button type='warning' onPress={() => {}}>
+				<Button type='warning' onPress={handleDelete}>
 					{t('delete')}
 				</Button>
 				<Button type='primary' onPress={handleSave} pending={isPending}>
@@ -121,7 +141,7 @@ const styles = StyleSheet.create({
 	stepsContainer: {
 		flex: 1,
 		width: '100%',
-		marginBottom: PosX(120),
+		marginBottom: PosX(140),
 		backgroundColor: "red"
 	},
 });
