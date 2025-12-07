@@ -29,5 +29,8 @@
 		"health": "🧠 Health",
 		"learning": "📚 Learning",
 		"creativity": "🎨 Creativity"
-	}
+	},
+	"delete_project": "Delete Project",
+	"delete_project_confirmation": "Are you sure you want to delete this project? This action is irreversible.",
+	"cancel": "Cancel"
 }

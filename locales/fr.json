@@ -29,5 +29,8 @@
 		"health": "🧠 Santé",
 		"learning": "📚 Apprentissage",
 		"creativity": "🎨 Créativité"
-	}
+	},
+	"delete_project": "Supprimer le projet",
+	"delete_project_confirmation": "Êtes-vous sûr de vouloir supprimer ce projet ? Cette action est irréversible.",
+	"cancel": "Annuler"
 }
