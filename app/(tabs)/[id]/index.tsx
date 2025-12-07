@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, ActivityIndicator, Pressable, StyleSheet, ScrollView } from 'react-native';
+import { View, TextInput, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { fetchMeProjectById, updateMeProjectById, UpdateProject } from '@/services/projectsQueries';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -7,10 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { PosX } from '@/constants/Responsive';
 import { Background } from '@/components/ui/Background';
 import Button from '@/components/ui/Button';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { Entypo } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import Categories from '@/components/project/Categories';
+import StepsFlow from '@/components/project/StepsFlow';
 
 export default function ProjectScreen() {
 	const { id } = useLocalSearchParams();
@@ -74,150 +74,9 @@ export default function ProjectScreen() {
 
 			<Categories projectId={projectId} maxCategories={2} />
 
-			<ScrollView style={styles.scrollContainer}>
-				<View style={styles.steps}>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-					<View style={styles.step}>
-						<Entypo name="menu" size={PosX(30)} color="#888888"/>
-						<TextInput
-							style={styles.stepName}
-							placeholder='Step Name'
-							placeholderTextColor="rgba(227, 223, 217, 0.8)"
-						/>
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={new Date()}
-							mode={'date'}
-							is24Hour={true}
-						/>
-					</View>
-				</View>
-			</ScrollView>
+			<View style={styles.stepsContainer}>
+				<StepsFlow steps={projectQuery.data?.steps || []} />
+			</View>
 
 			<View style={styles.buttonContainer}>
 				<Button type='warning' onPress={() => {}}>
@@ -259,32 +118,10 @@ const styles = StyleSheet.create({
 		bottom: PosX(50),
 		gap: PosX(15),
 	},
-	scrollContainer: {
+	stepsContainer: {
 		flex: 1,
 		width: '100%',
-		marginBottom: PosX(150),
-	},
-	steps: {
-		gap: PosX(10),
-	},
-	step: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingVertical: PosX(10),
-		paddingHorizontal: PosX(20),
-		width: '100%',
-		height: PosX(60),
-		gap: PosX(10),
-		borderRadius: PosX(16),
-		borderWidth: 1,
-		borderColor: '#393939',
-		backgroundColor: "#302C26"
-	},
-	stepName: {
-		flex: 1,
-		fontFamily: "SF-Medium",
-		fontSize: PosX(18),
-		color: "rgba(227, 223, 217, 0.8)"
+		marginBottom: PosX(120),
+		backgroundColor: "red"
 	},
 });
