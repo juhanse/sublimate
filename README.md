@@ -1,50 +1,59 @@
-# Welcome to your Expo app 👋
+# 🚀 Sublimate
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> **Turn your ideas into finished projects, one step at a time.**  
+> *Make progress visible, fun, and unstoppable.*
 
-## Get started
+<img src="docs/Welcome.png" align="left" width="150" alt="Sublimate App Preview - Home" />
+<br clear="left"/>
 
-1. Install dependencies
+## 📖 About The Project
 
-   ```bash
-   npm install
-   ```
+We all have ideas, goals, and dreams. But let’s be honest: almost everyone has started a project they never finished. 
 
-2. Start the app
+**Why?** Because motivation fades. Progress is hard to see. We forget why we started, and existing productivity tools are often cold, complex, and impersonal. 
 
-   ```bash
-   npx expo start
-   ```
+**Sublimate** is a mobile application designed to fix this. We believe that achieving your goals shouldn't feel like a chore. Inspired by the gamified and engaging approach of apps like Duolingo, Sublimate helps you finish what you start by making your progress highly visual and rewarding.
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### ✨ How It Works
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. **Create your project:** Give your goal a name and a purpose.
+2. **Break it down:** Split your big project into small, manageable steps.
+3. **Set deadlines:** Assign a target date for each step to keep the momentum going.
+4. **Capture the proof:** Take a photo to prove the step is done and celebrate the small wins.
+5. **See the magic:** Once the project is complete, Sublimate uses AI to generate a short, dynamic video compiling your photos, showcasing your entire journey from start to finish.
 
-## Get a fresh project
+### 🎯 Who Is It For?
 
-When you're ready, run:
+While anyone can use Sublimate to renovate a room or read 10 books, the app is primarily built for:
+- 🎓 **Students:** To prepare for exams step-by-step.
+- 🎨 **Young Creators:** To showcase their creative process and behind-the-scenes work.
+- 🏃 **Athletes:** To track training goals and physical transformations.
 
-```bash
-npm run reset-project
-```
+### 💎 Our Values
+- **Determination:** Pushing through the friction of getting started.
+- **Achievement:** Celebrating every step, no matter how small.
+- **Creativity:** Building a positive, motivating community of people who share their progress.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
+## 🛠 Technical Overview
 
-To learn more about developing your project with Expo, look at the following resources:
+Behind the smooth user experience is a robust, modern tech stack designed for scalability, performance, and cross-platform compatibility. 
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 📱 Mobile Application (Frontend)
+- **Framework:** [React Native](https://reactnative.dev/) powered by [Expo](https://expo.dev/) for seamless iOS and Android development.
+- **State Management:** [Zustand](https://github.com/pmndrs/zustand) for a fast, minimalist, and scalable global state.
+- **Device Integrations:**
+  - **Permissions Management:** Handled natively through Expo to ensure privacy and security.
+  - **Camera & Gallery:** Direct access to capture and upload photo proofs of completed steps.
+  - **Push Notifications:** To send friendly reminders, deadline alerts, and motivation boosts.
 
-## Join the community
+### ⚙️ Backend & Infrastructure
+- **BaaS (Backend as a Service):** [Supabase](https://supabase.com/) serves as the core backend infrastructure.
+- **Authentication:** Supabase Auth integrated with **Social Providers** (Google/Apple) for quick, frictionless onboarding.
+- **Database:** PostgreSQL (via Supabase) for secure relational data management (Users, Projects, Steps).
+- **Media Storage:** Supabase **Storage Buckets** are used to securely host user-uploaded images and the final AI-generated videos.
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 💻 Admin Dashboard
+- **Framework:** [Next.js](https://nextjs.org/) (React).
+- **Purpose:** A dedicated, external web dashboard used by the core team to manage the application, monitor community engagement, moderate content, and oversee the backend infrastructure easily.
